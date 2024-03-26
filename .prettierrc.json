@@ -1,0 +1,14 @@
+{
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrder": ["^(.*)(react|next)(.*)$", "^@/(.*)$", ".(.*)"],
+  "plugins": [
+    "prettier-plugin-tailwindcss",
+    "@trivago/prettier-plugin-sort-imports"
+  ],
+  "singleQuote": true,
+  "parser": "flow",
+  "fileInfoOptions": {
+    "withNodeModules": true
+  }
+}
