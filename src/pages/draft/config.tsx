@@ -1,8 +1,10 @@
+import { useStore } from 'effector-react';
 import { ArrowRight, Check } from 'lucide-react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -11,22 +13,18 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { toast } from '@/components/ui/use-toast';
+import draftStore from '@/store/draft/draft-store';
+import { generateDraftUseCase } from '@/useCases/draft/generate-draft.useCase';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { changeFiltersUseCase } from '@/useCases/player/change-filters.useCase';
-import { Checkbox } from '@/components/ui/checkbox';
-import { draftEvent } from '@/store/draft/draft-events';
-import { toast } from '@/components/ui/use-toast';
-import { useStore } from 'effector-react';
-import draftStore from '@/store/draft/draft-store';
-import { generateDraftUseCase } from '@/useCases/draft/generate-draft.useCase';
 
 const defaultValues = {
   name: undefined,
   teamPlayersQuantity: undefined,
   teamsQuantity: undefined,
-  isSmartCaptainSelection: undefined
+  isSmartCaptainSelection: true,
 };
 
 const formSchema = z.object({
@@ -37,7 +35,7 @@ const formSchema = z.object({
 });
 
 export default function DraftConfig() {
-  const { config } = useStore(draftStore)
+  const { config } = useStore(draftStore);
   const form = useForm<z.infer<typeof formSchema>>({
     mode: 'all',
     defaultValues,
@@ -45,8 +43,8 @@ export default function DraftConfig() {
   });
 
   useEffect(() => {
-    form.reset({})
-  }, [])
+    form.reset({});
+  }, []);
 
   const showAlert = () => {
     toast({
@@ -60,13 +58,12 @@ export default function DraftConfig() {
     });
   };
 
-
   return (
     <div className="w-fit">
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(config => {
-            generateDraftUseCase.execute(config, showAlert)
+          onSubmit={form.handleSubmit((config) => {
+            generateDraftUseCase.execute(config, showAlert);
           })}
           className="flex flex-col p-10 gap-4"
         >
@@ -135,7 +132,11 @@ export default function DraftConfig() {
               <FormItem className="min-w-80">
                 <FormControl>
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="teamPlayersQuantity" checked={value} onCheckedChange={e => onChange(e)} />
+                    <Checkbox
+                      id="teamPlayersQuantity"
+                      checked={value}
+                      onCheckedChange={(e) => onChange(e)}
+                    />
                     <label
                       htmlFor="teamPlayersQuantity"
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
