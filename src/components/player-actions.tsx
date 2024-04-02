@@ -32,7 +32,7 @@ const PlayerActions = ({ row, data }: { data: IPlayer[], row: { original: IPlaye
         const base64Image = reader.result as string;
         console.log(base64Image); // Log base64 image data
         const newData = data.map(player => player.id === playerId ? { ...player, photo: base64Image } : player);
-        playerEvent({ dataSource: newData });
+        playerEvent({ players: newData });
       };
       reader.readAsDataURL(file);
     } catch (error) {

@@ -19,7 +19,7 @@ export interface IPlayerPage {
   totalPages: number;
   totalRegistries: number;
   selectedRows: string[];
-  dataSource: IPlayer[]
+  players: IPlayer[]
   filters: {
     name?: string | null;
   };

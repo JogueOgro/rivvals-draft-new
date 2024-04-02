@@ -10,9 +10,16 @@ import draftStore from '@/store/draft/draft-store'
 import { draftEvent } from '@/store/draft/draft-events'
 import CaptainSelectionTable from './captain-selection'
 import PlayersSelect from './players-select'
+import { useEffect } from 'react'
+import { draftInitialState } from '@/store/draft/draft-state'
 
 export default function DraftPage() {
   const { activeTab, config } = useStore(draftStore)
+
+  useEffect(() => {
+    draftEvent({ activeTab: '1' })
+  }, [])
+
   return (
     <>
       <HeadMetatags title="Draft" />
@@ -26,21 +33,15 @@ export default function DraftPage() {
               <TabsTrigger value="3" className="px-8">SELEÇÃO DE JOGADORES</TabsTrigger>
               <TabsTrigger value="4" className="px-8">RESUMO DO DRAFT</TabsTrigger>
             </TabsList>
-            <Card className="w-full min-h-96 mt-8">
-              <TabsContent value="1">
-                <DraftConfig />
-              </TabsContent>
-              <TabsContent value="2">
-                <div className="mt-[-7px]">
-                  <CaptainSelectionTable />
-                </div>
-              </TabsContent>
-              <TabsContent value="3">
-                <div className="mt-[-7px]">
-                  <PlayersSelect />
-                </div>
-              </TabsContent>
-            </Card>
+            <TabsContent value="1">
+              <DraftConfig />
+            </TabsContent>
+            <TabsContent value="2">
+              <CaptainSelectionTable />
+            </TabsContent>
+            <TabsContent value="3">
+              <PlayersSelect />
+            </TabsContent>
           </Tabs>
         </div>
       </PageLayout>

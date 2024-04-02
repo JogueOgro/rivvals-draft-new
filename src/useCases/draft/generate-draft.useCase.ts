@@ -1,7 +1,6 @@
-import { IDraft } from "@/domain/draft.domain";
+import { IDraft, ITeam } from "@/domain/draft.domain";
 import { IPlayer } from "@/domain/player.domain";
 import { draftEvent } from "@/store/draft/draft-events";
-import { playerEvent } from "@/store/player/player-events";
 import playerStore from "@/store/player/player-store";
 
 const calculatePlayerScore = (player: IPlayer) => {
@@ -9,17 +8,18 @@ const calculatePlayerScore = (player: IPlayer) => {
 };
 
 const execute = (config: Partial<IDraft>, callBack: () => void) => {
-  const { dataSource: players } = playerStore.getState();
+  const { players } = playerStore.getState();
+  const dataSource = [...players];
   const teamList = [];
   const totalTeams = Number(config!.teamsQuantity);
 
-  if (!players?.length) {
+  if (!dataSource?.length) {
     window.alert("Não há jogadores disponíveis.");
     return;
   }
 
   for (let i = 0; i < totalTeams; i++) {
-    const team: any = {
+    const team: ITeam = {
       id: String(i + 1),
       name: `Team ${i + 1}`,
       players: [],
@@ -27,18 +27,15 @@ const execute = (config: Partial<IDraft>, callBack: () => void) => {
 
     let bestPlayerIndex = 0;
     let bestPlayerScore = 0;
-    for (let j = 0; j < players.length; j++) {
-      const playerScore = calculatePlayerScore(players[j]);
+    for (let j = 0; j < dataSource.length; j++) {
+      const playerScore = calculatePlayerScore(dataSource[j]);
       if (playerScore > bestPlayerScore) {
         bestPlayerIndex = j;
         bestPlayerScore = playerScore;
       }
     }
-    const bestPlayer = players.splice(bestPlayerIndex, 1)[0];
+    const bestPlayer = dataSource.splice(bestPlayerIndex, 1)[0];
     bestPlayer.isCaptain = true;
-    playerEvent({
-      dataSource: players?.map(player => player?.id === bestPlayer?.id ? ({ ...player, isCaptain: true }) : player)
-    })
     team.players.push(bestPlayer);
     teamList.push(team);
   }
