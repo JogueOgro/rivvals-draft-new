@@ -7,10 +7,12 @@ import useMedia from 'use-media';
 
 const PageLayout = ({ children }: { children: ReactNode }) => {
   const isMobile = useMedia({ maxWidth: 1024 });
-  const [showSidebar, setShowSidebar] = useState(!isMobile);
+  const [showSidebar, setShowSidebar] = useState(false);
 
   useEffect(() => {
-    setShowSidebar(!isMobile);
+    if (isMobile) {
+      setShowSidebar(false);
+    }
   }, [isMobile]);
 
   return (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from '@/components/data-table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ArrowRightLeft, Check, Edit, Trophy } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowRightLeft, Check, Edit, Trophy } from 'lucide-react';
 import { StarFilledIcon } from '@radix-ui/react-icons';
 import { useStore } from 'effector-react';
 import draftStore from '@/store/draft/draft-store';
@@ -22,8 +22,8 @@ import { ITeam } from '@/domain/draft.domain';
 import { draftEvent } from '@/store/draft/draft-events';
 import { toast } from '@/components/ui/use-toast';
 
-const CaptainSelectionTable = () => {
-  const { config } = useStore(draftStore)
+const CaptainSelection = () => {
+  const { config, activeTeamIndex } = useStore(draftStore)
   const { players } = useStore(playerStore)
 
   const [openDrawer, setOpenDrawer] = useState(false)
@@ -31,11 +31,15 @@ const CaptainSelectionTable = () => {
   const [selectedTeam, setSelectedTeam] = useState<ITeam | null>(null)
   const [listOfAllocatedPlayers, setListOfAllocatedPlayers] = useState<string[]>([])
 
-  const filteredAvailablePlayers = players?.filter(player => !listOfAllocatedPlayers.includes(player.id!))
+  const filteredAvailablePlayers = [...players]?.filter(player => !listOfAllocatedPlayers.includes(player.id!))
 
-  const filteredSearchPlayers = filteredAvailablePlayers.filter(player =>
+  const filteredSearchPlayers = filteredAvailablePlayers?.filter(player =>
     player?.name?.toLowerCase().match(searchText.toLowerCase())
   );
+
+  const sortPlayersByScore = filteredSearchPlayers?.sort((playerA, playerB) => {
+    return Number(playerB?.score) - Number(playerA?.score)
+  });
 
   function resetStates() {
     setSelectedTeam(null)
@@ -44,9 +48,9 @@ const CaptainSelectionTable = () => {
   }
 
   function changeCaptain(newCaptain: IPlayer) {
-    const newTeamList: ITeam[] = config!.teamList.map(team => {
+    const newTeamList: ITeam[] = [...config!.teamList].map(team => {
       if (team.id === selectedTeam?.id) {
-        return { ...team, players: [newCaptain] }
+        return { ...team, players: [{ ...newCaptain, isCaptain: true }] }
       } else {
         return team
       }
@@ -87,7 +91,7 @@ const CaptainSelectionTable = () => {
 
   return (
     <>
-      <Card className="w-full">
+      <Card className="w-full pb-12">
         {config?.teamList?.map((team: ITeam) => {
           return (
             <div className="w-full mb-14">
@@ -99,7 +103,7 @@ const CaptainSelectionTable = () => {
               </div>
               <DataTable
                 isHidePagination
-                data={team?.players || []}
+                data={team?.players?.filter(row => row?.isCaptain) || []}
                 isHideFilterButton
                 isLoading={false}
                 pageSize={1}
@@ -107,40 +111,16 @@ const CaptainSelectionTable = () => {
                 currentPage={1}
                 columns={[
                   {
-                    id: 'photo',
-                    helperName: 'Foto',
-                    accessorKey: 'Foto',
+                    id: 'name',
+                    helperName: 'Capitão',
+                    accessorKey: 'Capitão',
                     cell: ({ row }: any) => {
                       return (
-                        <Avatar>
-                          <AvatarImage src={row.original.photo} />
-                          <AvatarFallback>{row.original.name?.substring(0, 2)?.toUpperCase()}</AvatarFallback>
-                        </Avatar>
-                      )
-                    },
-                  },
-                  {
-                    id: 'name',
-                    helperName: 'Nome',
-                    accessorKey: 'Nome',
-                    cell: ({ row }: any) => {
-                      return <div className="w-[250px] font-bold text-md">{row.original?.name?.toUpperCase()}</div>;
-                    },
-                  },
-                  {
-                    id: 'nick',
-                    helperName: 'Nick',
-                    accessorKey: 'Nick',
-                    cell: ({ row }: any) => {
-                      return <div className="w-[150px]">{row.original?.nick}</div>;
-                    },
-                  },
-                  {
-                    id: 'email',
-                    helperName: 'E-mail',
-                    accessorKey: 'E-mail',
-                    cell: ({ row }: any) => {
-                      return <div className="w-[200px]">{row.original?.email}</div>;
+                        <div className="w-[350px] text-md flex flex-col">
+                          <b className="shrink-0">{row.original?.name?.toUpperCase()}</b>
+                          <small>{row.original?.nick}</small>
+                        </div>
+                      );
                     },
                   },
                   {
@@ -194,40 +174,70 @@ const CaptainSelectionTable = () => {
                           className="bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900"
                         >
                           <ArrowRightLeft />
+                          &nbsp;
                           Substituir
                         </Button>
                       )
                     },
                   },
                 ]}
-                onChangePageSize={(pageSize) => { }}
-                onChangeCurrentPage={(currentPage) => { }}
+                onChangePageSize={() => { }}
+                onChangeCurrentPage={() => { }}
               />
             </div>
           )
         })}
+
+        <div className="w-full flex justify-center mt-20 gap-8">
+          <Button
+            variant='outline'
+            onClick={() => draftEvent({ activeTab: '1' })}
+            className="min-w-[300px]  py-2"
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" />
+            Voltar
+          </Button>
+          <Button
+            onClick={() => {
+              draftEvent({
+                activeTab: '3',
+                isActiveTimer: true,
+                timerSeconds: 60,
+                activeTeamIndex: 0
+              })
+            }}
+            className="min-w-[300px] bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900 py-2"
+          >
+            Próximo
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </Button>
+        </div>
+
       </Card>
 
       <Sheet open={openDrawer} onOpenChange={setOpenDrawer}>
         <SheetContent className="min-w-[750px]">
           <SheetHeader>
-            <SheetTitle>Substituir Capitão</SheetTitle>
+            <SheetTitle>Substituir capitão do time {selectedTeam?.id}</SheetTitle>
             <SheetDescription>
               Selecione abaixo o player desejado
             </SheetDescription>
           </SheetHeader>
-          <div className="w-full overflow-auto max-h-[88%] pr-4 mt-8">
-            <div className="w-full flex justify-between items-center my-2">
-              <Input
-                placeholder="Pesquisar..."
-                value={searchText}
-                onChange={(event) => setSearchText(event.target.value)}
-                className='w-[400px]'
-              />
-              <small className='shrink-0'>Total: {filteredAvailablePlayers?.length}</small>
-            </div>
+          <div className="w-full flex justify-between items-center mt-8">
+            <Input
+              placeholder="Pesquisar..."
+              value={searchText}
+              onChange={(event) => setSearchText(event.target.value)}
+              className='w-[400px]'
+            />
+            <small className='shrink-0 mr-8'>
+              Total:
+              <b className="pl-1">{filteredAvailablePlayers?.length}</b>
+            </small>
+          </div>
 
-            {filteredSearchPlayers?.map(row => (
+          <div className="w-full overflow-auto max-h-[88%] pr-4 mt-2">
+            {sortPlayersByScore?.map(row => (
               <Card
                 onClick={() => changeCaptain(row)}
                 key={row.id}
@@ -252,4 +262,4 @@ const CaptainSelectionTable = () => {
   );
 }
 
-export default CaptainSelectionTable;
+export default CaptainSelection;

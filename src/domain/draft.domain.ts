@@ -12,6 +12,9 @@ export interface IDraft extends BaseDomain {
 export interface IDraftPage {
   activeTab: string
   config: IDraft | null
+  isActiveTimer: boolean
+  timerSeconds: number
+  activeTeamIndex: number
 }
 
 export interface ITeam {

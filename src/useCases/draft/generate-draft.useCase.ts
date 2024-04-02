@@ -21,7 +21,7 @@ const execute = (config: Partial<IDraft>, callBack: () => void) => {
   for (let i = 0; i < totalTeams; i++) {
     const team: ITeam = {
       id: String(i + 1),
-      name: `Team ${i + 1}`,
+      name: `Time ${i + 1}`,
       players: [],
     };
 
