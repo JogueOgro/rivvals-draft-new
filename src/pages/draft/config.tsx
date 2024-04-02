@@ -21,19 +21,18 @@ import { toast } from '@/components/ui/use-toast';
 import { useStore } from 'effector-react';
 import draftStore from '@/store/draft/draft-store';
 import { generateDraftUseCase } from '@/useCases/draft/generate-draft.useCase';
+import { Card } from '@/components/ui/card';
 
 const defaultValues = {
   name: undefined,
   teamPlayersQuantity: undefined,
   teamsQuantity: undefined,
-  isSmartCaptainSelection: undefined
 };
 
 const formSchema = z.object({
   name: z.string().min(1, '* Campo obrigatório'),
   teamPlayersQuantity: z.string(),
   teamsQuantity: z.string(),
-  isSmartCaptainSelection: z.boolean(),
 });
 
 export default function DraftConfig() {
@@ -62,7 +61,7 @@ export default function DraftConfig() {
 
 
   return (
-    <div className="w-fit">
+    <Card className="w-fit">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(config => {
@@ -127,26 +126,6 @@ export default function DraftConfig() {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            defaultValue={config?.isSmartCaptainSelection}
-            name="isSmartCaptainSelection"
-            render={({ field: { value, onChange, name } }) => (
-              <FormItem className="min-w-80">
-                <FormControl>
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="teamPlayersQuantity" checked={value} onCheckedChange={e => onChange(e)} />
-                    <label
-                      htmlFor="teamPlayersQuantity"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Seleção inteligente de capitães
-                    </label>
-                  </div>
-                </FormControl>
-              </FormItem>
-            )}
-          />
           <Button
             type="submit"
             className="mt-8 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900 py-2"
@@ -156,6 +135,6 @@ export default function DraftConfig() {
           </Button>
         </form>
       </Form>
-    </div>
+    </Card>
   );
 }

@@ -40,14 +40,14 @@ const PlayerPage = () => {
     totalPages,
     pageSize,
     selectedRows,
-    dataSource,
+    players,
     isLoading,
     filters,
     totalRegistries
   } = useStore(playerStore)
 
   const searchText = filters?.name?.trim()?.toLowerCase() || ''
-  const filteredData = dataSource?.filter(obj => obj?.name?.trim()?.toLowerCase().includes(searchText))
+  const filteredData = players?.filter(obj => obj?.name?.trim()?.toLowerCase().includes(searchText))
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const currentPageData = filteredData?.slice(startIndex, endIndex);
@@ -77,7 +77,7 @@ const PlayerPage = () => {
   }, [pageSize, totalRegistries])
 
   useEffect(() => {
-    playerEvent({ filters: { name: '' }, selectedRows: [], currentPage: 1 })
+    playerEvent({ filters: { name: '' }, selectedRows: [], currentPage: 1, pageSize: 10 })
   }, [])
 
   return (
@@ -88,9 +88,9 @@ const PlayerPage = () => {
           <div className="flex flex-col">
             <div className="flex items-center gap-4">
               <span className="text-3xl font-bold">Players</span>
-              {!!dataSource?.length && (
+              {!!players?.length && (
                 <Badge className="text-lg bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900">
-                  {dataSource.length}
+                  {players.length}
                 </Badge>
               )}
             </div>
@@ -155,7 +155,7 @@ const PlayerPage = () => {
                 helperName: 'Selecione',
                 header: () => {
                   const { selectedRows } = playerStore.getState();
-                  const isChecked = dataSource?.every((obj) =>
+                  const isChecked = players?.every((obj) =>
                     selectedRows.includes(obj.id!),
                   );
                   const onChange = (checked: boolean) => {
@@ -163,7 +163,7 @@ const PlayerPage = () => {
                       playerEvent({
                         selectedRows: [
                           ...selectedRows,
-                          ...dataSource?.map((item) => item.id!),
+                          ...players?.map((item) => item.id!),
                         ],
                       });
                     } else {
@@ -281,7 +281,7 @@ const PlayerPage = () => {
                 header: () => '',
                 helperName: 'Opções',
                 cell: ({ row }: any) => {
-                  return <PlayerActions row={row} data={dataSource} />
+                  return <PlayerActions row={row} data={players} />
                 },
               },
             ]}

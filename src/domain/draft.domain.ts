@@ -6,15 +6,17 @@ export interface IDraft extends BaseDomain {
   teamPlayersQuantity?: string
   teamsQuantity?: string
   isSmartCaptainSelection?: boolean
-  teamList: {
-    id?: string
-    name: string
-    photo?: string
-    players: IPlayer[]
-  }[]
+  teamList: ITeam[]
 }
 
 export interface IDraftPage {
   activeTab: string
   config: IDraft | null
+}
+
+export interface ITeam {
+  id?: string
+  photo?: string
+  name: string
+  players: IPlayer[]
 }

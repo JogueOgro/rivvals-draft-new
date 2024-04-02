@@ -8,13 +8,13 @@ import playerStore from '@/store/player/player-store';
 
 
 const PlayersSelect = () => {
-  const { dataSource } = useStore(playerStore)
+  const { players } = useStore(playerStore)
 
   return (
     <div className="w-full p-16">
       <span className='font-bold text-xl'>Selecione um player</span>
       <div className="flex flex-wrap justify-center gap-4">
-        {dataSource?.map(player => (
+        {players?.map(player => (
           <div key={player.id} className="flex flex-col items-center justify-center">
             <Image
               src={cardImg}
