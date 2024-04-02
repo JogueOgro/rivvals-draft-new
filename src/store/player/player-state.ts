@@ -9,5 +9,6 @@ export const playerInitialState: IPlayerPage = {
   totalRegistries: 0,
   filters: {
     name: null
-  }
+  },
+  dataSource: []
 };

@@ -1,17 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  ArrowRightSquare,
-  Swords,
-} from 'lucide-react';
+import { HamburgerMenuIcon } from '@radix-ui/react-icons';
+import { ArrowRightSquare, Swords } from 'lucide-react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import logoImg from '@/assets/logo.png'
+import logoImg from '@/assets/logo.png';
 
 import MenuItem from './menu-item';
 import sidebarMenuItems from './menus-sidebar';
-import Image from 'next/image';
 import { Button } from './ui/button';
-import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 
 type IProps = {
   showSidebar: boolean;
@@ -37,7 +34,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }: IProps) => {
       <div>
         {!showSidebar && (
           <Button
-            variant='outline'
+            variant="outline"
             onClick={() => setShowSidebar(!showSidebar)}
             className=" rounded-full p-2 w-10 h-10 flex items-center justify-center ml-5 mt-4"
           >
@@ -54,7 +51,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }: IProps) => {
           />
           {showSidebar && (
             <Button
-              variant='outline'
+              variant="outline"
               onClick={() => setShowSidebar(!showSidebar)}
               className="ring-1 ring-purple-100 rounded-full p-2 absolute right-[-8%] top-[45%] w-10 h-10 flex items-center justify-center"
             >
@@ -68,8 +65,9 @@ const Sidebar = ({ showSidebar, setShowSidebar }: IProps) => {
             className="rounded-none w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900 py-8"
           >
             <div
-              className={`w-full flex items-center ${!showSidebar ? 'justify-center' : 'justify-between'
-                }`}
+              className={`w-full flex items-center ${
+                !showSidebar ? 'justify-center' : 'justify-between'
+              }`}
             >
               {showSidebar && <span className="text-md">Draft</span>}
               <Swords className="w-6" />
@@ -79,11 +77,13 @@ const Sidebar = ({ showSidebar, setShowSidebar }: IProps) => {
 
         <div className="border border-b-0 border-x-0 border-slate-300">
           {sidebarMenuItems.map((item) => (
-            <div className="border border-t-0 border-x-0 border-slate-300">
+            <div
+              key={item.menu}
+              className="border border-t-0 border-x-0 border-slate-300"
+            >
               <MenuItem key={item.menu} {...{ ...item, showSidebar }} />
             </div>
           ))}
-
         </div>
       </div>
       <div
@@ -98,7 +98,7 @@ const Sidebar = ({ showSidebar, setShowSidebar }: IProps) => {
           showSidebar={showSidebar}
         />
       </div>
-    </div >
+    </div>
   );
 };
 

@@ -12,19 +12,19 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { groupSettingsUseCase } from '@/useCases/groups/group-settings.useCase';
+import { groupsSettingsUseCase } from '@/useCases/groups/groups-settings.useCase';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 const defaultValues = {
-  groupQuantity: undefined,
+  groupsQuantity: undefined,
   teamsPerGroup: undefined,
 };
 
 const formSchema = z.object({
-  groupQuantity: z.number().int(),
-  teamsPerGroup: z.number().int(),
+  groupsQuantity: z.string(),
+  teamsPerGroup: z.string(),
 });
 
 export default function GroupsConfig() {
@@ -39,14 +39,13 @@ export default function GroupsConfig() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit((formData) => {
-            console.log(formData);
-            groupSettingsUseCase.execute(formData);
+            groupsSettingsUseCase.execute(formData);
           })}
           className="flex flex-col p-10 gap-4"
         >
           <FormField
             control={form.control}
-            name="groupQuantity"
+            name="groupsQuantity"
             render={({ field: { value, onChange, name } }) => (
               <FormItem className="min-w-80">
                 <FormLabel>Quantidade de Grupos *</FormLabel>
@@ -56,7 +55,7 @@ export default function GroupsConfig() {
                     name={name}
                     placeholder="Digite aqui"
                     value={value}
-                    onChange={(event) => onChange(Number(event.target.value))}
+                    onChange={(event) => onChange(event.target.value)}
                   />
                 </FormControl>
               </FormItem>
@@ -74,7 +73,7 @@ export default function GroupsConfig() {
                     name={name}
                     placeholder="Digite aqui"
                     value={value}
-                    onChange={(event) => onChange(Number(event.target.value))}
+                    onChange={(event) => onChange(event.target.value)}
                   />
                 </FormControl>
               </FormItem>

@@ -1,6 +1,5 @@
-/* eslint-disable prettier/prettier */
 import { IPlayerPage } from "@/domain/player.domain";
-import { persist } from 'effector-storage/local'
+import { persist } from 'effector-storage/local';
 
 
 import { createStore } from "effector";
