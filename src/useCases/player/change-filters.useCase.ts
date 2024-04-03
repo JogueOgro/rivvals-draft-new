@@ -1,4 +1,4 @@
-import { playerEvent } from '@/store/player/player-events';
+import { playerEvent } from '@/store/player/player-events'
 
 interface IParams {
   name?: string | null

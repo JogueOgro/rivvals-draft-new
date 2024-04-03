@@ -1,6 +1,6 @@
+import { Calendar, Group, User } from 'lucide-react'
 
 import { IMenuItemProps } from '@/components/menu-item'
-import { Calendar, Group, Table, User } from 'lucide-react'
 
 const sidebarMenuItems: IMenuItemProps[] = [
   {
@@ -17,7 +17,7 @@ const sidebarMenuItems: IMenuItemProps[] = [
     menu: 'Agenda',
     route: '/schedule',
     icon: Calendar,
-  }
+  },
 ]
 
 export default sidebarMenuItems

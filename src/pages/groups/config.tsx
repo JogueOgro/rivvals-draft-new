@@ -1,47 +1,57 @@
-import { ArrowRight, Check } from 'lucide-react';
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useStore } from 'effector-react'
+import React, { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { groupsSettingsUseCase } from '@/useCases/groups/groups-settings.useCase';
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import groupsStore from '@/store/groups/groups-store'
+import { groupsSettingsUseCase } from '@/useCases/groups/groups-settings.useCase'
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+
+type IProps = {
+  setActiveView: (v: string) => void
+}
 
 const defaultValues = {
   groupsQuantity: undefined,
   teamsPerGroup: undefined,
-};
+}
 
 const formSchema = z.object({
-  groupsQuantity: z.string(),
-  teamsPerGroup: z.string(),
-});
+  groupsQuantity: z.string().min(1, '* Campo obrigatório'),
+  teamsPerGroup: z.string().min(1, '* Campo obrigatório'),
+})
 
-export default function GroupsConfig() {
+export default function GroupsConfig({ setActiveView }: IProps) {
+  const { groupsQuantity, teamsPerGroup } = useStore(groupsStore)
   const form = useForm<z.infer<typeof formSchema>>({
     mode: 'all',
     defaultValues,
     resolver: zodResolver(formSchema),
-  });
+  })
+
+  useEffect(() => {
+    form.reset({ groupsQuantity, teamsPerGroup })
+  }, [form, groupsQuantity, teamsPerGroup])
 
   return (
-    <Card className="w-fit mt-8">
+    <div className="w-fit h-fit mt-2 pb-8">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit((formData) => {
-            groupsSettingsUseCase.execute(formData);
+            groupsSettingsUseCase.execute(formData)
+            setActiveView('2')
           })}
-          className="flex flex-col p-10 gap-4"
+          className="flex flex-col gap-4"
         >
           <FormField
             control={form.control}
@@ -81,13 +91,13 @@ export default function GroupsConfig() {
           />
           <Button
             type="submit"
+            disabled={!form.formState.isValid}
             className="mt-8 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900 py-2"
           >
-            Confirmar
-            <ArrowRight className="w-5 h-5" />
+            Gerar grupos
           </Button>
         </form>
       </Form>
-    </Card>
-  );
+    </div>
+  )
 }

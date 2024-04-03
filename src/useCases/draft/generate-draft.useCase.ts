@@ -1,54 +1,64 @@
-import { IDraft } from "@/domain/draft.domain";
-import { IPlayer } from "@/domain/player.domain";
-import { draftEvent } from "@/store/draft/draft-events";
-import { playerEvent } from "@/store/player/player-events";
-import playerStore from "@/store/player/player-store";
+import { IDraft, ITeam } from '@/domain/draft.domain'
+import { IPlayer } from '@/domain/player.domain'
+import { draftEvent } from '@/store/draft/draft-events'
+import { draftInitialState } from '@/store/draft/draft-state'
+import playerStore from '@/store/player/player-store'
 
 const calculatePlayerScore = (player: IPlayer) => {
-  return Number(player.score) + Number(player.wins) * 5 + Number(player.power) * 20;
-};
+  return (
+    Number(player.score) + Number(player.wins) * 5 + Number(player.power) * 20
+  )
+}
 
 const execute = (config: Partial<IDraft>, callBack: () => void) => {
-  const { dataSource: players } = playerStore.getState();
-  const teamList = [];
-  const totalTeams = Number(config!.teamsQuantity);
+  draftEvent(draftInitialState)
+  const { players } = playerStore.getState()
+  const dataSource = [...(players || [])]
+  const total =
+    Number(config?.teamPlayersQuantity) * Number(config?.teamsQuantity)
 
-  if (!players?.length) {
-    window.alert("Não há jogadores disponíveis.");
-    return;
+  if (!dataSource?.length) {
+    window.alert('Não há jogadores disponíveis.')
+    return
   }
 
-  for (let i = 0; i < totalTeams; i++) {
-    const team: any = {
-      id: String(i + 1),
-      name: `Team ${i + 1}`,
-      players: [],
-    };
+  if (dataSource?.length < total) {
+    window.alert('Não há quantidade de jogadores suficiente.')
+    return
+  }
 
-    let bestPlayerIndex = 0;
-    let bestPlayerScore = 0;
-    for (let j = 0; j < players.length; j++) {
-      const playerScore = calculatePlayerScore(players[j]);
+  const teamList = []
+  const totalTeams = Number(config!.teamsQuantity)
+
+  for (let i = 0; i < totalTeams; i++) {
+    const team: ITeam = {
+      id: String(i + 1),
+      name: `Time ${i + 1}`,
+      players: [],
+      avgScore: 0,
+    }
+
+    let bestPlayerIndex = 0
+    let bestPlayerScore = 0
+    for (let j = 0; j < dataSource.length; j++) {
+      const playerScore = calculatePlayerScore(dataSource[j])
       if (playerScore > bestPlayerScore) {
-        bestPlayerIndex = j;
-        bestPlayerScore = playerScore;
+        bestPlayerIndex = j
+        bestPlayerScore = playerScore
       }
     }
-    const bestPlayer = players.splice(bestPlayerIndex, 1)[0];
-    bestPlayer.isCaptain = true;
-    playerEvent({
-      dataSource: players?.map(player => player?.id === bestPlayer?.id ? ({ ...player, isCaptain: true }) : player)
-    })
-    team.players.push(bestPlayer);
-    teamList.push(team);
+    const bestPlayer = dataSource.splice(bestPlayerIndex, 1)[0]
+    bestPlayer.isCaptain = true
+    team.players.push(bestPlayer)
+    teamList.push(team)
   }
 
   draftEvent({
     config: { ...config, teamList },
-    activeTab: '2'
-  });
+    activeTab: '2',
+  })
 
-  callBack();
-};
+  callBack()
+}
 
-export const generateDraftUseCase = { execute };
+export const generateDraftUseCase = { execute }

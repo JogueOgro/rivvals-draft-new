@@ -1,4 +1,4 @@
-import { BaseDomain } from "./base.domain";
+import { BaseDomain } from './base.domain'
 
 export interface IGroups extends BaseDomain {
   groupsQuantity?: string

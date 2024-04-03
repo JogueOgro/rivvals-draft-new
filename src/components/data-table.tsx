@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -48,8 +48,8 @@ interface DataTableProps<TData> {
   currentPage: number
   totalPages: number
   pageSize: number
-  onChangePageSize: (value: number) => void
-  onChangeCurrentPage: (value: number) => void
+  onChangePageSize?: (value: number) => void
+  onChangeCurrentPage?: (value: number) => void
   customTableHeader?: ReactNode
   isHideFilterButton?: boolean
   isHidePagination?: boolean
@@ -59,12 +59,12 @@ function DataTableConfig<TData>({
   columns,
   data,
   isLoading,
-  onChangeCurrentPage,
-  onChangePageSize,
   customTableHeader,
   totalPages,
   pageSize,
   currentPage,
+  onChangeCurrentPage = () => { },
+  onChangePageSize = () => { },
   isHideFilterButton = true,
   isHidePagination = false,
 }: DataTableProps<TData>) {

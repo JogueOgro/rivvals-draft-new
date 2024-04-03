@@ -1,20 +1,25 @@
-import { BaseDomain } from "./base.domain";
-import { IPlayer } from "./player.domain";
+import { BaseDomain } from './base.domain'
+import { IPlayer } from './player.domain'
+
+export interface ITeam {
+  id?: string
+  photo?: string
+  name: string
+  players: IPlayer[]
+  avgScore: number
+}
 
 export interface IDraft extends BaseDomain {
   name?: string
   teamPlayersQuantity?: string
   teamsQuantity?: string
-  isSmartCaptainSelection?: boolean
-  teamList: {
-    id?: string
-    name: string
-    photo?: string
-    players: IPlayer[]
-  }[]
+  teamList: ITeam[]
 }
 
 export interface IDraftPage {
   activeTab: string
   config: IDraft | null
+  isActiveTimer: boolean
+  timerSeconds: number
+  activeTeamIndex: number
 }

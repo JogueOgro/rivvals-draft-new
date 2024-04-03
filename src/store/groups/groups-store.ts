@@ -1,8 +1,9 @@
-import { IGroups} from "@/domain/groups.domain";
+import { IGroups } from '@/domain/groups.domain'
+
+import { groupsEvent } from './groups-events'
+import { groupsInitialState } from './groups-state'
+import { createStore } from 'effector'
 import { persist } from 'effector-storage/local'
-import { createStore } from "effector";
-import { groupsEvent } from "./groups-events";
-import { groupsInitialState } from "./groups-state";
 
 const groupsStore = createStore<IGroups>(groupsInitialState).on(
   groupsEvent,
@@ -10,9 +11,9 @@ const groupsStore = createStore<IGroups>(groupsInitialState).on(
     return {
       ...state,
       ...payload,
-    };
+    }
   },
-);
+)
 
 persist({ store: groupsStore, key: 'groupsStore' })
 
