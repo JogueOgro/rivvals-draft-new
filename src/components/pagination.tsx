@@ -32,7 +32,7 @@ function DataTablePagination<TData>({
   currentPage,
   totalPages,
   onChangeCurrentPage,
-  onChangePageSize
+  onChangePageSize,
 }: DataTablePaginationProps<TData>) {
   return (
     <div className="flex items-center justify-between px-2">
@@ -62,8 +62,7 @@ function DataTablePagination<TData>({
           </Select>
         </div>
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Página {currentPage} de{' '}
-          {/* {table?.getPageCount()} */}
+          Página {currentPage} de {/* {table?.getPageCount()} */}
           {totalPages}
         </div>
         <div className="flex items-center space-x-2">

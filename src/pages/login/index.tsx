@@ -1,16 +1,14 @@
-'use client';
+'use client'
 
-import { useStore } from 'effector-react';
-import { ArrowRight, Loader2 } from 'lucide-react';
-import Image from 'next/image';
+import { ArrowRight, Loader2 } from 'lucide-react'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 
-import ilustration from '@/assets/ilustration.svg';
-import React from '@/components/head-metatags';
-import HeadMetatags from '@/components/head-metatags';
-import { Button } from '@/components/ui/button';
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import { sleep } from '@/lib/utils';
+import ilustration from '@/assets/ilustration.svg'
+import HeadMetatags from '@/components/head-metatags'
+import { Button } from '@/components/ui/button'
+import { sleep } from '@/lib/utils'
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -64,5 +62,5 @@ export default function LoginPage() {
         </div>
       </div>
     </>
-  );
+  )
 }

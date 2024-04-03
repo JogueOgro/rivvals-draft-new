@@ -1,18 +1,10 @@
-/* eslint-disable prettier/prettier */
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react'
 
+import Sidebar from './sidebar'
 
-import Sidebar from './sidebar';
-import useMedia from 'use-media';
+const showSidebar = false
 
 const PageLayout = ({ children }: { children: ReactNode }) => {
-  const isMobile = useMedia({ maxWidth: 1024 });
-  const [showSidebar, setShowSidebar] = useState(!isMobile);
-
-  useEffect(() => {
-    setShowSidebar(!isMobile);
-  }, [isMobile]);
-
   return (
     <div
       className="flex min-h-screen"
@@ -22,7 +14,7 @@ const PageLayout = ({ children }: { children: ReactNode }) => {
         backgroundPosition: 'center',
       }}
     >
-      <Sidebar {...{ showSidebar, setShowSidebar }} />
+      <Sidebar {...{ showSidebar }} />
       <div
         className="flex flex-col flex-1 overflow-hidden"
         style={{
@@ -34,7 +26,7 @@ const PageLayout = ({ children }: { children: ReactNode }) => {
         </main>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PageLayout;
+export default PageLayout

@@ -1,6 +1,6 @@
+import { Calendar, User } from 'lucide-react'
 
 import { IMenuItemProps } from '@/components/menu-item'
-import { Calendar, Group, Table, User } from 'lucide-react'
 
 const sidebarMenuItems: IMenuItemProps[] = [
   {

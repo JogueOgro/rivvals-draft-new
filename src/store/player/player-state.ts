@@ -1,4 +1,4 @@
-import { IPlayerPage } from "@/domain/player.domain";
+import { IPlayerPage } from '@/domain/player.domain'
 
 export const playerInitialState: IPlayerPage = {
   pageSize: 10,
@@ -8,6 +8,7 @@ export const playerInitialState: IPlayerPage = {
   isLoading: false,
   totalRegistries: 0,
   filters: {
-    name: null
-  }
-};
+    name: null,
+  },
+  players: [],
+}
