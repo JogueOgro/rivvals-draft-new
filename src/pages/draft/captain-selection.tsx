@@ -47,6 +47,24 @@ const CaptainSelection = () => {
     setOpenDrawer(false)
   }
 
+  function handleNext() {
+    const calculateTeamAvgScore = config?.teamList?.map(team => ({
+      ...team, avgScore: [...team.players].reduce((total, player) => {
+        return total + (player ? Number(player.score) : 0);
+      }, 0)
+    }));
+
+    const sortTeamByScore = calculateTeamAvgScore?.sort((teamA, teamB) => teamA.avgScore - teamB.avgScore)
+
+    draftEvent({
+      activeTab: '3',
+      isActiveTimer: true,
+      timerSeconds: 60,
+      activeTeamIndex: 0,
+      config: { ...config, teamList: sortTeamByScore || [] }
+    })
+  }
+
   function changeCaptain(newCaptain: IPlayer) {
     const newTeamList: ITeam[] = [...config!.teamList].map(team => {
       if (team.id === selectedTeam?.id) {
@@ -198,14 +216,7 @@ const CaptainSelection = () => {
             Voltar
           </Button>
           <Button
-            onClick={() => {
-              draftEvent({
-                activeTab: '3',
-                isActiveTimer: true,
-                timerSeconds: 60,
-                activeTeamIndex: 0
-              })
-            }}
+            onClick={() => handleNext()}
             className="min-w-[300px] bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900 py-2"
           >
             Próximo

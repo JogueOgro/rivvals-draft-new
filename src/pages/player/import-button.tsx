@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import * as XLSX from 'xlsx';
 import { IPlayer } from '@/domain/player.domain';
@@ -15,10 +15,10 @@ const ImportButton: React.FC<ImportButtonProps> = ({ onImport }) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     setSelectedFile(file || null);
-    handleImport(file as any);
   };
 
   const handleClickUpload = () => {
+    setSelectedFile(null)
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
@@ -45,12 +45,19 @@ const ImportButton: React.FC<ImportButtonProps> = ({ onImport }) => {
         tags: row[3] || '',
         wins: row[4] || '',
         score: row[5] || '',
-        email: row[6] || ''
+        email: row[6] || '',
+        photo: row[7] || '',
       }));
       onImport(players);
     };
     reader.readAsArrayBuffer(file);
   };
+
+  useEffect(() => {
+    if (selectedFile) {
+      handleImport(selectedFile as any);
+    }
+  }, [selectedFile])
 
   return (
     <div className="flex items-center space-x-2">

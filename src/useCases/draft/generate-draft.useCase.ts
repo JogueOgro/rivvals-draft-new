@@ -1,6 +1,7 @@
 import { IDraft, ITeam } from "@/domain/draft.domain";
 import { IPlayer } from "@/domain/player.domain";
 import { draftEvent } from "@/store/draft/draft-events";
+import { draftInitialState } from "@/store/draft/draft-state";
 import playerStore from "@/store/player/player-store";
 
 const calculatePlayerScore = (player: IPlayer) => {
@@ -8,21 +9,30 @@ const calculatePlayerScore = (player: IPlayer) => {
 };
 
 const execute = (config: Partial<IDraft>, callBack: () => void) => {
+  draftEvent(draftInitialState)
   const { players } = playerStore.getState();
-  const dataSource = [...players];
-  const teamList = [];
-  const totalTeams = Number(config!.teamsQuantity);
+  const dataSource = [...(players || [])];
+  const total = Number(config?.teamPlayersQuantity) * Number(config?.teamsQuantity)
 
   if (!dataSource?.length) {
     window.alert("Não há jogadores disponíveis.");
     return;
   }
 
+  if (dataSource?.length < total) {
+    window.alert("Não há quantidade de jogadores suficiente.");
+    return;
+  }
+
+  const teamList = [];
+  const totalTeams = Number(config!.teamsQuantity);
+
   for (let i = 0; i < totalTeams; i++) {
     const team: ITeam = {
       id: String(i + 1),
       name: `Time ${i + 1}`,
       players: [],
+      avgScore: 0
     };
 
     let bestPlayerIndex = 0;

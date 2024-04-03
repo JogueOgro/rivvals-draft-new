@@ -15,10 +15,9 @@ import { HamburgerMenuIcon } from '@radix-ui/react-icons';
 
 type IProps = {
   showSidebar: boolean;
-  setShowSidebar: (v: boolean) => void;
 };
 
-const Sidebar = ({ showSidebar, setShowSidebar }: IProps) => {
+const Sidebar = ({ showSidebar }: IProps) => {
   const route = useRouter();
 
   const handleExit = () => {
@@ -35,15 +34,6 @@ const Sidebar = ({ showSidebar, setShowSidebar }: IProps) => {
       }}
     >
       <div>
-        {!showSidebar && (
-          <Button
-            variant='outline'
-            onClick={() => setShowSidebar(!showSidebar)}
-            className=" rounded-full p-2 w-10 h-10 flex items-center justify-center ml-5 mt-4"
-          >
-            <HamburgerMenuIcon className="w-15 h-15 text-slate-500" />
-          </Button>
-        )}
         <div className="flex justify-center w-full relative">
           <Image
             src={logoImg}
@@ -52,15 +42,6 @@ const Sidebar = ({ showSidebar, setShowSidebar }: IProps) => {
             height={0}
             className="pt-4"
           />
-          {showSidebar && (
-            <Button
-              variant='outline'
-              onClick={() => setShowSidebar(!showSidebar)}
-              className="ring-1 ring-purple-100 rounded-full p-2 absolute right-[-8%] top-[45%] w-10 h-10 flex items-center justify-center"
-            >
-              <HamburgerMenuIcon className="w-15 h-15 text-slate-500" />
-            </Button>
-          )}
         </div>
         <div className="flex w-full pt-4">
           <Button

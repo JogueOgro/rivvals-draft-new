@@ -1,10 +1,10 @@
 import { useStore } from 'effector-react';
 import {
-  Check, Download, Trash, Image,
-  MoreVertical,
+  Check,
+  Trash,
   Trophy,
 } from 'lucide-react';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { StarFilledIcon } from '@radix-ui/react-icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -16,7 +16,7 @@ import { playerEvent } from '@/store/player/player-events';
 import playerStore from '@/store/player/player-store';
 import TableFilters from './table-filters';
 import ImportButton from './import-button';
-import * as XLSX from 'xlsx'
+
 import { importPlayersUseCase } from '@/useCases/player/import-players.useCase';
 import { toast } from '@/components/ui/use-toast';
 import { Badge } from '@/components/ui/badge';
@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { deletePlayersUseCase } from '@/useCases/player/delete-player.useCase';
 import PlayerActions from '@/components/player-actions';
+import DownloadButton from './download-button';
 
 const PlayerPage = () => {
   const {
@@ -51,25 +52,6 @@ const PlayerPage = () => {
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const currentPageData = filteredData?.slice(startIndex, endIndex);
-
-
-  const handleDownload = () => {
-    const data = [
-      {
-        name: '',
-        nick: '',
-        power: '',
-        tags: '',
-        wins: '',
-        score: '',
-        email: '',
-      }
-    ];
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(data);
-    XLSX.utils.book_append_sheet(wb, ws, 'importacao');
-    XLSX.writeFile(wb, 'modelo_importacao.xlsx');
-  }
 
   useEffect(() => {
     const totalPages = Math.ceil(totalRegistries / pageSize)
@@ -99,16 +81,7 @@ const PlayerPage = () => {
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              onClick={handleDownload}
-              variant="default"
-              className="py-2 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900"
-            >
-              <div className="w-full flex items-center justify-between space-x-2">
-                <Download className="w-4" />
-                <span className="text-md">Baixar modelo</span>
-              </div>
-            </Button>
+            <DownloadButton />
             <ImportButton onImport={data => importPlayersUseCase.execute(data, successCallBack)} />
             {!!selectedRows.length && (
               <AlertDialog>
@@ -132,7 +105,13 @@ const PlayerPage = () => {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => deletePlayersUseCase.execute(selectedRows)}>Confirmar</AlertDialogAction>
+                    <AlertDialogAction
+                      onClick={() => {
+                        deletePlayersUseCase.execute(selectedRows)
+                      }}
+                    >
+                      Confirmar
+                    </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
@@ -155,7 +134,7 @@ const PlayerPage = () => {
                 helperName: 'Selecione',
                 header: () => {
                   const { selectedRows } = playerStore.getState();
-                  const isChecked = players?.every((obj) =>
+                  const isChecked = players.length > 0 && players?.every((obj) =>
                     selectedRows.includes(obj.id!),
                   );
                   const onChange = (checked: boolean) => {

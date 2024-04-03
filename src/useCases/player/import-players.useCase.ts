@@ -16,7 +16,14 @@ const execute = async (players: IPlayer[], cb: () => void) => {
         createdAt: new Date().toISOString()
       }
     }).filter(row => !!row?.name && !!row?.email)
-    playerEvent({ isLoading: false, players: formattedData, totalRegistries, totalPages })
+
+    const sortPlayerByName = formattedData?.sort((playerA, playerB) => {
+      const nameA = playerA?.name || '';
+      const nameB = playerB?.name || '';
+      return nameA.localeCompare(nameB);
+    });
+
+    playerEvent({ isLoading: false, players: sortPlayerByName, totalRegistries, totalPages })
     cb()
   } catch (e) {
     window.alert('Ocorreu um erro, verifique o arquivo de importação e tente novamente.')

@@ -5,7 +5,6 @@ export interface IDraft extends BaseDomain {
   name?: string
   teamPlayersQuantity?: string
   teamsQuantity?: string
-  isSmartCaptainSelection?: boolean
   teamList: ITeam[]
 }
 
@@ -22,4 +21,5 @@ export interface ITeam {
   photo?: string
   name: string
   players: IPlayer[]
+  avgScore: number
 }

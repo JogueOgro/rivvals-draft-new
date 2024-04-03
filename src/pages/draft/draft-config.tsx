@@ -14,9 +14,6 @@ import { Input } from '@/components/ui/input';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { changeFiltersUseCase } from '@/useCases/player/change-filters.useCase';
-import { Checkbox } from '@/components/ui/checkbox';
-import { draftEvent } from '@/store/draft/draft-events';
 import { toast } from '@/components/ui/use-toast';
 import { useStore } from 'effector-react';
 import draftStore from '@/store/draft/draft-store';
@@ -128,6 +125,7 @@ export default function DraftConfig() {
           />
           <Button
             type="submit"
+            disabled={!form.formState.isValid}
             className="mt-8 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900 py-2"
           >
             Confirmar

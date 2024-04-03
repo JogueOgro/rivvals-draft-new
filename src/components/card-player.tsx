@@ -1,31 +1,46 @@
-import { IPlayer } from '@/domain/player.domain';
+import React, { useEffect, useState } from 'react';
 import { Star, Trophy } from 'lucide-react';
-import React from 'react';
+import { IPlayer } from '@/domain/player.domain';
 
 type IProps = {
-  player: IPlayer
-  onSelect: (value: IPlayer) => void
-}
+  player: IPlayer;
+  onSelect: (value: IPlayer) => void;
+  index: number; // Adicionando índice como propriedade
+};
 
-const PlayerCard = ({ player, onSelect }: IProps) => {
+const PlayerCard = ({ player, onSelect, index }: IProps) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const delayFactor = 0.1;
+    const delay = index * delayFactor * 1000;
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [index]);
+
   return (
     <div
       onClick={() => onSelect(player)}
       key={player.id}
-      className="w-full min-h-[500px] flex flex-col items-center justify-center cursor-pointer  mt-[-50px]"
+      className={`w-full min-h-[500px] flex flex-col items-center justify-center cursor-pointer  mt-[-50px] ${isVisible ? 'animate-slide-in' : '' // Adicionando classe de animação se isVisible for true
+        }`}
       style={{
         backgroundImage: 'url("./static/card.webp")',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
-      }}>
+      }}
+    >
       <div
         key={player.id}
         className="w-[280px] h-[405px] rounded-tl-md rounded-tr-md mt-[62px]"
         style={{
-          backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0)), url("${player.photo || './static/empty.webp'}")`,
+          backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0)), url("${player.photo || './static/empty.webp'
+            }")`,
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center',
         }}
       >
         <div className="flex flex-1 h-full flex-col text-white">
@@ -47,9 +62,8 @@ const PlayerCard = ({ player, onSelect }: IProps) => {
           </div>
         </div>
       </div>
-
     </div>
   );
-}
+};
 
 export default PlayerCard;

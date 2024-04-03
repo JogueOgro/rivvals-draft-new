@@ -6,9 +6,8 @@ import { useStore } from 'effector-react';
 import draftStore from '@/store/draft/draft-store';
 import { draftEvent } from '@/store/draft/draft-events';
 
-const TimerClock = () => {
+const TimerClock = React.memo(() => {
   const { isActiveTimer, timerSeconds } = useStore(draftStore)
-
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -19,13 +18,11 @@ const TimerClock = () => {
       }, 1000);
     } else {
       draftEvent({ isActiveTimer: false });
+      return
     }
 
     return () => clearInterval(interval);
   }, [isActiveTimer, timerSeconds]);
-
-
-
 
   return (
     <div className="absolute right-[48px] top-[4px]">
@@ -49,6 +46,6 @@ const TimerClock = () => {
       </Card>
     </div>
   );
-};
+});
 
 export default TimerClock;

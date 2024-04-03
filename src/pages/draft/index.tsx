@@ -3,16 +3,14 @@
 import HeadMetatags from '@/components/head-metatags'
 import PageLayout from '@/components/page-layout'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import DraftConfig from './config'
-import { Card } from '@/components/ui/card'
+import DraftConfig from './draft-config'
 import { useStore } from 'effector-react'
 import draftStore from '@/store/draft/draft-store'
 import { draftEvent } from '@/store/draft/draft-events'
 import CaptainSelection from './captain-selection'
 import PlayersSelect from './players-select'
 import { useEffect } from 'react'
-import { draftInitialState } from '@/store/draft/draft-state'
-import TimerClock from '@/components/timer'
+import DraftResult from './draft-result'
 
 export default function DraftPage() {
   const { activeTab, config } = useStore(draftStore)
@@ -42,6 +40,9 @@ export default function DraftPage() {
             </TabsContent>
             <TabsContent value="3">
               <PlayersSelect />
+            </TabsContent>
+            <TabsContent value="4">
+              <DraftResult />
             </TabsContent>
           </Tabs>
         </div>
