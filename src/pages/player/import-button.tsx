@@ -1,62 +1,68 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import * as XLSX from 'xlsx';
-import { IPlayer } from '@/domain/player.domain';
-import { Upload } from 'lucide-react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Upload } from 'lucide-react'
+import React, { useEffect, useRef, useState } from 'react'
+
+import { Button } from '@/components/ui/button'
+import { IPlayer } from '@/domain/player.domain'
+
+import * as XLSX from 'xlsx'
 
 interface ImportButtonProps {
-  onImport: (data: IPlayer[]) => void;
+  onImport: (data: IPlayer[]) => void
 }
 
 const ImportButton: React.FC<ImportButtonProps> = ({ onImport }) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    setSelectedFile(file || null);
-  };
+    const file = event.target.files?.[0]
+    setSelectedFile(file || null)
+  }
 
   const handleClickUpload = () => {
     setSelectedFile(null)
     if (fileInputRef.current) {
-      fileInputRef.current.click();
+      fileInputRef.current.click()
     }
-  };
+  }
 
   const handleImport = (file: File | null) => {
     if (!file) {
-      console.log('Nenhum arquivo selecionado');
-      return;
+      console.log('Nenhum arquivo selecionado')
+      return
     }
 
-    const reader = new FileReader();
+    const reader = new FileReader()
     reader.onload = (e) => {
       if (!e.target?.result) return
-      const data = new Uint8Array(e.target.result as ArrayBuffer);
-      const workbook = XLSX.read(data, { type: 'array' });
-      const sheetName = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[sheetName];
-      const importedData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as any[][];
-      const players: IPlayer[] = importedData.slice(1).map(row => ({
+      const data = new Uint8Array(e.target.result as ArrayBuffer)
+      const workbook = XLSX.read(data, { type: 'array' })
+      const sheetName = workbook.SheetNames[0]
+      const worksheet = workbook.Sheets[sheetName]
+      const importedData = XLSX.utils.sheet_to_json(worksheet, {
+        header: 1,
+      }) as any[][]
+      const players: IPlayer[] = importedData.slice(1).map((row) => ({
         name: row[0] || '',
         nick: row[1] || '',
-        power: parseFloat(row[2] as any) || 0,
+        power: parseFloat(row[2] as string) || 0,
         tags: row[3] || '',
         wins: row[4] || '',
         score: row[5] || '',
         email: row[6] || '',
         photo: row[7] || '',
-      }));
-      onImport(players);
-    };
-    reader.readAsArrayBuffer(file);
-  };
+      }))
+      onImport(players)
+    }
+    reader.readAsArrayBuffer(file)
+  }
 
   useEffect(() => {
     if (selectedFile) {
-      handleImport(selectedFile as any);
+      handleImport(selectedFile as any)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFile])
 
   return (
@@ -78,7 +84,7 @@ const ImportButton: React.FC<ImportButtonProps> = ({ onImport }) => {
         </div>
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export default ImportButton;
+export default ImportButton

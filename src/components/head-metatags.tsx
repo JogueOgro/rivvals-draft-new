@@ -1,25 +1,25 @@
-'use client';
+'use client'
 
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 
 type IProps = {
-  title: string;
-  description?: string;
-};
+  title: string
+  description?: string
+}
 
 const HeadMetatags = (props: IProps) => {
-  const [url, setUrl] = useState('');
-  const route = useRouter();
-  const parsedName = 'Rivvals Backoffice';
-  const title = props?.title ? props?.title + ' | ' + parsedName : parsedName;
-  const defaultDescription = props?.description || parsedName;
+  const [url, setUrl] = useState('')
+  const route = useRouter()
+  const parsedName = 'Rivvals Backoffice'
+  const title = props?.title ? props?.title + ' | ' + parsedName : parsedName
+  const defaultDescription = props?.description || parsedName
 
   useEffect(() => {
-    const parsedUrl = `${window.location.origin}${route.pathname}`;
-    setUrl(parsedUrl);
-  }, [route]);
+    const parsedUrl = `${window.location.origin}${route.pathname}`
+    setUrl(parsedUrl)
+  }, [route])
 
   return (
     <Head>
@@ -31,7 +31,7 @@ const HeadMetatags = (props: IProps) => {
       <meta name="description" content={defaultDescription} />
       <meta property="og:description" content={defaultDescription} />
     </Head>
-  );
-};
+  )
+}
 
-export default HeadMetatags;
+export default HeadMetatags

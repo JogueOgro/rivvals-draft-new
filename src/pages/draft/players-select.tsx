@@ -1,73 +1,94 @@
-import { useStore } from 'effector-react';
-import React, { useEffect, useState } from 'react';
-import playerStore from '@/store/player/player-store';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { draftEvent } from '@/store/draft/draft-events';
-import { ArrowLeft, ArrowLeftCircle, ArrowRight, ArrowRightCircle, Trash2, Trophy } from 'lucide-react';
-import DataTable from '@/components/data-table';
-import TimerClock from '@/components/timer';
-import draftStore from '@/store/draft/draft-store';
-import { StarFilledIcon } from '@radix-ui/react-icons';
-import PlayerCard from '@/components/card-player';
-import { IPlayer } from '@/domain/player.domain';
+import { StarFilledIcon } from '@radix-ui/react-icons'
+import { useStore } from 'effector-react'
+import {
+  ArrowLeft,
+  ArrowLeftCircle,
+  ArrowRight,
+  ArrowRightCircle,
+  Trash2,
+  Trophy,
+} from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+
+import PlayerCard from '@/components/card-player'
+import DataTable from '@/components/data-table'
+import TimerClock from '@/components/timer'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { IPlayer } from '@/domain/player.domain'
+import { draftEvent } from '@/store/draft/draft-events'
+import draftStore from '@/store/draft/draft-store'
+import playerStore from '@/store/player/player-store'
 
 const PlayersSelect = () => {
   const { config, activeTeamIndex } = useStore(draftStore)
   const { players } = useStore(playerStore)
-  const [listOfAllocatedPlayers, setListOfAllocatedPlayers] = useState<string[]>([])
+  const [listOfAllocatedPlayers, setListOfAllocatedPlayers] = useState<
+    string[]
+  >([])
 
-  const dataSource = [...config!.teamList];
+  const dataSource = [...config!.teamList]
 
   const filteredActiveTeam = [...dataSource]?.find((_, index) => {
     return index === activeTeamIndex
-  });
+  })
 
-  const filteredAvailablePlayers = [...players]?.filter(player => {
+  const filteredAvailablePlayers = [...players]?.filter((player) => {
     return !listOfAllocatedPlayers.includes(player.id!)
   })
 
-  const sortPlayersByScore = filteredAvailablePlayers?.sort((playerA, playerB) => {
-    return Number(playerB?.score) - Number(playerA?.score)
-  });
+  const sortPlayersByScore = filteredAvailablePlayers?.sort(
+    (playerA, playerB) => {
+      return Number(playerB?.score) - Number(playerA?.score)
+    },
+  )
 
   const top5Players = sortPlayersByScore?.slice(0, 5)
 
   function onPlayerSelect(selectedPlayer: IPlayer) {
-    const newTeamList = [...dataSource];
-    newTeamList[activeTeamIndex].players.push({ ...selectedPlayer, isCaptain: false })
+    const newTeamList = [...dataSource]
+    newTeamList[activeTeamIndex].players.push({
+      ...selectedPlayer,
+      isCaptain: false,
+    })
 
     if (activeTeamIndex + 1 >= newTeamList.length) {
-      draftEvent({ config: { ...config, teamList: newTeamList }, activeTeamIndex: 0 })
+      draftEvent({
+        config: { ...config, teamList: newTeamList },
+        activeTeamIndex: 0,
+      })
     } else {
-      draftEvent({ config: { ...config, teamList: newTeamList }, activeTeamIndex: activeTeamIndex + 1 })
+      draftEvent({
+        config: { ...config, teamList: newTeamList },
+        activeTeamIndex: activeTeamIndex + 1,
+      })
     }
   }
 
   function onRemovePlayer(playerId: string) {
     const newTeamList = [...dataSource]
     const teamIndex = newTeamList[activeTeamIndex]
-    teamIndex.players = teamIndex?.players?.filter(row => row.id !== playerId);
+    teamIndex.players = teamIndex?.players?.filter((row) => row.id !== playerId)
     draftEvent({ config: { ...config, teamList: newTeamList } })
   }
 
   function isDisabledButton() {
-    const totalPlayers = Number(config?.teamsQuantity) * Number(config?.teamPlayersQuantity);
+    const totalPlayers =
+      Number(config?.teamsQuantity) * Number(config?.teamPlayersQuantity)
 
-    let playersSelected = 0;
+    let playersSelected = 0
 
     for (const team of dataSource) {
-      playersSelected += team.players.length;
+      playersSelected += team.players.length
     }
 
-    const isFullSelected = playersSelected === totalPlayers;
+    const isFullSelected = playersSelected === totalPlayers
 
-    return !isFullSelected;
+    return !isFullSelected
   }
 
-
   useEffect(() => {
-    const newList: string[] = [];
+    const newList: string[] = []
 
     for (const team of config!.teamList) {
       for (const player of team.players) {
@@ -76,7 +97,7 @@ const PlayersSelect = () => {
     }
 
     setListOfAllocatedPlayers(newList)
-  }, [config!.teamList])
+  }, [config])
 
   if (!filteredActiveTeam) return <></>
 
@@ -86,24 +107,35 @@ const PlayersSelect = () => {
       <Card className="w-full p-16">
         <div className="grid grid-cols-5 gap-2 mb-4">
           {top5Players?.map((player, index) => (
-            <PlayerCard index={index} player={player} onSelect={player => onPlayerSelect(player)} />
+            <PlayerCard
+              key={index}
+              index={index}
+              player={player}
+              onSelect={(player) => onPlayerSelect(player)}
+            />
           ))}
         </div>
 
         <div className="w-full mb-14 mt-2">
           <div className="flex items-center justify-between bg-muted/95 p-2 ring-1">
             <Button
-              variant='ghost'
+              variant="ghost"
               disabled={activeTeamIndex < 1}
-              onClick={() => draftEvent({ activeTeamIndex: activeTeamIndex - 1 })}
+              onClick={() =>
+                draftEvent({ activeTeamIndex: activeTeamIndex - 1 })
+              }
             >
               <ArrowLeftCircle />
             </Button>
-            <span className="font-bold text-zinc-700 text-2xl pl-4">{filteredActiveTeam?.name}</span>
+            <span className="font-bold text-zinc-700 text-2xl pl-4">
+              {filteredActiveTeam?.name}
+            </span>
             <Button
-              variant='ghost'
+              variant="ghost"
               disabled={activeTeamIndex + 1 >= Number(config!.teamsQuantity)}
-              onClick={() => draftEvent({ activeTeamIndex: activeTeamIndex + 1 })}
+              onClick={() =>
+                draftEvent({ activeTeamIndex: activeTeamIndex + 1 })
+              }
             >
               <ArrowRightCircle />
             </Button>
@@ -126,7 +158,9 @@ const PlayersSelect = () => {
                     return (
                       <div className="w-[350px] text-md flex gap-4 shrink-0">
                         <div className="flex flex-col shrink-0">
-                          <b className="shrink-0">{row.original?.name?.toUpperCase()}</b>
+                          <b className="shrink-0">
+                            {row.original?.name?.toUpperCase()}
+                          </b>
                           <small>{row.original?.nick}</small>
                         </div>
                         {row.original?.isCaptain && (
@@ -135,7 +169,7 @@ const PlayersSelect = () => {
                           </div>
                         )}
                       </div>
-                    );
+                    )
                   },
                 },
                 {
@@ -143,7 +177,7 @@ const PlayersSelect = () => {
                   helperName: 'Score',
                   accessorKey: 'Score',
                   cell: ({ row }: { row: { original: IPlayer } }) => {
-                    return <div className="w-[50px]">{row.original?.score}</div>;
+                    return <div className="w-[50px]">{row.original?.score}</div>
                   },
                 },
                 {
@@ -153,11 +187,17 @@ const PlayersSelect = () => {
                   cell: ({ row }: { row: { original: IPlayer } }) => {
                     const wins = row.original?.wins
                     const Icons = () => {
-                      return new Array(wins).fill('').map(() => (
-                        <Trophy className="text-yellow-400 w-6 h-6" />
-                      ))
+                      return new Array(wins)
+                        .fill('')
+                        .map((_, i) => (
+                          <Trophy key={i} className="text-yellow-400 w-6 h-6" />
+                        ))
                     }
-                    return <div className="w-[150px] flex items-center"><Icons /></div>;
+                    return (
+                      <div className="w-[150px] flex items-center">
+                        <Icons />
+                      </div>
+                    )
                   },
                 },
                 {
@@ -167,11 +207,20 @@ const PlayersSelect = () => {
                   cell: ({ row }: { row: { original: IPlayer } }) => {
                     const power = row.original?.power
                     const Stars = () => {
-                      return new Array(power).fill('').map(() => (
-                        <StarFilledIcon className="text-yellow-400 w-6 h-6" />
-                      ))
+                      return new Array(power)
+                        .fill('')
+                        .map((_, i) => (
+                          <StarFilledIcon
+                            key={i}
+                            className="text-yellow-400 w-6 h-6"
+                          />
+                        ))
                     }
-                    return <div className="flex items-center w-[150px]"><Stars /></div>;
+                    return (
+                      <div className="flex items-center w-[150px]">
+                        <Stars />
+                      </div>
+                    )
                   },
                 },
                 {
@@ -182,23 +231,21 @@ const PlayersSelect = () => {
                     return (
                       <Button
                         disabled={row.original.isCaptain}
-                        variant='outline'
+                        variant="outline"
                         onClick={() => onRemovePlayer(row.original.id!)}
                       >
                         <Trash2 className="text-red-500" />
                       </Button>
-                    );
+                    )
                   },
                 },
               ]}
-              onChangePageSize={() => { }}
-              onChangeCurrentPage={() => { }}
             />
           </div>
         </div>
         <div className="w-full flex justify-center mt-20 gap-8">
           <Button
-            variant='outline'
+            variant="outline"
             onClick={() => draftEvent({ activeTab: '2' })}
             className="min-w-[300px]  py-2"
           >
@@ -216,7 +263,7 @@ const PlayersSelect = () => {
         </div>
       </Card>
     </>
-  );
+  )
 }
 
-export default PlayersSelect;
+export default PlayersSelect

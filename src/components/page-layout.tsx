@@ -1,10 +1,10 @@
-import { ReactNode } from 'react';
-import Sidebar from './sidebar';
+import { ReactNode } from 'react'
+
+import Sidebar from './sidebar'
 
 const showSidebar = false
 
 const PageLayout = ({ children }: { children: ReactNode }) => {
-
   return (
     <div
       className="flex min-h-screen"
@@ -26,7 +26,7 @@ const PageLayout = ({ children }: { children: ReactNode }) => {
         </main>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PageLayout;
+export default PageLayout

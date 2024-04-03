@@ -1,10 +1,11 @@
-import { Button } from '@/components/ui/button';
-import { Download } from 'lucide-react';
-import React from 'react';
+import { Download } from 'lucide-react'
+import React from 'react'
+
+import { Button } from '@/components/ui/button'
+
 import * as XLSX from 'xlsx'
 
 const DownloadButton = () => {
-
   const handleDownload = () => {
     const data = [
       {
@@ -16,12 +17,12 @@ const DownloadButton = () => {
         score: '',
         email: '',
         photo: '',
-      }
-    ];
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(data);
-    XLSX.utils.book_append_sheet(wb, ws, 'importacao');
-    XLSX.writeFile(wb, 'modelo_importacao.xlsx');
+      },
+    ]
+    const wb = XLSX.utils.book_new()
+    const ws = XLSX.utils.json_to_sheet(data)
+    XLSX.utils.book_append_sheet(wb, ws, 'importacao')
+    XLSX.writeFile(wb, 'modelo_importacao.xlsx')
   }
 
   return (
@@ -35,7 +36,7 @@ const DownloadButton = () => {
         <span className="text-md">Baixar modelo</span>
       </div>
     </Button>
-  );
+  )
 }
 
-export default DownloadButton;
+export default DownloadButton

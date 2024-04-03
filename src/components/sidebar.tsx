@@ -1,29 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  ArrowRightSquare,
-  Swords,
-} from 'lucide-react';
-import { useRouter } from 'next/router';
+import { ArrowRightSquare, Swords } from 'lucide-react'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 import logoImg from '@/assets/logo.png'
 
-import MenuItem from './menu-item';
-import sidebarMenuItems from './menus-sidebar';
-import Image from 'next/image';
-import { Button } from './ui/button';
-import { HamburgerMenuIcon } from '@radix-ui/react-icons';
+import MenuItem from './menu-item'
+import sidebarMenuItems from './menus-sidebar'
+import { Button } from './ui/button'
 
 type IProps = {
-  showSidebar: boolean;
-};
+  showSidebar: boolean
+}
 
 const Sidebar = ({ showSidebar }: IProps) => {
-  const route = useRouter();
+  const route = useRouter()
 
   const handleExit = () => {
-    localStorage.clear();
-    route.push('/');
-  };
+    localStorage.clear()
+    route.push('/')
+  }
 
   return (
     <div
@@ -48,10 +43,7 @@ const Sidebar = ({ showSidebar }: IProps) => {
             onClick={() => route.push('/draft')}
             className="rounded-none w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900 py-8"
           >
-            <div
-              className={`w-full flex items-center ${!showSidebar ? 'justify-center' : 'justify-between'
-                }`}
-            >
+            <div className={`w-full flex items-center justify-center`}>
               {showSidebar && <span className="text-md">Draft</span>}
               <Swords className="w-6" />
             </div>
@@ -60,11 +52,13 @@ const Sidebar = ({ showSidebar }: IProps) => {
 
         <div className="border border-b-0 border-x-0 border-slate-300">
           {sidebarMenuItems.map((item) => (
-            <div className="border border-t-0 border-x-0 border-slate-300">
+            <div
+              key={item.menu}
+              className="border border-t-0 border-x-0 border-slate-300"
+            >
               <MenuItem key={item.menu} {...{ ...item, showSidebar }} />
             </div>
           ))}
-
         </div>
       </div>
       <div
@@ -79,8 +73,8 @@ const Sidebar = ({ showSidebar }: IProps) => {
           showSidebar={showSidebar}
         />
       </div>
-    </div >
-  );
-};
+    </div>
+  )
+}
 
-export default Sidebar;
+export default Sidebar

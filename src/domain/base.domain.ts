@@ -1,6 +1,6 @@
 export interface BaseDomain {
   id?: string
-  createdAt?: string;
+  createdAt?: string
 }
 
 export interface IUseCaseParams {
