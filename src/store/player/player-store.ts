@@ -1,11 +1,9 @@
-/* eslint-disable prettier/prettier */
-import { IPlayerPage } from "@/domain/player.domain";
+import { IPlayerPage } from '@/domain/player.domain'
+
+import { playerEvent } from './player-events'
+import { playerInitialState } from './player-state'
+import { createStore } from 'effector'
 import { persist } from 'effector-storage/local'
-
-
-import { createStore } from "effector";
-import { playerEvent } from "./player-events";
-import { playerInitialState } from "./player-state";
 
 const playerStore = createStore<IPlayerPage>(playerInitialState).on(
   playerEvent,
@@ -13,9 +11,9 @@ const playerStore = createStore<IPlayerPage>(playerInitialState).on(
     return {
       ...state,
       ...payload,
-    };
+    }
   },
-);
+)
 
 persist({ store: playerStore, key: 'playerStore' })
 
