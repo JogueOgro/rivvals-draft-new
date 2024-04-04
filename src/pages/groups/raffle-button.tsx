@@ -29,7 +29,6 @@ export default function RaffleButton() {
       window.alert('Sorteio Concluído!')
     } else {
       setTenasOpen(true)
-      await sleep(500)
       setIsLoading(true)
       await sleep(3000)
       let raffle = Math.floor(Math.random() * positions.length) + 1

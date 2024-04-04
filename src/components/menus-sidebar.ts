@@ -1,8 +1,13 @@
-import { Calendar, Group, User } from 'lucide-react'
+import { CalendarRange, Group, Swords, User } from 'lucide-react'
 
 import { IMenuItemProps } from '@/components/menu-item'
 
 const sidebarMenuItems: IMenuItemProps[] = [
+  {
+    menu: 'Draft',
+    route: '/draft',
+    icon: Swords,
+  },
   {
     menu: 'Jogadores',
     route: '/player',
@@ -16,7 +21,7 @@ const sidebarMenuItems: IMenuItemProps[] = [
   {
     menu: 'Agenda',
     route: '/schedule',
-    icon: Calendar,
+    icon: CalendarRange,
   },
 ]
 

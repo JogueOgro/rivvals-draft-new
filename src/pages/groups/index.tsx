@@ -20,7 +20,7 @@ import RaffleButton from './raffle-button'
 import GroupsRaffle from './raffle-tables'
 
 const GroupsPage = () => {
-  const [activeView, setActiveView] = useState('2')
+  const [activeView, setActiveView] = useState('1')
   const { groupsQuantity, teamsPerGroup } = useStore(groupsStore)
 
   useEffect(() => {

@@ -16,7 +16,7 @@ export default function LoginPage() {
 
   const onLogin = async () => {
     setIsLoading(true)
-    await sleep(3500)
+    await sleep(500)
     push('/draft')
   }
 
@@ -24,7 +24,7 @@ export default function LoginPage() {
     <>
       <HeadMetatags title="Login" />
       <div
-        className="overflow-hidden flex w-full min-h-screen items-center justify-center bg-[#f3f4f6]"
+        className="overflow-hidden flex w-full min-h-screen items-center justify-center"
         style={{
           backgroundImage: `url("/static/background.png")`,
           backgroundSize: 'cover',

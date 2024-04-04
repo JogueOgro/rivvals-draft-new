@@ -1,18 +1,20 @@
-import { ArrowRightSquare, Swords } from 'lucide-react'
+import { ArrowRightSquare } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 import logoImg from '@/assets/logo.png'
 
 import MenuItem from './menu-item'
 import sidebarMenuItems from './menus-sidebar'
-import { Button } from './ui/button'
 
 type IProps = {
   showSidebar: boolean
 }
 
 const Sidebar = ({ showSidebar }: IProps) => {
+  const [activeMenuIndex, setActiveMenuIndex] = useState(0)
+
   const route = useRouter()
 
   const handleExit = () => {
@@ -35,28 +37,25 @@ const Sidebar = ({ showSidebar }: IProps) => {
             alt="logo"
             width={showSidebar ? 100 : 50}
             height={0}
-            className="pt-4"
+            className="pt-10"
           />
         </div>
-        <div className="flex w-full pt-4">
-          <Button
-            onClick={() => route.push('/draft')}
-            className="rounded-none w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900 py-8"
-          >
-            <div className={`w-full flex items-center justify-center`}>
-              {showSidebar && <span className="text-md">Draft</span>}
-              <Swords className="w-6" />
-            </div>
-          </Button>
-        </div>
-
-        <div className="border border-b-0 border-x-0 border-slate-300">
-          {sidebarMenuItems.map((item) => (
+        <div className="border border-b-0 border-x-0 border-slate-300 mt-8">
+          {sidebarMenuItems.map((item, index) => (
             <div
               key={item.menu}
               className="border border-t-0 border-x-0 border-slate-300"
             >
-              <MenuItem key={item.menu} {...{ ...item, showSidebar }} />
+              <MenuItem
+                {...{
+                  ...item,
+                  key: index,
+                  index,
+                  showSidebar,
+                  activeMenuIndex,
+                  setActiveMenuIndex,
+                }}
+              />
             </div>
           ))}
         </div>
@@ -65,13 +64,7 @@ const Sidebar = ({ showSidebar }: IProps) => {
         className="border border-b-0 border-x-0 border-slate-300"
         onClick={handleExit}
       >
-        <MenuItem
-          key={sidebarMenuItems.length + 1}
-          menu={'Log Out'}
-          route={'/'}
-          icon={ArrowRightSquare}
-          showSidebar={showSidebar}
-        />
+        <MenuItem index={99} menu="Sair" route={'/'} icon={ArrowRightSquare} />
       </div>
     </div>
   )
