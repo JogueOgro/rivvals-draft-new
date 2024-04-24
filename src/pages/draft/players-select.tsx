@@ -20,6 +20,28 @@ import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
 import playerStore from '@/store/player/player-store'
 
+function getRandomTopPlayers(playerList: IPlayer[]) {
+  if (playerList.length <= 5) return playerList
+  else {
+    let tops = 12 // Quantidade de players da lista que serão considerados para a escolha
+    if (playerList.length < 10) tops = playerList.length
+    let selected: number[] = []
+    while (selected.length < 5) {
+      let random = Math.floor(Math.random() * tops) + 1
+      console.log(random)
+      if (selected.includes(random)) console.log("Adicionado " + random)
+      else {
+        selected.push(random)
+      }
+    }
+    let selectedPlayers: IPlayer[] = []
+    for (let i = 0; i < 5; i++) {
+      selectedPlayers[i] = playerList[selected[i]]
+    }
+    return selectedPlayers
+  }
+}
+
 const PlayersSelect = () => {
   const { config, activeTeamIndex } = useStore(draftStore)
   const { players } = useStore(playerStore)
@@ -43,7 +65,7 @@ const PlayersSelect = () => {
     },
   )
 
-  const top5Players = sortPlayersByScore?.slice(0, 5)
+  const top5Players = getRandomTopPlayers(sortPlayersByScore)
 
   function onPlayerSelect(selectedPlayer: IPlayer) {
     const newTeamList = [...dataSource]
