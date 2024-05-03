@@ -25,16 +25,16 @@ function getRandomTopPlayers(playerList: IPlayer[]) {
   else {
     let tops = 12 // Quantidade de players da lista que serão considerados para a escolha
     if (playerList.length < 10) tops = playerList.length
-    let selected: number[] = []
+    const selected: number[] = []
     while (selected.length < 5) {
-      let random = Math.floor(Math.random() * tops) + 1
+      const random = Math.floor(Math.random() * tops) + 1
       console.log(random)
-      if (selected.includes(random)) console.log("Adicionado " + random)
+      if (selected.includes(random)) console.log('Adicionado ' + random)
       else {
         selected.push(random)
       }
     }
-    let selectedPlayers: IPlayer[] = []
+    const selectedPlayers: IPlayer[] = []
     for (let i = 0; i < 5; i++) {
       selectedPlayers[i] = playerList[selected[i]]
     }
