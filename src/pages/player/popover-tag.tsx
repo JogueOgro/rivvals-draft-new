@@ -17,7 +17,7 @@ type IProps = {
   playerId?: string
 }
 
-export function PopoverTag({ playerId }: IProps) {
+export default function PopoverTag({ playerId }: IProps) {
   const [name, setName] = useState('')
 
   const onSaveTag = () => {

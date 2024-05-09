@@ -45,8 +45,8 @@ function getRandomTopPlayers(playerList: IPlayer[]) {
   }
 }
 
-const audioStart = new Audio('/static/start.mp3')
-const audioClock = new Audio('/static/clock.mp3')
+const audioStart = typeof window !== 'undefined' ? new Audio('/static/start.mp3') : null;
+const audioClock = typeof window !== 'undefined' ? new Audio('/static/clock.mp3') : null;
 
 const PlayersSelect = () => {
   const { config, activeTeamIndex, isOpenModalStart, isActiveTimer } =
@@ -72,8 +72,10 @@ const PlayersSelect = () => {
   )
 
   function onPlayerSelect(selectedPlayer: IPlayer) {
-    audioClock.pause()
-    audioClock.currentTime = 0
+    if (audioClock) {
+      audioClock.pause()
+      audioClock.currentTime = 0
+    }
 
 
     draftEvent({
@@ -127,6 +129,8 @@ const PlayersSelect = () => {
   }
 
   useEffect(() => {
+    if (!audioStart) return
+
     if (isOpenModalStart) {
       audioStart.play()
     } else {
@@ -136,6 +140,8 @@ const PlayersSelect = () => {
   }, [isOpenModalStart])
 
   useEffect(() => {
+    if (!audioClock) return
+
     if (isActiveTimer) {
       audioClock.volume = 0.3
       audioClock.loop = true

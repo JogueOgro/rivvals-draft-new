@@ -12,7 +12,8 @@ type IProps = {
   onSelect: (value: IPlayer) => void
 }
 
-const audioFlip = new Audio('/static/flip.mp3')
+const audioFlip =
+  typeof window !== 'undefined' ? new Audio('/static/flip.mp3') : null
 
 const PlayerCard = ({ player, onSelect }: IProps) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -26,7 +27,7 @@ const PlayerCard = ({ player, onSelect }: IProps) => {
   const cardBackground = `linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0)), url("${playerPhoto}")`
 
   const handlePlayerSelect = async () => {
-    audioFlip.play()
+    if (audioFlip) audioFlip.play()
     setIsLoading(true)
     setIsOpen(true)
     await sleep(2000)

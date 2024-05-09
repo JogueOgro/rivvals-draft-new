@@ -29,7 +29,7 @@ import { importPlayersUseCase } from '@/useCases/player/import-players.useCase'
 
 import DownloadButton from './download-button'
 import ImportButton from './import-button'
-import { PopoverTag } from './popover-tag'
+import PopoverTag from './popover-tag'
 import TableFilters from './table-filters'
 
 const PlayerPage = () => {
