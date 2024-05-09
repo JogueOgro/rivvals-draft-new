@@ -1,6 +1,6 @@
 import { useStore } from 'effector-react'
-import { ArrowLeft, Medal, Star, Trophy } from 'lucide-react'
-import React from 'react'
+import { ArrowLeft, Eye, EyeOff, Medal, Star, Trophy } from 'lucide-react'
+import React, { useState } from 'react'
 
 import DataTable from '@/components/data-table'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -11,6 +11,7 @@ import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
 
 const DraftResult = () => {
+  const [isShowScore, setIsShowScore] = useState(false)
   const { config, activeTeamIndex } = useStore(draftStore)
 
   const dataSource = config?.teamList ? [...config.teamList] : []
@@ -30,13 +31,23 @@ const DraftResult = () => {
   if (!filteredActiveTeam) return <></>
 
   return (
-    <>
+    <div className="relative">
+      <Button
+        size="icon"
+        variant="ghost"
+        className="absolute right-0 -top-10 text-zinc-500"
+        onClick={() => setIsShowScore((x) => !x)}
+      >
+        {isShowScore ? <EyeOff /> : <Eye />}
+      </Button>
       <Card className="w-full pb-12">
         {calculatedListWithTeamAvgScore?.map((team, i) => (
           <div key={team.id} className="w-full mb-14">
             <div className="flex items-center justify-between rounded-sm h-16 w-full bg-muted/95">
               <span className="font-bold text-2xl pl-4">Time {i + 1}</span>
-              <div className="flex flex-col bg-muted-foreground/10 items-center justify-center px-4 mr-2 rounded-lg">
+              <div
+                className={`flex flex-col bg-muted-foreground/10 border items-center justify-center px-4 mr-2 rounded-lg ${isShowScore ? '' : 'blur-sm'}`}
+              >
                 <span className="font-bold text-2xl">{team?.avgScore}</span>
                 <small>score</small>
               </div>
@@ -85,18 +96,6 @@ const DraftResult = () => {
                             </div>
                           )}
                         </div>
-                      )
-                    },
-                  },
-                  {
-                    id: 'tags',
-                    helperName: 'Tags',
-                    accessorKey: 'Tags',
-                    cell: ({ row }: { row: { original: IPlayer } }) => {
-                      return row.original?.tags ? (
-                        <b>{`[${row.original?.tags}]`}</b>
-                      ) : (
-                        '-'
                       )
                     },
                   },
@@ -162,7 +161,7 @@ const DraftResult = () => {
           </Button>
         </div>
       </Card>
-    </>
+    </div>
   )
 }
 

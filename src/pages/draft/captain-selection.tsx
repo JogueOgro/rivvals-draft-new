@@ -173,26 +173,6 @@ const CaptainSelection = () => {
                     },
                   },
                   {
-                    id: 'score',
-                    helperName: 'Score',
-                    accessorKey: 'Score',
-                    cell: ({ row }: { row: { original: IPlayer } }) => {
-                      return <b>{row.original?.score}</b>
-                    },
-                  },
-                  {
-                    id: 'tags',
-                    helperName: 'Tags',
-                    accessorKey: 'Tags',
-                    cell: ({ row }: { row: { original: IPlayer } }) => {
-                      return row.original?.tags ? (
-                        <b>{`[${row.original?.tags}]`}</b>
-                      ) : (
-                        '-'
-                      )
-                    },
-                  },
-                  {
                     id: 'medal',
                     accessorKey: 'medal',
                     helperName: 'Medalhas',

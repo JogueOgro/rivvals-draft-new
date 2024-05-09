@@ -113,21 +113,6 @@ const PlayersSelect = () => {
     draftEvent({ config: { ...config, teamList: newTeamList } })
   }
 
-  function isDisabledButton() {
-    const totalPlayers =
-      Number(config?.teamsQuantity) * Number(config?.teamPlayersQuantity)
-
-    let playersSelected = 0
-
-    for (const team of dataSource) {
-      playersSelected += team.players.length
-    }
-
-    const isFullSelected = playersSelected === totalPlayers
-
-    return !isFullSelected
-  }
-
   useEffect(() => {
     if (!audioStart) return
 
@@ -279,18 +264,6 @@ const PlayersSelect = () => {
                   },
                 },
                 {
-                  id: 'tags',
-                  helperName: 'Tags',
-                  accessorKey: 'Tags',
-                  cell: ({ row }: { row: { original: IPlayer } }) => {
-                    return row.original?.tags ? (
-                      <b>{`[${row.original?.tags}]`}</b>
-                    ) : (
-                      '-'
-                    )
-                  },
-                },
-                {
                   id: 'medal',
                   accessorKey: 'medal',
                   helperName: 'Medalhas',
@@ -365,7 +338,6 @@ const PlayersSelect = () => {
             Voltar
           </Button>
           <Button
-            disabled={isDisabledButton()}
             onClick={() => draftEvent({ activeTab: '3' })}
             className="min-w-[300px] bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  py-2"
           >
