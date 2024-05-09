@@ -4,8 +4,10 @@ import { useStore } from 'effector-react'
 import dynamic from 'next/dynamic'
 import { useEffect } from 'react'
 
+import tmiClient from '@/clients/twitch'
 import HeadMetatags from '@/components/head-metatags'
 import TimerClock from '@/components/timer'
+import TwitchChat from '@/components/twitch.chat'
 import { Card } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { draftEvent } from '@/store/draft/draft-events'
@@ -29,11 +31,19 @@ export default function DraftPage() {
     draftEvent({ timerSeconds: 60, isActiveTimer: false, activeTab: '1' })
   }, [])
 
+  useEffect(() => {
+    tmiClient.connect()
+    return () => {
+      tmiClient.disconnect()
+    }
+  }, [])
+
   return (
     <>
       <HeadMetatags title="Draft" />
       <div>
         {activeTab === '2' && <TimerClock />}
+        {activeTab === '2' && <TwitchChat />}
         <div className="w-full flex items-center gap-3">
           <span className="text-3xl font-bold">
             {

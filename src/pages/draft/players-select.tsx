@@ -117,6 +117,7 @@ const PlayersSelect = () => {
     if (!audioStart) return
 
     if (isOpenModalStart) {
+      audioStart.volume = 0.1
       audioStart.play()
     } else {
       audioStart.pause()
@@ -187,7 +188,11 @@ const PlayersSelect = () => {
                     {index + 1}
                   </h1>
                 </div>
-                <PlayerCard player={player} onSelect={onPlayerSelect} />
+                <PlayerCard
+                  cardNumber={index + 1}
+                  player={player}
+                  onSelect={onPlayerSelect}
+                />
               </div>
             ))}
           </div>

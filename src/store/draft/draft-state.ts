@@ -7,4 +7,5 @@ export const draftInitialState: IDraftPage = {
   timerSeconds: 60,
   activeTeamIndex: 0,
   isOpenModalStart: false,
+  chat: [],
 }

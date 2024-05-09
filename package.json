@@ -80,6 +80,7 @@
     "@types/node": "20.10.6",
     "@types/react": "18.2.47",
     "@types/react-dom": "18.2.18",
+    "@types/tmi.js": "^1.8.6",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.16",

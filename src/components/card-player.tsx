@@ -1,22 +1,31 @@
-import { StarFilledIcon } from '@radix-ui/react-icons'
-import { Medal, Trophy } from 'lucide-react'
-import React, { useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
 
+/* eslint-disable react-hooks/rules-of-hooks */
+import { StarFilledIcon } from '@radix-ui/react-icons'
+import { useStore } from 'effector-react'
+import { Medal, Trophy } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+
+import { IDraftChat } from '@/domain/draft.domain'
 import { IPlayer } from '@/domain/player.domain'
 import { sleep } from '@/lib/utils'
+import { draftEvent } from '@/store/draft/draft-events'
+import draftStore from '@/store/draft/draft-store'
 
 import { motion } from 'framer-motion'
 
 type IProps = {
+  cardNumber: number
   player: IPlayer
   onSelect: (value: IPlayer) => void
+  onForceSelect?: (value: IPlayer) => void
 }
 
 const audioFlip =
   typeof window !== 'undefined' ? new Audio('/static/flip.mp3') : null
 
-const PlayerCard = ({ player, onSelect }: IProps) => {
-  const [isLoading, setIsLoading] = useState(false)
+const PlayerCard = ({ player, onSelect, cardNumber }: IProps) => {
+  const { chat } = useStore(draftStore)
   const [isOpen, setIsOpen] = useState(false)
 
   if (!player) {
@@ -28,18 +37,46 @@ const PlayerCard = ({ player, onSelect }: IProps) => {
 
   const handlePlayerSelect = async () => {
     if (audioFlip) audioFlip.play()
-    setIsLoading(true)
     setIsOpen(true)
     await sleep(2000)
     onSelect(player)
     setIsOpen(false)
-    setIsLoading(false)
+
+    const newChatList = [] as IDraftChat[]
+
+    for (const row of chat) {
+      const [action, value] = row.message!.split(' ')
+      if (action === '!escolher' && !!value && Number(value) === cardNumber) {
+        newChatList.push({ ...row, isExecuted: true })
+      } else {
+        newChatList.push(row)
+      }
+    }
+
+    draftEvent({ chat: newChatList })
   }
+
+  useEffect(() => {
+    if (chat && chat.length) {
+      const filteredChat = [...chat].filter((x) => x.isAction && !x.isExecuted)
+      for (const row of filteredChat) {
+        const [action, value] = row.message!.split(' ')
+        if (action === '!escolher' && !!value && Number(value) === cardNumber) {
+          handlePlayerSelect()
+          break
+        }
+      }
+    }
+  }, [chat])
+
+  useEffect(() => {
+    setIsOpen(false)
+  }, [cardNumber])
 
   return (
     <div
       onClick={() => {
-        if (!isLoading) handlePlayerSelect()
+        handlePlayerSelect()
       }}
       key={player.id}
       className={`w-full ${isOpen ? 'h-[500px] -mt-6' : 'h-[425px] mt-8'} flex flex-col items-center justify-center cursor-pointer animate-slide-in`}
