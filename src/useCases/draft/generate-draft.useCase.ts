@@ -2,6 +2,7 @@ import { IDraft, ITeam } from '@/domain/draft.domain'
 import { IPlayer } from '@/domain/player.domain'
 import { draftEvent } from '@/store/draft/draft-events'
 import { draftInitialState } from '@/store/draft/draft-state'
+import { playerEvent } from '@/store/player/player-events'
 import playerStore from '@/store/player/player-store'
 
 const calculatePlayerScore = (player: IPlayer) => {
@@ -10,10 +11,10 @@ const calculatePlayerScore = (player: IPlayer) => {
   )
 }
 
-const execute = (config: Partial<IDraft>, callBack: () => void) => {
+const execute = (config: Partial<IDraft>, callBack?: () => void) => {
   draftEvent(draftInitialState)
   const { players } = playerStore.getState()
-  const dataSource = [...(players || [])]
+  const dataSource = [...players]
   const total =
     Number(config?.teamPlayersQuantity) * Number(config?.teamsQuantity)
 
@@ -23,6 +24,7 @@ const execute = (config: Partial<IDraft>, callBack: () => void) => {
   }
 
   if (dataSource?.length < total) {
+    playerEvent({ openModalUpload: false })
     window.alert('Não há quantidade de jogadores suficiente.')
     return
   }
@@ -33,7 +35,6 @@ const execute = (config: Partial<IDraft>, callBack: () => void) => {
   for (let i = 0; i < totalTeams; i++) {
     const team: ITeam = {
       id: String(i + 1),
-      name: `Time ${i + 1}`,
       players: [],
       avgScore: 0,
     }
@@ -58,7 +59,7 @@ const execute = (config: Partial<IDraft>, callBack: () => void) => {
     activeTab: '2',
   })
 
-  callBack()
+  if (callBack) callBack()
 }
 
 export const generateDraftUseCase = { execute }

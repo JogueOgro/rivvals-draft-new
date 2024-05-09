@@ -3,7 +3,6 @@ import { Group, Settings } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 import HeadMetatags from '@/components/head-metatags'
-import PageLayout from '@/components/page-layout'
 import {
   Accordion,
   AccordionContent,
@@ -30,7 +29,7 @@ const GroupsPage = () => {
   return (
     <>
       <HeadMetatags title="Grupos" />
-      <PageLayout>
+      <div>
         <div className="flex items-center justify-between flex-col sm:flex-row gap-2 pb-12">
           <div className="flex flex-col">
             <span className="text-3xl font-bold">Grupos</span>
@@ -63,22 +62,20 @@ const GroupsPage = () => {
                 </div>
               </AccordionTrigger>
               <AccordionContent>
+                <RaffleButton />
                 <div
-                  className="grid w-full gap-4 p-8 grid-cols-4"
+                  className="grid w-full gap-4 grid-cols-4 mt-4"
                   style={{
                     opacity: groupsQuantity && teamsPerGroup ? '1' : '0',
                   }}
                 >
                   <GroupsRaffle />
                 </div>
-                <div className="w-full flex justify-center">
-                  <RaffleButton />
-                </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         </Card>
-      </PageLayout>
+      </div>
     </>
   )
 }

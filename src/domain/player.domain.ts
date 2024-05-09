@@ -5,16 +5,20 @@ export interface IPlayer extends BaseDomain {
   email?: string
   name?: string
   nick?: string
-  tags?: string[]
-  wins?: number
+  medal?: number
   power?: number
+  wins?: number
+  tags?: string
+  stars?: number
   score?: number
   isCaptain?: boolean
 }
 
 export interface IPlayerPage {
   isLoading: boolean
+  openModalUpload: boolean
   pageSize: number
+  progress: number
   currentPage: number
   totalPages: number
   totalRegistries: number

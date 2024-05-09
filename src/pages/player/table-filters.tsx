@@ -68,7 +68,7 @@ export default function TableFilters() {
           </Button>
           <Button
             type="submit"
-            className="bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900 py-2"
+            className="bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  py-2"
           >
             <Search className="w-5 h-5" />
           </Button>

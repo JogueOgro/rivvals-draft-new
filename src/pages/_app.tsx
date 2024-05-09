@@ -4,6 +4,7 @@ import { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import { Montserrat } from 'next/font/google'
 
+import PageLayout from '@/components/page-layout'
 import { Toaster } from '@/components/ui/toaster'
 
 import './_globals.css'
@@ -15,7 +16,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <main className={inter.className}>
       <Providers>
-        <Component {...pageProps} />
+        <PageLayout>
+          <Component {...pageProps} />
+        </PageLayout>
       </Providers>
       <Toaster />
     </main>

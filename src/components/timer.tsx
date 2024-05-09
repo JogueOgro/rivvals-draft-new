@@ -1,12 +1,11 @@
 import { useStore } from 'effector-react'
 import { PlayCircle, XCircle } from 'lucide-react'
-import React, { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
 
 import { Button } from './ui/button'
-import { Card } from './ui/card'
 
 const TimerClock = () => {
   const { isActiveTimer, timerSeconds } = useStore(draftStore)
@@ -26,12 +25,12 @@ const TimerClock = () => {
     return () => clearInterval(interval)
   }, [isActiveTimer, timerSeconds])
 
-  return (
-    <div className="absolute right-[48px] top-[4px]">
-      <div className="w-full flex justify-end">
+  return useMemo(
+    () => (
+      <div className="flex justify-center absolute right-[48px] top-[6px]">
         <Button
           variant="ghost"
-          className="rounded-sm mr-[-10px]"
+          className="rounded-sm z-50 right-0 absolute"
           onClick={() => {
             if (isActiveTimer) {
               draftEvent({ isActiveTimer: false, timerSeconds: 60 })
@@ -46,13 +45,18 @@ const TimerClock = () => {
             <PlayCircle className="text-blue-600" />
           )}
         </Button>
+        <div className="flex flex-col gap-5 relative">
+          <div className="h-16 w-16 sm:w-32 sm:h-32 lg:w-40 lg:h-40 flex justify-between items-center border bg-white rounded-2xl">
+            <div className="relative h-2.5 w-2.5 sm:h-3 sm:w-3 !-left-[6px] rounded-full bg-blue-800"></div>
+            <span className="lg:text-7xl sm:text-6xl text-3xl font-semibold text-blue-800">
+              {timerSeconds}
+            </span>
+            <div className="relative h-2.5 w-2.5 sm:h-3 sm:w-3 -right-[6px] rounded-full bg-blue-800"></div>
+          </div>
+        </div>
       </div>
-      <Card className="w-32 h-32 rounded-sm shadow-lg flex items-center justify-center">
-        <span className="text-[50px] font-bold transition-all duration-1000 animate-pulse">
-          {timerSeconds % 60}
-        </span>
-      </Card>
-    </div>
+    ),
+    [isActiveTimer, timerSeconds],
   )
 }
 

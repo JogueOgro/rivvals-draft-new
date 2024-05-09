@@ -107,7 +107,7 @@ const AlertDialogAction = React.forwardRef<
     className={cn(
       buttonVariants(),
       className,
-      'bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900',
+      'bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 ',
     )}
     {...props}
   />

@@ -1,11 +1,9 @@
-import { StarFilledIcon } from '@radix-ui/react-icons'
 import { useStore } from 'effector-react'
-import { Check, Trash, Trophy } from 'lucide-react'
+import { Check, Medal, Star, Trash, Trophy, X } from 'lucide-react'
 import React, { useEffect } from 'react'
 
 import DataTable from '@/components/data-table'
 import HeadMetatags from '@/components/head-metatags'
-import PageLayout from '@/components/page-layout'
 import PlayerActions from '@/components/player-actions'
 import {
   AlertDialog,
@@ -31,6 +29,7 @@ import { importPlayersUseCase } from '@/useCases/player/import-players.useCase'
 
 import DownloadButton from './download-button'
 import ImportButton from './import-button'
+import { PopoverTag } from './popover-tag'
 import TableFilters from './table-filters'
 
 const PlayerPage = () => {
@@ -46,12 +45,38 @@ const PlayerPage = () => {
   } = useStore(playerStore)
 
   const searchText = filters?.name?.trim()?.toLowerCase() || ''
-  const filteredData = players?.filter((obj) =>
+  const filteredData = [...players]?.filter((obj) =>
     obj?.name?.trim()?.toLowerCase().includes(searchText),
   )
   const startIndex = (currentPage - 1) * pageSize
   const endIndex = startIndex + pageSize
   const currentPageData = filteredData?.slice(startIndex, endIndex)
+
+  const onRemoveTag = ({
+    playerId,
+    tag,
+  }: {
+    playerId?: string
+    tag: string
+  }) => {
+    const { players: oldList } = playerStore.getState()
+
+    const newList = [...oldList].map((player) => {
+      if (player.id !== playerId) return player
+
+      const tagOldList = player.tags?.trim()
+      const playerOldTagList = tagOldList?.split(',')
+      const filteredList = playerOldTagList?.filter((x) => x !== tag)
+      const playerNewTagList = filteredList?.join(',')
+
+      return {
+        ...player,
+        tags: `${playerNewTagList}`,
+      }
+    })
+
+    playerEvent({ players: newList })
+  }
 
   useEffect(() => {
     const totalPages = Math.ceil(totalRegistries / pageSize)
@@ -70,13 +95,13 @@ const PlayerPage = () => {
   return (
     <>
       <HeadMetatags title="Players" />
-      <PageLayout>
+      <div>
         <div className="flex items-center justify-between flex-col sm:flex-row gap-2">
           <div className="flex flex-col">
             <div className="flex items-center gap-4">
               <span className="text-3xl font-bold">Players</span>
               {!!players?.length && (
-                <Badge className="text-lg bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900">
+                <Badge className="text-lg bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 ">
                   {players.length}
                 </Badge>
               )}
@@ -86,7 +111,7 @@ const PlayerPage = () => {
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <DownloadButton />
+            <DownloadButton text="Baixar template" />
             <ImportButton
               onImport={(data) =>
                 importPlayersUseCase.execute(data, successCallBack)
@@ -216,26 +241,56 @@ const PlayerPage = () => {
                 accessorKey: 'Nome',
                 cell: ({ row }: { row: { original: IPlayer } }) => {
                   return (
-                    <span className="text-md font-bold">
-                      {row.original?.name?.toUpperCase()}
-                    </span>
+                    <div>
+                      <span className="font-semibold flex flex-col">
+                        {row.original?.name?.toUpperCase()}
+                      </span>
+                      <small>{row.original?.nick}</small>
+                    </div>
                   )
                 },
               },
+              // {
+              //   id: 'email',
+              //   helperName: 'E-mail',
+              //   accessorKey: 'E-mail',
+              //   cell: ({ row }: { row: { original: IPlayer } }) => {
+              //     return <span>{row.original?.email}</span>
+              //   },
+              // },
               {
-                id: 'nick',
-                helperName: 'Nick',
-                accessorKey: 'Nick',
+                id: 'tags',
+                helperName: 'Tags',
+                accessorKey: 'Tags',
                 cell: ({ row }: { row: { original: IPlayer } }) => {
-                  return <span>{row.original?.nick}</span>
-                },
-              },
-              {
-                id: 'email',
-                helperName: 'E-mail',
-                accessorKey: 'E-mail',
-                cell: ({ row }: { row: { original: IPlayer } }) => {
-                  return <span>{row.original?.email}</span>
+                  const tags = row.original?.tags?.trim()
+                  const listTags = tags?.split(',')?.filter((x) => !!x)
+
+                  if (!tags) return <PopoverTag playerId={row.original.id} />
+
+                  return (
+                    <div className="flex w-fit items-center gap-1">
+                      {listTags?.map((tag) => (
+                        <Badge
+                          key={tag}
+                          variant="outline"
+                          className="w-fit flex items-center justify-between gap-1"
+                        >
+                          {tag}
+                          <X
+                            className="w-3 h-3 cursor-pointer"
+                            onClick={() =>
+                              onRemoveTag({
+                                tag,
+                                playerId: row.original.id,
+                              })
+                            }
+                          />
+                        </Badge>
+                      ))}
+                      <PopoverTag playerId={row.original.id} />
+                    </div>
+                  )
                 },
               },
               {
@@ -247,44 +302,46 @@ const PlayerPage = () => {
                 },
               },
               {
-                id: 'wins',
-                helperName: 'Wins',
-                accessorKey: 'Wins',
+                id: 'medal',
+                accessorKey: 'medal',
+                helperName: 'Medalhas',
+                header: 'Medalhas',
                 cell: ({ row }: { row: { original: IPlayer } }) => {
-                  const wins = row.original?.wins
-                  const Icons = () => {
-                    return new Array(wins)
-                      .fill('')
-                      .map((_, i) => (
-                        <Trophy key={i} className="text-yellow-400 w-6 h-6" />
-                      ))
-                  }
+                  const value = row.original?.medal
                   return (
-                    <div className="flex items-center">
-                      <Icons />
+                    <div className="flex items-center gap-2">
+                      <Medal className="text-yellow-400 w-6 h-6" />
+                      <b className="text-lg">{value}</b>
                     </div>
                   )
                 },
               },
               {
-                id: 'power',
-                helperName: 'Power',
-                accessorKey: 'Power',
+                id: 'wins',
+                helperName: 'Wins',
+                accessorKey: 'Wins',
+                header: 'Vitórias',
                 cell: ({ row }: { row: { original: IPlayer } }) => {
-                  const power = row.original?.power
-                  const Stars = () => {
-                    return new Array(power)
-                      .fill('')
-                      .map((_, i) => (
-                        <StarFilledIcon
-                          key={i}
-                          className="text-yellow-400 w-6 h-6"
-                        />
-                      ))
-                  }
+                  const wins = row.original?.wins
                   return (
-                    <div className="flex items-center">
-                      <Stars />
+                    <div className="flex items-center gap-2">
+                      <Trophy className="text-yellow-400 w-6 h-6" />
+                      <b className="text-lg">{wins}</b>
+                    </div>
+                  )
+                },
+              },
+              {
+                id: 'stars',
+                helperName: 'Stars',
+                accessorKey: 'Stars',
+                header: 'Estrelas',
+                cell: ({ row }: { row: { original: IPlayer } }) => {
+                  const stars = row.original?.stars
+                  return (
+                    <div className="flex items-center gap-2">
+                      <Star className="text-yellow-400 w-6 h-6" />
+                      <b className="text-lg">{stars}</b>
                     </div>
                   )
                 },
@@ -307,7 +364,7 @@ const PlayerPage = () => {
             }}
           />
         </div>
-      </PageLayout>
+      </div>
     </>
   )
 }

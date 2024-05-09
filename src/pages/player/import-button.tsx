@@ -46,12 +46,13 @@ const ImportButton: React.FC<ImportButtonProps> = ({ onImport }) => {
       const players: IPlayer[] = importedData.slice(1).map((row) => ({
         name: row[0] || '',
         nick: row[1] || '',
-        power: parseFloat(row[2] as string) || 0,
-        tags: row[3] || '',
-        wins: row[4] || '',
-        score: row[5] || '',
-        email: row[6] || '',
-        photo: row[7] || '',
+        stars: parseInt(row[2] as string) || 0,
+        medal: parseInt(row[3] as string) || 0,
+        wins: parseInt(row[4] as string) || 0,
+        tags: row[5] || '',
+        score: row[6] || '',
+        email: row[7] || '',
+        photo: row[8] || '',
       }))
       onImport(players)
     }
@@ -75,7 +76,7 @@ const ImportButton: React.FC<ImportButtonProps> = ({ onImport }) => {
       />
       <Button
         variant="default"
-        className="py-2 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900"
+        className="py-2 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 "
         onClick={handleClickUpload}
       >
         <div className="flex items-center space-x-2">

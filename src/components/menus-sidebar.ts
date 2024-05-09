@@ -1,4 +1,4 @@
-import { CalendarRange, Group, Swords, User } from 'lucide-react'
+import { Group, Swords, User } from 'lucide-react'
 
 import { IMenuItemProps } from '@/components/menu-item'
 
@@ -9,19 +9,14 @@ const sidebarMenuItems: IMenuItemProps[] = [
     icon: Swords,
   },
   {
-    menu: 'Jogadores',
-    route: '/player',
-    icon: User,
-  },
-  {
     menu: 'Sortear Grupos',
     route: '/groups',
     icon: Group,
   },
   {
-    menu: 'Agenda',
-    route: '/schedule',
-    icon: CalendarRange,
+    menu: 'Jogadores',
+    route: '/player',
+    icon: User,
   },
 ]
 

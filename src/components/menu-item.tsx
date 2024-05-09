@@ -1,12 +1,12 @@
 'use client'
 
+import { LucideIcon } from 'lucide-react'
 import { useRouter } from 'next/router'
 
 import { Button } from './ui/button'
 
 export type IMenuItemProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  icon: any
+  icon: LucideIcon
   menu: string
   route: string
   index?: number
@@ -27,7 +27,7 @@ export default function MenuItem(props: IMenuItemProps) {
       className={
         !isActive
           ? 'rounded-none w-full py-7 border-0 bg-transparent'
-          : 'rounded-none w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900 py-8'
+          : 'rounded-none w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  py-8'
       }
       onClick={() => {
         route.push(props.route)

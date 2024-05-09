@@ -1,11 +1,10 @@
-import { StarFilledIcon } from '@radix-ui/react-icons'
 import { useStore } from 'effector-react'
 import {
-  ArrowLeft,
   ArrowRight,
   ArrowRightLeft,
   Check,
-  Edit,
+  Medal,
+  Star,
   Trophy,
 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
@@ -59,20 +58,22 @@ const CaptainSelection = () => {
   }
 
   function handleNext() {
-    const calculateTeamAvgScore = config?.teamList?.map((team) => ({
-      ...team,
-      avgScore: [...team.players].reduce((total, player) => {
+    const list = config?.teamList ? [...config.teamList] : []
+    const calculateTeamAvgScore = list.map((team) => {
+      const avgScore = [...team.players].reduce((total, player) => {
         return total + (player ? Number(player.score) : 0)
-      }, 0),
-    }))
+      }, 0)
+
+      return { ...team, avgScore }
+    })
 
     const sortTeamByScore = calculateTeamAvgScore?.sort(
       (teamA, teamB) => teamA.avgScore - teamB.avgScore,
     )
 
     draftEvent({
-      activeTab: '3',
-      isActiveTimer: true,
+      activeTab: '2',
+      isOpenModalStart: true,
       timerSeconds: 60,
       activeTeamIndex: 0,
       config: { ...config, teamList: sortTeamByScore || [] },
@@ -80,7 +81,8 @@ const CaptainSelection = () => {
   }
 
   function changeCaptain(newCaptain: IPlayer) {
-    const newTeamList: ITeam[] = [...config!.teamList].map((team) => {
+    const list = config?.teamList ? [...config.teamList] : []
+    const newTeamList: ITeam[] = list.map((team) => {
       if (team.id === selectedTeam?.id) {
         return { ...team, players: [{ ...newCaptain, isCaptain: true }] }
       } else {
@@ -110,8 +112,8 @@ const CaptainSelection = () => {
 
   useEffect(() => {
     const newList: string[] = []
-
-    for (const team of config!.teamList) {
+    const list = config?.teamList ? [...config.teamList] : []
+    for (const team of list) {
       for (const player of team.players) {
         newList.push(player.id!)
       }
@@ -123,16 +125,13 @@ const CaptainSelection = () => {
   return (
     <>
       <Card className="w-full pb-12">
-        {config?.teamList?.map((team: ITeam) => {
+        {config?.teamList?.map((team: ITeam, i) => {
           return (
             <div className="w-full mb-14" key={team.id}>
-              <div className="flex items-center rounded-sm h-16 w-full bg-muted/95 hover:to-purple-900">
-                <Button variant="ghost">
-                  <Edit />
-                  <span className="font-bold text-zinc-700 text-2xl pl-4">
-                    {team?.name}
-                  </span>
-                </Button>
+              <div className="flex items-center rounded-sm h-16 w-full bg-muted/95 ">
+                <span className="font-bold text-zinc-700 text-2xl pl-4">
+                  Time {i + 1}
+                </span>
               </div>
               <DataTable
                 isHidePagination
@@ -143,6 +142,21 @@ const CaptainSelection = () => {
                 totalPages={1}
                 currentPage={1}
                 columns={[
+                  {
+                    id: 'photo',
+                    helperName: 'Foto',
+                    accessorKey: 'Foto',
+                    cell: ({ row }: { row: { original: IPlayer } }) => {
+                      return (
+                        <Avatar>
+                          <AvatarImage src={row.original.photo} />
+                          <AvatarFallback>
+                            {row.original.name?.substring(0, 2)?.toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                      )
+                    },
+                  },
                   {
                     id: 'name',
                     helperName: 'Capitão',
@@ -163,8 +177,33 @@ const CaptainSelection = () => {
                     helperName: 'Score',
                     accessorKey: 'Score',
                     cell: ({ row }: { row: { original: IPlayer } }) => {
+                      return <b>{row.original?.score}</b>
+                    },
+                  },
+                  {
+                    id: 'tags',
+                    helperName: 'Tags',
+                    accessorKey: 'Tags',
+                    cell: ({ row }: { row: { original: IPlayer } }) => {
+                      return row.original?.tags ? (
+                        <b>{`[${row.original?.tags}]`}</b>
+                      ) : (
+                        '-'
+                      )
+                    },
+                  },
+                  {
+                    id: 'medal',
+                    accessorKey: 'medal',
+                    helperName: 'Medalhas',
+                    header: 'Medalhas',
+                    cell: ({ row }: { row: { original: IPlayer } }) => {
+                      const value = row.original?.medal
                       return (
-                        <div className="w-[50px]">{row.original?.score}</div>
+                        <div className="flex items-center gap-2">
+                          <Medal className="text-yellow-400 w-6 h-6" />
+                          <b className="text-lg">{value}</b>
+                        </div>
                       )
                     },
                   },
@@ -172,44 +211,28 @@ const CaptainSelection = () => {
                     id: 'wins',
                     helperName: 'Wins',
                     accessorKey: 'Wins',
+                    header: 'Vitórias',
                     cell: ({ row }: { row: { original: IPlayer } }) => {
                       const wins = row.original?.wins
-                      const Icons = () => {
-                        return new Array(wins)
-                          .fill('')
-                          .map((_, i) => (
-                            <Trophy
-                              key={i}
-                              className="text-yellow-400 w-6 h-6"
-                            />
-                          ))
-                      }
                       return (
-                        <div className="w-[150px] flex items-center">
-                          <Icons />
+                        <div className="flex items-center gap-2">
+                          <Trophy className="text-yellow-400 w-6 h-6" />
+                          <b className="text-lg">{wins}</b>
                         </div>
                       )
                     },
                   },
                   {
-                    id: 'power',
-                    helperName: 'Power',
-                    accessorKey: 'Power',
+                    id: 'stars',
+                    helperName: 'Stars',
+                    accessorKey: 'Stars',
+                    header: 'Estrelas',
                     cell: ({ row }: { row: { original: IPlayer } }) => {
-                      const power = row.original?.power
-                      const Stars = () => {
-                        return new Array(power)
-                          .fill('')
-                          .map((_, i) => (
-                            <StarFilledIcon
-                              key={i}
-                              className="text-yellow-400 w-6 h-6"
-                            />
-                          ))
-                      }
+                      const stars = row.original?.stars
                       return (
-                        <div className="flex items-center w-[150px]">
-                          <Stars />
+                        <div className="flex items-center gap-2">
+                          <Star className="text-yellow-400 w-6 h-6" />
+                          <b className="text-lg">{stars}</b>
                         </div>
                       )
                     },
@@ -226,7 +249,7 @@ const CaptainSelection = () => {
                             setOpenDrawer((oldValue) => !oldValue)
                             setSelectedTeam(team)
                           }}
-                          className="bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900"
+                          className="bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 "
                         >
                           <ArrowRightLeft />
                           &nbsp; Substituir
@@ -242,16 +265,8 @@ const CaptainSelection = () => {
 
         <div className="w-full flex justify-center mt-20 gap-8">
           <Button
-            variant="outline"
-            onClick={() => draftEvent({ activeTab: '1' })}
-            className="min-w-[300px]  py-2"
-          >
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Voltar
-          </Button>
-          <Button
             onClick={() => handleNext()}
-            className="min-w-[300px] bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900 py-2"
+            className="min-w-[300px] bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  py-2"
           >
             Próximo
             <ArrowRight className="w-5 h-5 ml-2" />

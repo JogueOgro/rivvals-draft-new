@@ -10,7 +10,7 @@ const execute = async (players: IPlayer[], cb: () => void) => {
     playerEvent({ isLoading: true })
     const totalRegistries = players.length
     const totalPages = Math.ceil(totalRegistries / pageSize)
-    const formattedData = players
+    const formattedData = [...players]
       ?.map((row) => {
         return {
           ...row,

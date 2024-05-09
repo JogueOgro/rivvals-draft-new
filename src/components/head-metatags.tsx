@@ -12,7 +12,7 @@ type IProps = {
 const HeadMetatags = (props: IProps) => {
   const [url, setUrl] = useState('')
   const route = useRouter()
-  const parsedName = 'Rivvals Backoffice'
+  const parsedName = 'Rivvals'
   const title = props?.title ? props?.title + ' | ' + parsedName : parsedName
   const defaultDescription = props?.description || parsedName
 

@@ -47,13 +47,13 @@ export default function RaffleButton() {
     <>
       <Button
         onClick={handleClickRaffle}
-        className="mt-8 w-[300px] bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900 py-2"
+        className="mt-8 w-[300px] bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  py-2"
       >
         Sortear
         <Shuffle className="w-5 h-5 ml-2" />
       </Button>
       <AlertDialog open={tenasOpen} onOpenChange={setTenasOpen}>
-        <AlertDialogContent className="bg-transparent ring-0 border-none">
+        <AlertDialogContent className="bg-transparent ring-0 border-none shadow-none">
           <Image
             src={!isLoading ? tenas : tenasBag}
             width={0}

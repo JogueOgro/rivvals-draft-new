@@ -92,7 +92,7 @@ export default function GroupsConfig({ setActiveView }: IProps) {
           <Button
             type="submit"
             disabled={!form.formState.isValid}
-            className="mt-8 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900 py-2"
+            className="mt-8 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  py-2"
           >
             Gerar grupos
           </Button>

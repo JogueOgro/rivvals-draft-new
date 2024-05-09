@@ -241,3 +241,43 @@ export function dataURLtoFile(dataURL?: string): File | "" {
 
   return new File([u8arr], "filename", { type: fileType }) as any;
 }
+
+export const stringTruncate = (text: string, limit: number) => {
+  if (!text) return ''
+  let str = text
+  if (text.length > limit) {
+    str = str.substring(0, limit) + '...'
+  }
+  return str
+}
+
+export const getFileSize = (fileSize: number, decimals: number) => {
+  const bytes = fileSize
+  if (bytes <= 0) return '0 B'
+  const suffixes: string[] = [
+    'B',
+    'KB',
+    'MB',
+    'GB',
+    'TB',
+    'PB',
+    'EB',
+    'ZB',
+    'YB',
+  ]
+  const i = Math.floor(Math.log(bytes) / Math.log(1024))
+  return `${(bytes / Math.pow(1024, i)).toFixed(decimals)} ${suffixes[i]}`
+}
+
+export const getFileExtension = (fileName: string): string => {
+  return fileName.split('.').pop() || ''
+}
+
+export const formatFileName = (file: File): string => {
+  const timestamp = Date.now()
+  const fileName = file.name
+  const extension = getFileExtension(fileName)
+  const [name] = fileName.split('.')
+  const formattedName = name.replaceAll(' ', '_')
+  return `${formattedName}_${timestamp}.${extension}`
+}

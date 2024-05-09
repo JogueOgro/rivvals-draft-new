@@ -6,4 +6,5 @@ export const draftInitialState: IDraftPage = {
   isActiveTimer: false,
   timerSeconds: 60,
   activeTeamIndex: 0,
+  isOpenModalStart: false,
 }

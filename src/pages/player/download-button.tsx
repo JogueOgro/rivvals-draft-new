@@ -1,24 +1,17 @@
 import { Download } from 'lucide-react'
 import React from 'react'
 
-import { Button } from '@/components/ui/button'
+import mockPlayers from '@/lib/mockPlayers.json'
 
 import * as XLSX from 'xlsx'
 
-const DownloadButton = () => {
+type IProps = {
+  text: string
+}
+
+const DownloadButton = ({ text }: IProps) => {
   const handleDownload = () => {
-    const data = [
-      {
-        name: '',
-        nick: '',
-        power: '',
-        tags: '',
-        wins: '',
-        score: '',
-        email: '',
-        photo: '',
-      },
-    ]
+    const data = mockPlayers
     const wb = XLSX.utils.book_new()
     const ws = XLSX.utils.json_to_sheet(data)
     XLSX.utils.book_append_sheet(wb, ws, 'importacao')
@@ -26,16 +19,15 @@ const DownloadButton = () => {
   }
 
   return (
-    <Button
+    <div
       onClick={handleDownload}
-      variant="default"
-      className="py-2 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900"
+      className="bg-white ring-[0.2px] ring-black rounded-sm py-2 cursor-pointer"
     >
-      <div className="w-full flex items-center justify-between space-x-2">
+      <div className="w-full flex items-center justify-center space-x-2">
         <Download className="w-4" />
-        <span className="text-md">Baixar modelo</span>
+        <span className="text-md">{text}</span>
       </div>
-    </Button>
+    </div>
   )
 }
 

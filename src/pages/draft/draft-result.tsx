@@ -1,9 +1,9 @@
-import { StarFilledIcon } from '@radix-ui/react-icons'
 import { useStore } from 'effector-react'
-import { ArrowLeft, Edit, Share2, Trophy } from 'lucide-react'
+import { ArrowLeft, Medal, Star, Trophy } from 'lucide-react'
 import React from 'react'
 
 import DataTable from '@/components/data-table'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { IPlayer } from '@/domain/player.domain'
@@ -13,7 +13,7 @@ import draftStore from '@/store/draft/draft-store'
 const DraftResult = () => {
   const { config, activeTeamIndex } = useStore(draftStore)
 
-  const dataSource = [...config!.teamList]
+  const dataSource = config?.teamList ? [...config.teamList] : []
 
   const calculatedListWithTeamAvgScore = config?.teamList?.map((team) => {
     const teamScore = [...team.players].reduce((total, player) => {
@@ -31,15 +31,12 @@ const DraftResult = () => {
 
   return (
     <>
-      <Card className="w-full p-16">
-        {calculatedListWithTeamAvgScore?.map((team) => (
-          <div key={team.id} className="w-full mb-14 mt-2">
+      <Card className="w-full pb-12">
+        {calculatedListWithTeamAvgScore?.map((team, i) => (
+          <div key={team.id} className="w-full mb-14">
             <div className="flex items-center justify-between rounded-sm h-16 w-full bg-muted/95">
-              <Button variant="ghost">
-                <Edit />
-                <span className="font-bold text-2xl pl-4">{team?.name}</span>
-              </Button>
-              <div className="flex flex-col bg-zinc-200 items-center justify-center px-4 mr-2 rounded-lg">
+              <span className="font-bold text-2xl pl-4">Time {i + 1}</span>
+              <div className="flex flex-col bg-muted-foreground/10 items-center justify-center px-4 mr-2 rounded-lg">
                 <span className="font-bold text-2xl">{team?.avgScore}</span>
                 <small>score</small>
               </div>
@@ -55,6 +52,21 @@ const DraftResult = () => {
                 currentPage={1}
                 columns={[
                   {
+                    id: 'photo',
+                    helperName: 'Foto',
+                    accessorKey: 'Foto',
+                    cell: ({ row }: { row: { original: IPlayer } }) => {
+                      return (
+                        <Avatar>
+                          <AvatarImage src={row.original.photo} />
+                          <AvatarFallback>
+                            {row.original.name?.substring(0, 2)?.toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                      )
+                    },
+                  },
+                  {
                     id: 'name',
                     helperName: 'Nome',
                     accessorKey: 'Nome',
@@ -68,7 +80,7 @@ const DraftResult = () => {
                             <small>{row.original?.nick}</small>
                           </div>
                           {row.original?.isCaptain && (
-                            <div className="text-white text-sm text-center pt-[2px] rounded-full w-[80px] h-[24px] bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900">
+                            <div className="text-white text-sm text-center pt-[2px] rounded-full w-[80px] h-[24px] bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 ">
                               &nbsp;Capitão&nbsp;
                             </div>
                           )}
@@ -77,12 +89,29 @@ const DraftResult = () => {
                     },
                   },
                   {
-                    id: 'score',
-                    helperName: 'Score',
-                    accessorKey: 'Score',
+                    id: 'tags',
+                    helperName: 'Tags',
+                    accessorKey: 'Tags',
                     cell: ({ row }: { row: { original: IPlayer } }) => {
+                      return row.original?.tags ? (
+                        <b>{`[${row.original?.tags}]`}</b>
+                      ) : (
+                        '-'
+                      )
+                    },
+                  },
+                  {
+                    id: 'medal',
+                    accessorKey: 'medal',
+                    helperName: 'Medalhas',
+                    header: 'Medalhas',
+                    cell: ({ row }: { row: { original: IPlayer } }) => {
+                      const value = row.original?.medal
                       return (
-                        <div className="w-[50px]">{row.original?.score}</div>
+                        <div className="flex items-center gap-2">
+                          <Medal className="text-yellow-400 w-6 h-6" />
+                          <b className="text-lg">{value}</b>
+                        </div>
                       )
                     },
                   },
@@ -90,44 +119,28 @@ const DraftResult = () => {
                     id: 'wins',
                     helperName: 'Wins',
                     accessorKey: 'Wins',
+                    header: 'Vitórias',
                     cell: ({ row }: { row: { original: IPlayer } }) => {
                       const wins = row.original?.wins
-                      const Icons = () => {
-                        return new Array(wins)
-                          .fill('')
-                          .map((_, i) => (
-                            <Trophy
-                              key={i}
-                              className="text-yellow-400 w-6 h-6"
-                            />
-                          ))
-                      }
                       return (
-                        <div className="w-[150px] flex items-center">
-                          <Icons />
+                        <div className="flex items-center gap-2">
+                          <Trophy className="text-yellow-400 w-6 h-6" />
+                          <b className="text-lg">{wins}</b>
                         </div>
                       )
                     },
                   },
                   {
-                    id: 'power',
-                    helperName: 'Power',
-                    accessorKey: 'Power',
+                    id: 'stars',
+                    helperName: 'Stars',
+                    accessorKey: 'Stars',
+                    header: 'Estrelas',
                     cell: ({ row }: { row: { original: IPlayer } }) => {
-                      const power = row.original?.power
-                      const Stars = () => {
-                        return new Array(power)
-                          .fill('')
-                          .map((_, i) => (
-                            <StarFilledIcon
-                              key={i}
-                              className="text-yellow-400 w-6 h-6"
-                            />
-                          ))
-                      }
+                      const stars = row.original?.stars
                       return (
-                        <div className="flex items-center w-[150px]">
-                          <Stars />
+                        <div className="flex items-center gap-2">
+                          <Star className="text-yellow-400 w-6 h-6" />
+                          <b className="text-lg">{stars}</b>
                         </div>
                       )
                     },
@@ -141,15 +154,11 @@ const DraftResult = () => {
         <div className="w-full flex justify-center mt-20 gap-8">
           <Button
             variant="outline"
-            onClick={() => draftEvent({ activeTab: '3' })}
+            onClick={() => draftEvent({ activeTab: '2' })}
             className="min-w-[300px]  py-2"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Voltar
-          </Button>
-          <Button className="min-w-[300px] bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 hover:to-purple-900 py-2">
-            <Share2 className="w-5 h-5 mr-2" />
-            Compartilhar
           </Button>
         </div>
       </Card>
