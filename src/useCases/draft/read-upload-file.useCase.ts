@@ -18,17 +18,15 @@ const execute = async ({ file, callBack }: IParams) => {
 
   const { config } = draftStore.getState()
 
-  playerEvent({ progress: 0 })
+  playerEvent({ progress: 0, isLoading: true })
   await sleep(500)
 
   const reader = new FileReader()
 
   reader.onload = async (e) => {
-    if (!e.target?.result) return
-
     playerEvent({ progress: 20 })
 
-    const data = new Uint8Array(e.target.result as ArrayBuffer)
+    const data = new Uint8Array(e!.target!.result as ArrayBuffer)
     const workbook = XLSX.read(data, { type: 'array' })
     const sheetName = workbook.SheetNames[0]
     const worksheet = workbook.Sheets[sheetName]
@@ -42,13 +40,14 @@ const execute = async ({ file, callBack }: IParams) => {
     const players: IPlayer[] = importedData.slice(1).map((row) => ({
       name: row[0] || '',
       nick: row[1] || '',
-      stars: parseInt(row[2] as string) || 0,
-      medal: parseInt(row[3] as string) || 0,
-      wins: parseInt(row[4] as string) || 0,
-      tags: row[5] || '',
-      score: row[6] || '',
-      email: row[7] || '',
-      photo: row[8] || '',
+      twitch: row[2] || '',
+      stars: parseInt(row[3] as string) || 0,
+      medal: parseInt(row[4] as string) || 0,
+      wins: parseInt(row[5] as string) || 0,
+      tags: row[6] || '',
+      score: row[7] || '',
+      email: row[8] || '',
+      photo: row[9] || '',
     }))
 
     await sleep(500)
@@ -71,7 +70,7 @@ const execute = async ({ file, callBack }: IParams) => {
     )
 
     await sleep(500)
-    playerEvent({ openModalUpload: false })
+    playerEvent({ openModalUpload: false, isLoading: false })
   }
   reader.readAsArrayBuffer(file)
 }

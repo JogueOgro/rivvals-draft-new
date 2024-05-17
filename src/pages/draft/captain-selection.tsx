@@ -173,6 +173,18 @@ const CaptainSelection = () => {
                     },
                   },
                   {
+                    id: 'twitch',
+                    helperName: 'Twitch',
+                    accessorKey: 'Twitch',
+                    cell: ({ row }: { row: { original: IPlayer } }) => {
+                      return (
+                        <div className="text-md flex flex-col">
+                          <b className="shrink-0">{row.original?.twitch}</b>
+                        </div>
+                      )
+                    },
+                  },
+                  {
                     id: 'medal',
                     accessorKey: 'medal',
                     helperName: 'Medalhas',

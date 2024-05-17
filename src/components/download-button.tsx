@@ -1,6 +1,7 @@
 import { Download } from 'lucide-react'
 import React from 'react'
 
+import { Button } from '@/components/ui/button'
 import mockPlayers from '@/lib/mockPlayers.json'
 
 import * as XLSX from 'xlsx'
@@ -19,15 +20,19 @@ const DownloadButton = ({ text }: IProps) => {
   }
 
   return (
-    <div
-      onClick={handleDownload}
+    <Button
+      variant="ghost"
+      onClick={(e) => {
+        e.preventDefault()
+        handleDownload()
+      }}
       className="bg-white ring-[0.2px] ring-black rounded-sm py-2 cursor-pointer"
     >
       <div className="w-full flex items-center justify-center space-x-2">
         <Download className="w-4" />
         <span className="text-md">{text}</span>
       </div>
-    </div>
+    </Button>
   )
 }
 

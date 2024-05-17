@@ -48,11 +48,14 @@ tmiClient.on('chat', function (channel, user, message, self) {
   const newChatList = [...chat]?.filter(
     (x) => x.message?.trim() !== message.trim() && user?.id !== x.user?.id,
   )
+
+  const validCommands = /^!(escolher|anular)\b/i
+
   newChatList.push({
     id: uuid(),
     user,
     message,
-    isAction: !!action,
+    isAction: validCommands.test(action),
     isExecuted: false,
   })
   draftEvent({ chat: newChatList.reverse() })

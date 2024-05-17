@@ -21,13 +21,14 @@ export default function PopoverTag({ playerId }: IProps) {
   const [name, setName] = useState('')
 
   const onSaveTag = () => {
+    if (!name || !name?.trim()) return
     const { players: oldList } = playerStore.getState()
 
     const newList = [...oldList].map((player) => {
       if (player.id !== playerId) return player
       return {
         ...player,
-        tags: `${player.tags},${name}`,
+        tags: !player.tags ? name.trim() : `${player.tags},${name.trim()}`,
       }
     })
 

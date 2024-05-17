@@ -29,9 +29,6 @@ export default function DraftPage() {
 
   useEffect(() => {
     draftEvent({ timerSeconds: 60, isActiveTimer: false, activeTab: '1' })
-  }, [])
-
-  useEffect(() => {
     tmiClient.connect()
     return () => {
       tmiClient.disconnect()

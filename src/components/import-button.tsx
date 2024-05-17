@@ -46,13 +46,14 @@ const ImportButton: React.FC<ImportButtonProps> = ({ onImport }) => {
       const players: IPlayer[] = importedData.slice(1).map((row) => ({
         name: row[0] || '',
         nick: row[1] || '',
-        stars: parseInt(row[2] as string) || 0,
-        medal: parseInt(row[3] as string) || 0,
-        wins: parseInt(row[4] as string) || 0,
-        tags: row[5] || '',
-        score: row[6] || '',
-        email: row[7] || '',
-        photo: row[8] || '',
+        twitch: row[2] || '',
+        stars: parseInt(row[3] as string) || 0,
+        medal: parseInt(row[4] as string) || 0,
+        wins: parseInt(row[5] as string) || 0,
+        tags: row[6] || '',
+        score: row[7] || '',
+        email: row[8] || '',
+        photo: row[9] || '',
       }))
       onImport(players)
     }

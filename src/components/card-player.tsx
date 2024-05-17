@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable react-hooks/exhaustive-deps */
 
 /* eslint-disable react-hooks/rules-of-hooks */
@@ -6,7 +7,6 @@ import { useStore } from 'effector-react'
 import { Medal, Trophy } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
-import { IDraftChat } from '@/domain/draft.domain'
 import { IPlayer } from '@/domain/player.domain'
 import { sleep } from '@/lib/utils'
 import { draftEvent } from '@/store/draft/draft-events'
@@ -25,7 +25,7 @@ const audioFlip =
   typeof window !== 'undefined' ? new Audio('/static/flip.mp3') : null
 
 const PlayerCard = ({ player, onSelect, cardNumber }: IProps) => {
-  const { chat } = useStore(draftStore)
+  const { chat, config, activeTeamIndex } = useStore(draftStore)
   const [isOpen, setIsOpen] = useState(false)
 
   if (!player) {
@@ -41,27 +41,36 @@ const PlayerCard = ({ player, onSelect, cardNumber }: IProps) => {
     await sleep(2000)
     onSelect(player)
     setIsOpen(false)
-
-    const newChatList = [] as IDraftChat[]
-
-    for (const row of chat) {
-      const [action, value] = row.message!.split(' ')
-      if (action === '!escolher' && !!value && Number(value) === cardNumber) {
-        newChatList.push({ ...row, isExecuted: true })
-      } else {
-        newChatList.push(row)
-      }
-    }
-
-    draftEvent({ chat: newChatList })
   }
 
   useEffect(() => {
     if (chat && chat.length) {
       const filteredChat = [...chat].filter((x) => x.isAction && !x.isExecuted)
       for (const row of filteredChat) {
+
+        const userName = row?.user?.username?.toString().toLowerCase().trim()
         const [action, value] = row.message!.split(' ')
-        if (action === '!escolher' && !!value && Number(value) === cardNumber) {
+
+        const isCommandChose = action === '!escolher'
+        const isCardToSelect = Number(value) === cardNumber
+
+
+        const listMembersTwitchName = config?.teamList?.length
+          ? config?.teamList[activeTeamIndex]?.players
+            ?.filter((obj) => !!obj.twitch && obj.twitch !== '')
+            ?.map((obj) => obj.twitch)
+          : []
+
+        const isMemberOfTeam = listMembersTwitchName?.some((twitchUserName) => {
+          const playerName = twitchUserName!.toString().toLowerCase().trim()
+          return playerName.includes(userName || '')
+        })
+
+        if (isCommandChose && isCardToSelect && isMemberOfTeam) {
+          const newChatList = [...chat]?.map((obj) =>
+            obj.id !== row.id ? obj : { ...row, isExecuted: true },
+          )
+          draftEvent({ chat: newChatList })
           handlePlayerSelect()
           break
         }

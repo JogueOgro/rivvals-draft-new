@@ -7,6 +7,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 
 import logoImg from '@/assets/logo.png'
+import DownloadButton from '@/components/download-button'
 import HeadMetatags from '@/components/head-metatags'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,7 +23,6 @@ import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
 import { playerEvent } from '@/store/player/player-events'
 
-import DownloadButton from '../player/download-button'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 

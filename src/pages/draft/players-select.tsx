@@ -49,7 +49,7 @@ const audioStart = typeof window !== 'undefined' ? new Audio('/static/start.mp3'
 const audioClock = typeof window !== 'undefined' ? new Audio('/static/clock.mp3') : null;
 
 const PlayersSelect = () => {
-  const { config, activeTeamIndex, isOpenModalStart, isActiveTimer } =
+  const { config, activeTeamIndex, isOpenModalStart, isActiveTimer, activeTab } =
     useStore(draftStore)
   const { players } = useStore(playerStore)
   const [listOfAllocatedPlayers, setListOfAllocatedPlayers] = useState<
@@ -128,15 +128,19 @@ const PlayersSelect = () => {
   useEffect(() => {
     if (!audioClock) return
 
-    if (isActiveTimer) {
+    if (isActiveTimer && activeTab === '2') {
       audioClock.volume = 0.3
       audioClock.loop = true
       audioClock.play()
-    } else {
+      return
+    }
+
+    if (!isActiveTimer || activeTab !== '2') {
       audioClock.loop = false
       audioClock.pause()
       audioClock.currentTime = 0
     }
+
   }, [isActiveTimer])
 
   useEffect(() => {
@@ -264,6 +268,22 @@ const PlayersSelect = () => {
                             &nbsp;Capitão&nbsp;
                           </div>
                         )}
+                      </div>
+                    )
+                  },
+                },
+                {
+                  id: 'twitch',
+                  helperName: 'Twitch',
+                  accessorKey: 'Twitch',
+                  cell: ({ row }: { row: { original: IPlayer } }) => {
+                    return (
+                      <div className="text-md flex gap-4 shrink-0">
+                        <div className="flex flex-col shrink-0">
+                          <b className="shrink-0">
+                            {row.original?.twitch}
+                          </b>
+                        </div>
                       </div>
                     )
                   },
