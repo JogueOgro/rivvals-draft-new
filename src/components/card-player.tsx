@@ -9,10 +9,10 @@ import React, { useEffect, useState } from 'react'
 
 import { IPlayer } from '@/domain/player.domain'
 import { sleep } from '@/lib/utils'
-import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
 
 import { motion } from 'framer-motion'
+import { handleChatPlayerSelectUseCase } from '@/useCases/draft/handle-chat-player-select.useCase'
 
 type IProps = {
   cardNumber: number
@@ -25,7 +25,7 @@ const audioFlip =
   typeof window !== 'undefined' ? new Audio('/static/flip.mp3') : null
 
 const PlayerCard = ({ player, onSelect, cardNumber }: IProps) => {
-  const { chat, config, activeTeamIndex } = useStore(draftStore)
+  const { chat, } = useStore(draftStore)
   const [isOpen, setIsOpen] = useState(false)
 
   if (!player) {
@@ -38,44 +38,13 @@ const PlayerCard = ({ player, onSelect, cardNumber }: IProps) => {
   const handlePlayerSelect = async () => {
     if (audioFlip) audioFlip.play()
     setIsOpen(true)
-    await sleep(2000)
+    await sleep(3000)
     onSelect(player)
     setIsOpen(false)
   }
 
   useEffect(() => {
-    if (chat && chat.length) {
-      const filteredChat = [...chat].filter((x) => x.isAction && !x.isExecuted)
-      for (const row of filteredChat) {
-
-        const userName = row?.user?.username?.toString().toLowerCase().trim()
-        const [action, value] = row.message!.split(' ')
-
-        const isCommandChose = action === '!escolher'
-        const isCardToSelect = Number(value) === cardNumber
-
-
-        const listMembersTwitchName = config?.teamList?.length
-          ? config?.teamList[activeTeamIndex]?.players
-            ?.filter((obj) => !!obj.twitch && obj.twitch !== '')
-            ?.map((obj) => obj.twitch)
-          : []
-
-        const isMemberOfTeam = listMembersTwitchName?.some((twitchUserName) => {
-          const playerName = twitchUserName!.toString().toLowerCase().trim()
-          return playerName.includes(userName || '')
-        })
-
-        if (isCommandChose && isCardToSelect && isMemberOfTeam) {
-          const newChatList = [...chat]?.map((obj) =>
-            obj.id !== row.id ? obj : { ...row, isExecuted: true },
-          )
-          draftEvent({ chat: newChatList })
-          handlePlayerSelect()
-          break
-        }
-      }
-    }
+    handleChatPlayerSelectUseCase.execute({ cardNumber, handlePlayerSelect })
   }, [chat])
 
   useEffect(() => {
@@ -88,7 +57,7 @@ const PlayerCard = ({ player, onSelect, cardNumber }: IProps) => {
         handlePlayerSelect()
       }}
       key={player.id}
-      className={`w-full ${isOpen ? 'h-[500px] -mt-6' : 'h-[425px] mt-8'} flex flex-col items-center justify-center cursor-pointer animate-slide-in`}
+      className={`w-full ${isOpen ? 'h-[500px] -mt-6' : 'h-[425px] mt-2'} flex flex-col items-center justify-center cursor-pointer animate-slide-in`}
       style={{
         perspective: '1000px',
         backgroundImage: !isOpen
@@ -113,7 +82,7 @@ const PlayerCard = ({ player, onSelect, cardNumber }: IProps) => {
             top: 0,
             left: 0,
             backfaceVisibility: 'hidden',
-            backgroundImage: cardBackground,
+            backgroundImage: isOpen ? cardBackground : '',
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',

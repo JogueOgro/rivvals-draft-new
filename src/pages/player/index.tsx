@@ -5,13 +5,14 @@ import React, { useEffect } from 'react'
 import DataTable from '@/components/data-table'
 import HeadMetatags from '@/components/head-metatags'
 import PlayerActions from '@/components/player-actions'
+import PopoverTag from '@/components/popover-tag'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { IPlayer } from '@/domain/player.domain'
 import { playerEvent } from '@/store/player/player-events'
 import playerStore from '@/store/player/player-store'
+import { removeTagUseCase } from '@/useCases/draft/remove-tag.useCase'
 
-import PopoverTag from './popover-tag'
 import TableFilters from './table-filters'
 
 const PlayerPage = () => {
@@ -32,32 +33,6 @@ const PlayerPage = () => {
   const startIndex = (currentPage - 1) * pageSize
   const endIndex = startIndex + pageSize
   const currentPageData = filteredData?.slice(startIndex, endIndex)
-
-  const onRemoveTag = ({
-    playerId,
-    tag,
-  }: {
-    playerId?: string
-    tag: string
-  }) => {
-    const { players: oldList } = playerStore.getState()
-
-    const newList = [...oldList].map((player) => {
-      if (player.id !== playerId) return player
-
-      const tagOldList = player.tags?.trim()
-      const playerOldTagList = tagOldList?.split(',')
-      const filteredList = playerOldTagList?.filter((x) => x !== tag)
-      const playerNewTagList = filteredList?.join(',')
-
-      return {
-        ...player,
-        tags: `${playerNewTagList}`,
-      }
-    })
-
-    playerEvent({ players: newList })
-  }
 
   useEffect(() => {
     const totalPages = Math.ceil(totalRegistries / pageSize)
@@ -167,7 +142,7 @@ const PlayerPage = () => {
                           <X
                             className="w-3 h-3 cursor-pointer"
                             onClick={() =>
-                              onRemoveTag({
+                              removeTagUseCase.execute({
                                 tag,
                                 playerId: row.original.id,
                               })

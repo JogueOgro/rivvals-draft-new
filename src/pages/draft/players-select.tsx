@@ -24,50 +24,33 @@ import { IPlayer } from '@/domain/player.domain'
 import { sleep } from '@/lib/utils'
 import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
-import playerStore from '@/store/player/player-store'
+import { getSelectPlayersUseCase } from '@/useCases/draft/get-select-players.useCase'
+import { selectPlayerUseCase } from '@/useCases/draft/select-player.useCase'
+import { addSeconds } from 'date-fns'
 
-function getRandomTopPlayers(playerList: IPlayer[]) {
-  if (playerList.length <= 5) return playerList
-  else {
-    const tops = playerList.length
-    const selectedPlayers: IPlayer[] = []
-    const selectedIndexes: number[] = []
-
-    while (selectedPlayers.length < 5) {
-      const randomIndex = Math.floor(Math.random() * tops)
-      if (!selectedIndexes.includes(randomIndex)) {
-        selectedIndexes.push(randomIndex)
-        selectedPlayers.push(playerList[randomIndex])
-      }
-    }
-
-    return selectedPlayers
-  }
-}
 
 const audioStart = typeof window !== 'undefined' ? new Audio('/static/start.mp3') : null;
 const audioClock = typeof window !== 'undefined' ? new Audio('/static/clock.mp3') : null;
 
 const PlayersSelect = () => {
-  const { config, activeTeamIndex, isOpenModalStart, isActiveTimer, activeTab } =
-    useStore(draftStore)
-  const { players } = useStore(playerStore)
+  const {
+    config,
+    activeTeamIndex,
+    isOpenModalStart,
+    isActiveTimer,
+    activeTab,
+  } = useStore(draftStore)
+
   const [listOfAllocatedPlayers, setListOfAllocatedPlayers] = useState<
     string[]
   >([])
 
-  const dataSource = config?.teamList ? [...config.teamList] : []
-
-  const filteredActiveTeam = [...dataSource]?.find((_, index) => {
+  const filteredActiveTeam = config?.teamList?.find((_, index) => {
     return index === activeTeamIndex
   })
 
-  const filteredAvailablePlayers = [...players]?.filter((player) => {
-    return !listOfAllocatedPlayers.includes(player.id!)
-  })
-
   const listRandomPlayers = useMemo(
-    () => getRandomTopPlayers(filteredAvailablePlayers),
+    () => getSelectPlayersUseCase.execute({ listOfAllocatedPlayers }),
     [listOfAllocatedPlayers],
   )
 
@@ -77,43 +60,28 @@ const PlayersSelect = () => {
       audioClock.currentTime = 0
     }
 
-
-    draftEvent({
-      isOpenModalStart: true,
-      isActiveTimer: false,
-      timerSeconds: 60,
-    })
-
-    const newTeamList = [...dataSource]
-
-    newTeamList[activeTeamIndex].players.push({
-      ...selectedPlayer,
-      isCaptain: false,
-    })
-
-    if (activeTeamIndex + 1 >= newTeamList.length) {
-      draftEvent({
-        config: { ...config, teamList: newTeamList },
-        activeTeamIndex: 0,
-      })
-
-      return
-    }
-
-    draftEvent({
-      config: { ...config, teamList: newTeamList },
-      activeTeamIndex: activeTeamIndex + 1,
-    })
+    selectPlayerUseCase.execute(selectedPlayer)
   }
 
   function onRemovePlayer(playerId: string) {
-    const newTeamList = [...dataSource]
+    const newTeamList = !config?.teamList ? [] : [...config.teamList]
     const teamIndex = newTeamList[activeTeamIndex]
     teamIndex.players = teamIndex?.players?.filter((row) => row.id !== playerId)
     draftEvent({ config: { ...config, teamList: newTeamList } })
   }
 
   useEffect(() => {
+    ; (async () => {
+      if (isOpenModalStart) {
+        await sleep(4500)
+        draftEvent({
+          isOpenModalStart: false,
+          isActiveTimer: true,
+          timerSeconds: 60,
+        })
+      }
+    })()
+
     if (!audioStart) return
 
     if (isOpenModalStart) {
@@ -144,19 +112,7 @@ const PlayersSelect = () => {
   }, [isActiveTimer])
 
   useEffect(() => {
-    ; (async () => {
-      if (isOpenModalStart) {
-        await sleep(4500)
-        draftEvent({
-          isOpenModalStart: false,
-          isActiveTimer: true,
-          timerSeconds: 60,
-        })
-      }
-    })()
-  }, [isOpenModalStart])
-
-  useEffect(() => {
+    draftEvent({ isActiveTimer: false, timerSeconds: 60 })
     const newList = [] as string[]
     const list = config?.teamList ? [...config.teamList] : []
     for (const team of list) {
@@ -185,7 +141,7 @@ const PlayersSelect = () => {
             {listRandomPlayers?.map((player, index) => (
               <div
                 key={index}
-                className="flex items-center justify-center flex-col animate-slide-in"
+                className="flex items-center justify-center flex-col animate-slide-in gap-4"
               >
                 <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 animate-slide-in`">
                   <h1 className="text-center font-bold text-3xl text-white">
@@ -207,7 +163,11 @@ const PlayersSelect = () => {
               variant="ghost"
               disabled={activeTeamIndex < 1}
               onClick={() =>
-                draftEvent({ activeTeamIndex: activeTeamIndex - 1 })
+                draftEvent({
+                  activeTeamIndex: activeTeamIndex - 1,
+                  activeTeamStartTurnDate: new Date(),
+                  activeTeamEndTurnDate: addSeconds(new Date(), 60)
+                })
               }
             >
               <ArrowLeftCircle />
@@ -219,7 +179,11 @@ const PlayersSelect = () => {
               variant="ghost"
               disabled={activeTeamIndex + 1 >= Number(config!.teamsQuantity)}
               onClick={() =>
-                draftEvent({ activeTeamIndex: activeTeamIndex + 1 })
+                draftEvent({
+                  activeTeamIndex: activeTeamIndex + 1,
+                  activeTeamStartTurnDate: new Date(),
+                  activeTeamEndTurnDate: addSeconds(new Date(), 60)
+                })
               }
             >
               <ArrowRightCircle />
@@ -231,7 +195,7 @@ const PlayersSelect = () => {
               data={filteredActiveTeam?.players || []}
               isHideFilterButton
               isLoading={false}
-              pageSize={5}
+              pageSize={50}
               totalPages={1}
               currentPage={1}
               columns={[

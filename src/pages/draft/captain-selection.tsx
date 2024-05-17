@@ -28,6 +28,8 @@ import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
 import playerStore from '@/store/player/player-store'
 
+import { addSeconds } from 'date-fns'
+
 const CaptainSelection = () => {
   const { config } = useStore(draftStore)
   const { players } = useStore(playerStore)
@@ -76,6 +78,8 @@ const CaptainSelection = () => {
       isOpenModalStart: true,
       timerSeconds: 60,
       activeTeamIndex: 0,
+      activeTeamStartTurnDate: new Date(),
+      activeTeamEndTurnDate: addSeconds(new Date(), 60),
       config: { ...config, teamList: sortTeamByScore || [] },
     })
   }

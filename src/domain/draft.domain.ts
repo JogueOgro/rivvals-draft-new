@@ -22,6 +22,7 @@ export interface IDraftChat {
   message?: string
   isAction?: boolean
   isExecuted?: boolean
+  created: Date
 }
 
 export interface IDraftPage {
@@ -30,6 +31,8 @@ export interface IDraftPage {
   isActiveTimer: boolean
   isOpenModalStart: boolean
   timerSeconds: number
-  activeTeamIndex: number
   chat: IDraftChat[]
+  activeTeamIndex: number
+  activeTeamStartTurnDate: Date
+  activeTeamEndTurnDate: Date
 }

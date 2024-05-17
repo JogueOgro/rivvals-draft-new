@@ -1,11 +1,15 @@
 import { IDraftPage } from '@/domain/draft.domain'
 
+import { addSeconds } from 'date-fns'
+
 export const draftInitialState: IDraftPage = {
+  chat: [],
   config: null,
   activeTab: '1',
-  isActiveTimer: false,
   timerSeconds: 60,
-  activeTeamIndex: 0,
+  isActiveTimer: false,
   isOpenModalStart: false,
-  chat: [],
+  activeTeamIndex: 0,
+  activeTeamStartTurnDate: new Date(),
+  activeTeamEndTurnDate: addSeconds(new Date(), 60),
 }

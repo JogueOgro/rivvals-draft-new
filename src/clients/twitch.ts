@@ -57,8 +57,11 @@ tmiClient.on('chat', function (channel, user, message, self) {
     message,
     isAction: validCommands.test(action),
     isExecuted: false,
+    created: new Date(),
   })
-  draftEvent({ chat: newChatList.reverse() })
+  draftEvent({
+    chat: newChatList.sort((a, b) => b.created.getTime() - a.created.getTime()),
+  })
 })
 
 export default tmiClient
