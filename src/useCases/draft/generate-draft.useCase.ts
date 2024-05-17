@@ -23,6 +23,9 @@ const execute = (config: Partial<IDraft>, callBack?: () => void) => {
     return
   }
 
+  console.log(dataSource?.length)
+  console.log(total)
+
   if (dataSource?.length < total) {
     playerEvent({ openModalUpload: false })
     window.alert('Não há quantidade de jogadores suficiente.')
