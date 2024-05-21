@@ -4,7 +4,6 @@ import { useStore } from 'effector-react'
 import dynamic from 'next/dynamic'
 import { useEffect } from 'react'
 
-import tmiClient from '@/clients/twitch'
 import HeadMetatags from '@/components/head-metatags'
 import TimerClock from '@/components/timer'
 import TwitchChat from '@/components/twitch.chat'
@@ -16,6 +15,7 @@ import playerStore from '@/store/player/player-store'
 
 import CaptainSelection from './captain-selection'
 import DraftResult from './draft-result'
+import SortGroups from './groups'
 
 const PlayersSelect = dynamic(() => import('./players-select'), { ssr: false })
 
@@ -29,10 +29,6 @@ export default function DraftPage() {
 
   useEffect(() => {
     draftEvent({ timerSeconds: 60, isActiveTimer: false, activeTab: '1' })
-    tmiClient.connect()
-    return () => {
-      tmiClient.disconnect()
-    }
   }, [])
 
   return (
@@ -47,7 +43,8 @@ export default function DraftPage() {
               {
                 '1': `Seleção de Capitães`,
                 '2': `Time ${activeTeamIndex + 1} - Capitão: `,
-                '3': `Resumo do draft`,
+                '3': `Resumo do Draft`,
+                '4': `Sorteio de Grupos`,
               }[activeTab]
             }
           </span>
@@ -74,6 +71,9 @@ export default function DraftPage() {
               <TabsTrigger value="3" className="px-8" disabled={!config}>
                 RESUMO DO DRAFT
               </TabsTrigger>
+              <TabsTrigger value="4" className="px-8" disabled={!config}>
+                SORTEIO DE GRUPOS
+              </TabsTrigger>
             </TabsList>
             {!players?.length ? (
               <Card className="p-12 text-center w-full">
@@ -89,6 +89,9 @@ export default function DraftPage() {
                 </TabsContent>
                 <TabsContent value="3">
                   <DraftResult />
+                </TabsContent>
+                <TabsContent value="4">
+                  <SortGroups />
                 </TabsContent>
               </>
             )}

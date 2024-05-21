@@ -18,17 +18,17 @@ const execute = async (players: IPlayer[], cb: () => void) => {
           createdAt: new Date().toISOString(),
         }
       })
-      .filter((row) => !!row?.name && !!row?.email)
+      .filter((row) => !!row?.name)
 
-    const sortPlayerByName = formattedData?.sort((playerA, playerB) => {
-      const nameA = playerA?.name || ''
-      const nameB = playerB?.name || ''
-      return nameA.localeCompare(nameB)
+    const sortPlayerByScore = formattedData?.sort((playerA, playerB) => {
+      const scoreA = playerA?.stars || '0'
+      const scoreB = playerB?.stars || '0'
+      return Number(scoreB) - Number(scoreA)
     })
 
     playerEvent({
       isLoading: false,
-      players: sortPlayerByName,
+      players: sortPlayerByScore,
       totalRegistries,
       totalPages,
     })

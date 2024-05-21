@@ -45,9 +45,7 @@ const execute = async ({ file, callBack }: IParams) => {
       medal: parseInt(row[4] as string) || 0,
       wins: parseInt(row[5] as string) || 0,
       tags: row[6] || '',
-      score: row[7] || '',
-      email: row[8] || '',
-      photo: row[9] || '',
+      photo: row[7] || '',
     }))
 
     await sleep(500)

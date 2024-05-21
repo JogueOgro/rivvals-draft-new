@@ -6,7 +6,6 @@ export interface ITeam {
   id?: string
   photo?: string
   players: IPlayer[]
-  avgScore: number
 }
 
 export interface IDraft extends BaseDomain {

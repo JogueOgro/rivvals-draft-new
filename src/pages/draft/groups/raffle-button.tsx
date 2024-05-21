@@ -53,12 +53,14 @@ export default function RaffleButton() {
         <Shuffle className="w-5 h-5 ml-2" />
       </Button>
       <AlertDialog open={tenasOpen} onOpenChange={setTenasOpen}>
-        <AlertDialogContent className="bg-transparent ring-0 border-none shadow-none">
+        <AlertDialogContent className="bg-transparent ring-0 border-none shadow-none flex flex-col items-center justify-center">
+          <h1 className="text-[60px] text-white font-bold shrink-0 text-nowrap text-center">
+            Tenas enfiou a mão no saco!!!
+          </h1>
           <Image
             src={!isLoading ? tenas : tenasBag}
-            width={0}
-            height={0}
-            layout="responsive"
+            width={350}
+            height={350}
             alt="Tenas"
           />
         </AlertDialogContent>

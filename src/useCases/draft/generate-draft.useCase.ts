@@ -1,15 +1,8 @@
 import { IDraft, ITeam } from '@/domain/draft.domain'
-import { IPlayer } from '@/domain/player.domain'
 import { draftEvent } from '@/store/draft/draft-events'
 import { draftInitialState } from '@/store/draft/draft-state'
 import { playerEvent } from '@/store/player/player-events'
 import playerStore from '@/store/player/player-store'
-
-const calculatePlayerScore = (player: IPlayer) => {
-  return (
-    Number(player.score) + Number(player.wins) * 5 + Number(player.power) * 20
-  )
-}
 
 const execute = (config: Partial<IDraft>, callBack?: () => void) => {
   draftEvent(draftInitialState)
@@ -39,13 +32,12 @@ const execute = (config: Partial<IDraft>, callBack?: () => void) => {
     const team: ITeam = {
       id: String(i + 1),
       players: [],
-      avgScore: 0,
     }
 
     let bestPlayerIndex = 0
     let bestPlayerScore = 0
     for (let j = 0; j < dataSource.length; j++) {
-      const playerScore = calculatePlayerScore(dataSource[j])
+      const playerScore = Number(dataSource[j].stars)
       if (playerScore > bestPlayerScore) {
         bestPlayerIndex = j
         bestPlayerScore = playerScore

@@ -3,7 +3,6 @@ import { BaseDomain } from './base.domain'
 export interface IPlayer extends BaseDomain {
   photo?: string
   twitch?: string
-  email?: string
   name?: string
   nick?: string
   medal?: number
@@ -11,7 +10,6 @@ export interface IPlayer extends BaseDomain {
   wins?: number
   tags?: string
   stars?: number
-  score?: number
   isCaptain?: boolean
 }
 

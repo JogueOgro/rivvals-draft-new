@@ -18,7 +18,7 @@ const DraftResult = () => {
 
   const calculatedListWithTeamAvgScore = config?.teamList?.map((team) => {
     const teamScore = [...team.players].reduce((total, player) => {
-      return total + (player ? Number(player.score) : 0)
+      return total + (player ? Number(player.stars) : 0)
     }, 0)
     const avgScore = Math.round(teamScore / team?.players.length)
     return { ...team, avgScore }
@@ -49,7 +49,7 @@ const DraftResult = () => {
                 className={`flex flex-col bg-muted-foreground/10 border items-center justify-center px-4 mr-2 rounded-lg ${isShowScore ? '' : 'blur-sm'}`}
               >
                 <span className="font-bold text-2xl">{team?.avgScore}</span>
-                <small>score</small>
+                <small>média</small>
               </div>
             </div>
             <div className="w-full mt-1">
