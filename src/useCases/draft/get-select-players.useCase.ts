@@ -96,6 +96,14 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
     cardList = sortCardsByAvarageTeamScore.slice(0, 5)
   }
 
+  console.log({
+    activeTeam: activeTeamIndex + 1,
+    activeTeamAvgScore,
+    rivvalsAvgScore,
+    rivvalsTotalPlayers,
+    sugestions: cardList,
+  })
+
   return cardList
 }
 

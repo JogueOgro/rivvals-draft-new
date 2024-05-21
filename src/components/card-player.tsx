@@ -95,7 +95,7 @@ const PlayerCard = ({ player, onSelect, cardNumber }: IProps) => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: isOpen ? 1 : 0 }}
               >
-                {new Array(Number(player.stars)).fill('').map((_, i) => (
+                {new Array(Number(player.stars) > 3 ? Number(player.stars) : 3).fill('').map((_, i) => (
                   <StarFilledIcon key={i} className="text-yellow-200 w-8 h-8" />
                 ))}
               </motion.div>
