@@ -7,7 +7,6 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 metadata = Base.metadata
 
-
 class Achievment(Base):
     __tablename__ = 'achievment'
 
@@ -44,6 +43,22 @@ class Player(Base):
     tags = Column(String(45))
     email = Column(String(45))
     photo = Column(LONGTEXT)
+
+    def to_dict(self):
+        return {
+            'idplayer': self.idplayer,
+            'name': self.name,
+            'nick': self.nick,
+            'twitch': self.twitch,
+            'availability': self.availability,
+            'coins': self.coins,
+            'stars': self.stars,
+            'medal': self.medal,
+            'wins': self.wins,
+            'tags': self.tags,
+            'email': self.email,
+            'photo': self.photo
+        }
 
 
 class Program(Base):
