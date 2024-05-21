@@ -20,7 +20,7 @@ const DraftResult = () => {
     const teamScore = [...team.players].reduce((total, player) => {
       return total + (player ? Number(player.stars) : 0)
     }, 0)
-    const avgScore = Math.round(teamScore / team?.players.length)
+    const avgScore = Math.abs(teamScore / team?.players.length)
     return { ...team, avgScore }
   })
 
@@ -48,7 +48,9 @@ const DraftResult = () => {
               <div
                 className={`flex flex-col bg-muted-foreground/10 border items-center justify-center px-4 mr-2 rounded-lg ${isShowScore ? '' : 'blur-sm'}`}
               >
-                <span className="font-bold text-2xl">{team?.avgScore}</span>
+                <span className="font-bold text-2xl">
+                  {team?.avgScore.toFixed(1)}
+                </span>
                 <small>média</small>
               </div>
             </div>

@@ -65,7 +65,7 @@ const CaptainSelection = () => {
       const totalScore = [...team.players].reduce((total, player) => {
         return total + (player ? Number(player.stars) : 0)
       }, 0)
-      const avgScore = Math.round(totalScore / team?.players.length)
+      const avgScore = Math.abs(totalScore / team?.players.length)
 
       return { ...team, avgScore }
     })
