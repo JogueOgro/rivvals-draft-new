@@ -226,10 +226,11 @@ const CaptainSelection = () => {
                     header: 'Estrelas',
                     cell: ({ row }: { row: { original: IPlayer } }) => {
                       const stars = row.original?.stars
+                      const fixedStars = Number(stars) > 3 ? stars : 3
                       return (
                         <div className="flex items-center gap-2">
                           <Star className="text-yellow-400 w-6 h-6" />
-                          <b className="text-lg">{stars}</b>
+                          <b className="text-lg">{fixedStars}</b>
                         </div>
                       )
                     },
@@ -313,7 +314,9 @@ const CaptainSelection = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Star className="text-yellow-400 w-6 h-6" />
-                  <b className="text-lg">{row.stars}</b>
+                  <b className="text-lg">
+                    {Number(row.stars) > 3 ? row.stars : 3}
+                  </b>
                 </div>
               </Card>
             ))}
