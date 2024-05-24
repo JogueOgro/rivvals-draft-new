@@ -1,4 +1,5 @@
 import { IDraft, ITeam } from '@/domain/draft.domain'
+import { IPlayer } from '@/domain/player.domain'
 import { draftEvent } from '@/store/draft/draft-events'
 import { draftInitialState } from '@/store/draft/draft-state'
 import { playerEvent } from '@/store/player/player-events'
@@ -25,7 +26,7 @@ const execute = (config: Partial<IDraft>, callBack?: () => void) => {
     return
   }
 
-  const teamList = []
+  const teamList = [] as ITeam[]
   const totalTeams = Number(config!.teamsQuantity)
 
   for (let i = 0; i < totalTeams; i++) {
@@ -34,18 +35,18 @@ const execute = (config: Partial<IDraft>, callBack?: () => void) => {
       players: [],
     }
 
-    let bestPlayerIndex = 0
-    let bestPlayerScore = 0
-    for (let j = 0; j < dataSource.length; j++) {
-      const playerScore = Number(dataSource[j].stars)
-      if (playerScore > bestPlayerScore) {
-        bestPlayerIndex = j
-        bestPlayerScore = playerScore
-      }
-    }
-    const bestPlayer = dataSource.splice(bestPlayerIndex, 1)[0]
-    bestPlayer.isCaptain = true
-    team.players.push(bestPlayer)
+    const availablePlayers = players?.filter(
+      (x) => !teamList.some((y) => y.players.some((z) => z.id === x.id)),
+    )
+
+    const sortByTwitch: IPlayer[] = availablePlayers?.sort((a, b) => {
+      const twitchA = a?.twitch?.toString() || ''
+      const twitchB = b?.twitch?.toString() || ''
+      return twitchB.localeCompare(twitchA)
+    })
+
+    team.players.push({ ...sortByTwitch[0], isCaptain: true })
+
     teamList.push(team)
   }
 
