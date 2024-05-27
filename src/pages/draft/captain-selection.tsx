@@ -1,12 +1,5 @@
 import { useStore } from 'effector-react'
-import {
-  ArrowRight,
-  ArrowRightLeft,
-  Check,
-  Medal,
-  Star,
-  Trophy,
-} from 'lucide-react'
+import { ArrowRight, ArrowRightLeft, Check, Medal, Trophy } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 import DataTable from '@/components/data-table'
@@ -220,22 +213,6 @@ const CaptainSelection = () => {
                     },
                   },
                   {
-                    id: 'stars',
-                    helperName: 'Stars',
-                    accessorKey: 'Stars',
-                    header: 'Estrelas',
-                    cell: ({ row }: { row: { original: IPlayer } }) => {
-                      const stars = row.original?.stars
-                      const fixedStars = Number(stars) > 3 ? stars : 3
-                      return (
-                        <div className="flex items-center gap-2">
-                          <Star className="text-yellow-400 w-6 h-6" />
-                          <b className="text-lg">{fixedStars}</b>
-                        </div>
-                      )
-                    },
-                  },
-                  {
                     id: 'actions',
                     accessorFn: () => '',
                     header: () => '',
@@ -311,12 +288,6 @@ const CaptainSelection = () => {
                   </Avatar>
                   <span className="font-bold">{row.name}</span>
                   <span className="font-light">{row.nick}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Star className="text-yellow-400 w-6 h-6" />
-                  <b className="text-lg">
-                    {Number(row.stars) > 3 ? row.stars : 3}
-                  </b>
                 </div>
               </Card>
             ))}

@@ -1,5 +1,12 @@
 import { useStore } from 'effector-react'
-import { ArrowLeft, Eye, EyeOff, Medal, Star, Trophy } from 'lucide-react'
+import {
+  ArrowLeft,
+  DownloadCloud,
+  Eye,
+  EyeOff,
+  Medal,
+  Trophy,
+} from 'lucide-react'
 import React, { useState } from 'react'
 
 import DataTable from '@/components/data-table'
@@ -9,6 +16,7 @@ import { Card } from '@/components/ui/card'
 import { IPlayer } from '@/domain/player.domain'
 import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
+import { downloadDraftUseCase } from '@/useCases/draft/download-draft.useCase'
 
 const DraftResult = () => {
   const [isShowScore, setIsShowScore] = useState(false)
@@ -131,22 +139,6 @@ const DraftResult = () => {
                       )
                     },
                   },
-                  {
-                    id: 'stars',
-                    helperName: 'Stars',
-                    accessorKey: 'Stars',
-                    header: 'Estrelas',
-                    cell: ({ row }: { row: { original: IPlayer } }) => {
-                      const stars = row.original?.stars
-                      const fixedStars = Number(stars) > 3 ? stars : 3
-                      return (
-                        <div className="flex items-center gap-2">
-                          <Star className="text-yellow-400 w-6 h-6" />
-                          <b className="text-lg">{fixedStars}</b>
-                        </div>
-                      )
-                    },
-                  },
                 ]}
               />
             </div>
@@ -161,6 +153,13 @@ const DraftResult = () => {
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Voltar
+          </Button>
+          <Button
+            className="min-w-[300px] py-2 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
+            onClick={downloadDraftUseCase.execute}
+          >
+            <DownloadCloud className="w-5 h-5 mr-2" />
+            Exportar
           </Button>
         </div>
       </Card>

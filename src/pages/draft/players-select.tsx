@@ -7,7 +7,6 @@ import {
   ArrowRight,
   ArrowRightCircle,
   Medal,
-  Star,
   Trash2,
   Trophy,
 } from 'lucide-react'
@@ -278,22 +277,6 @@ const PlayersSelect = () => {
                       <div className="flex items-center gap-2">
                         <Trophy className="text-yellow-400 w-6 h-6" />
                         <b className="text-lg">{wins}</b>
-                      </div>
-                    )
-                  },
-                },
-                {
-                  id: 'stars',
-                  helperName: 'Stars',
-                  accessorKey: 'Stars',
-                  header: 'Estrelas',
-                  cell: ({ row }: { row: { original: IPlayer } }) => {
-                    const stars = row.original?.stars
-                    const fixedStars = Number(stars) > 3 ? stars : 3
-                    return (
-                      <div className="flex items-center gap-2">
-                        <Star className="text-yellow-400 w-6 h-6" />
-                        <b className="text-lg">{fixedStars}</b>
                       </div>
                     )
                   },
