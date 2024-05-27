@@ -62,7 +62,9 @@ export default function DraftPage() {
           <Tabs
             defaultValue="1"
             value={activeTab}
-            onValueChange={(v) => draftEvent({ activeTab: v })}
+            onValueChange={(v) =>
+              draftEvent({ activeTab: v, isActiveTimer: false })
+            }
             className="w-full"
           >
             <TabsList>
