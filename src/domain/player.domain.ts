@@ -11,6 +11,10 @@ export interface IPlayer extends BaseDomain {
   tags?: string
   stars?: number
   isCaptain?: boolean
+  schedule?: {
+    day: string
+    hour: number
+  }[]
 }
 
 export interface IPlayerPage {

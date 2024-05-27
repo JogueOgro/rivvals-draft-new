@@ -4,7 +4,7 @@ import playerStore from '@/store/player/player-store'
 
 import { uuid } from 'uuidv4'
 
-const execute = async (players: IPlayer[], cb: () => void) => {
+const execute = async (players: IPlayer[]) => {
   try {
     const { pageSize } = playerStore.getState()
     playerEvent({ isLoading: true })
@@ -32,7 +32,6 @@ const execute = async (players: IPlayer[], cb: () => void) => {
       totalRegistries,
       totalPages,
     })
-    cb()
   } catch (e) {
     window.alert(
       'Ocorreu um erro, verifique o arquivo de importação e tente novamente.',

@@ -51,7 +51,7 @@ const execute = async ({ file, callBack }: IParams) => {
     await sleep(500)
     playerEvent({ progress: 60 })
 
-    await importPlayersUseCase.execute(players, console.log)
+    await importPlayersUseCase.execute(players)
     await sleep(500)
     playerEvent({ progress: 80 })
 
