@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import groupsStore from '@/store/groups/groups-store'
-import { groupsSettingsUseCase } from '@/useCases/groups/groups-settings.useCase'
+import { groupsSettingsUseCase } from '@/useCases/draft/groups-settings.useCase'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
