@@ -6,6 +6,7 @@ import * as XLSX from 'xlsx'
 interface IExportModel extends IPlayer {
   team: string
   teamAvg: number
+  playerSchedule: string
 }
 
 const execute = () => {
@@ -26,11 +27,16 @@ const execute = () => {
       delete player.photo
       delete player.createdAt
 
-      formattedData.push({
+      const obj = {
         ...player,
+        playerSchedule: JSON.stringify(player.schedule),
         team: team.id!.toString(),
         teamAvg: activeTeamAvgScore,
-      })
+      }
+
+      delete obj.schedule
+
+      formattedData.push(obj)
     }
   }
 
