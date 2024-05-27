@@ -2,7 +2,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 /* eslint-disable react-hooks/rules-of-hooks */
-import { StarFilledIcon } from '@radix-ui/react-icons'
 import { useStore } from 'effector-react'
 import { Medal, Trophy } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
@@ -89,17 +88,6 @@ const PlayerCard = ({ player, onSelect, cardNumber }: IProps) => {
           }}
         >
           <div className="flex flex-1 h-full flex-col text-white">
-            <div className="flex items-center mt-2 ml-2">
-              <motion.div
-                className="text-yellow-300 w-8 h-8"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: isOpen ? 1 : 0 }}
-              >
-                {new Array(Number(player.stars)).fill('').map((_, i) => (
-                  <StarFilledIcon key={i} className="text-yellow-200 w-8 h-8" />
-                ))}
-              </motion.div>
-            </div>
             {isOpen && (
               <div className="flex flex-1 h-full items-end">
                 <div className="w-full flex items-center flex-col">

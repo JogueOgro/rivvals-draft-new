@@ -1,5 +1,12 @@
 import { useStore } from 'effector-react'
-import { ArrowLeft, Eye, EyeOff, Medal, Star, Trophy } from 'lucide-react'
+import {
+  ArrowLeft,
+  DownloadCloud,
+  Eye,
+  EyeOff,
+  Medal,
+  Trophy,
+} from 'lucide-react'
 import React, { useState } from 'react'
 
 import DataTable from '@/components/data-table'
@@ -9,6 +16,7 @@ import { Card } from '@/components/ui/card'
 import { IPlayer } from '@/domain/player.domain'
 import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
+import { downloadDraftUseCase } from '@/useCases/draft/download-draft.useCase'
 
 const DraftResult = () => {
   const [isShowScore, setIsShowScore] = useState(false)
@@ -18,9 +26,9 @@ const DraftResult = () => {
 
   const calculatedListWithTeamAvgScore = config?.teamList?.map((team) => {
     const teamScore = [...team.players].reduce((total, player) => {
-      return total + (player ? Number(player.score) : 0)
+      return total + (player ? Number(player.stars) : 0)
     }, 0)
-    const avgScore = Math.round(teamScore / team?.players.length)
+    const avgScore = Math.abs(teamScore / team?.players.length)
     return { ...team, avgScore }
   })
 
@@ -48,8 +56,10 @@ const DraftResult = () => {
               <div
                 className={`flex flex-col bg-muted-foreground/10 border items-center justify-center px-4 mr-2 rounded-lg ${isShowScore ? '' : 'blur-sm'}`}
               >
-                <span className="font-bold text-2xl">{team?.avgScore}</span>
-                <small>score</small>
+                <span className="font-bold text-2xl">
+                  {team?.avgScore.toFixed(1)}
+                </span>
+                <small>média</small>
               </div>
             </div>
             <div className="w-full mt-1">
@@ -129,21 +139,6 @@ const DraftResult = () => {
                       )
                     },
                   },
-                  {
-                    id: 'stars',
-                    helperName: 'Stars',
-                    accessorKey: 'Stars',
-                    header: 'Estrelas',
-                    cell: ({ row }: { row: { original: IPlayer } }) => {
-                      const stars = row.original?.stars
-                      return (
-                        <div className="flex items-center gap-2">
-                          <Star className="text-yellow-400 w-6 h-6" />
-                          <b className="text-lg">{stars}</b>
-                        </div>
-                      )
-                    },
-                  },
                 ]}
               />
             </div>
@@ -158,6 +153,13 @@ const DraftResult = () => {
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Voltar
+          </Button>
+          <Button
+            className="min-w-[300px] py-2 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
+            onClick={downloadDraftUseCase.execute}
+          >
+            <DownloadCloud className="w-5 h-5 mr-2" />
+            Exportar
           </Button>
         </div>
       </Card>

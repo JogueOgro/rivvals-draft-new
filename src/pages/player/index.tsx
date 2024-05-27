@@ -156,14 +156,6 @@ const PlayerPage = () => {
                 },
               },
               {
-                id: 'score',
-                helperName: 'Score',
-                accessorKey: 'Score',
-                cell: ({ row }: { row: { original: IPlayer } }) => {
-                  return <b>{row.original?.score}</b>
-                },
-              },
-              {
                 id: 'medal',
                 accessorKey: 'medal',
                 helperName: 'Medalhas',

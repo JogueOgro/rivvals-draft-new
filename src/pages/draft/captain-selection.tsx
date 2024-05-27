@@ -1,12 +1,5 @@
 import { useStore } from 'effector-react'
-import {
-  ArrowRight,
-  ArrowRightLeft,
-  Check,
-  Medal,
-  Star,
-  Trophy,
-} from 'lucide-react'
+import { ArrowRight, ArrowRightLeft, Check, Medal, Trophy } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 import DataTable from '@/components/data-table'
@@ -50,7 +43,7 @@ const CaptainSelection = () => {
   )
 
   const sortPlayersByScore = filteredSearchPlayers?.sort((playerA, playerB) => {
-    return Number(playerB?.score) - Number(playerA?.score)
+    return Number(playerB?.stars) - Number(playerA?.stars)
   })
 
   function resetStates() {
@@ -62,9 +55,10 @@ const CaptainSelection = () => {
   function handleNext() {
     const list = config?.teamList ? [...config.teamList] : []
     const calculateTeamAvgScore = list.map((team) => {
-      const avgScore = [...team.players].reduce((total, player) => {
-        return total + (player ? Number(player.score) : 0)
+      const totalScore = [...team.players].reduce((total, player) => {
+        return total + (player ? Number(player.stars) : 0)
       }, 0)
+      const avgScore = Math.abs(totalScore / team?.players.length)
 
       return { ...team, avgScore }
     })
@@ -219,21 +213,6 @@ const CaptainSelection = () => {
                     },
                   },
                   {
-                    id: 'stars',
-                    helperName: 'Stars',
-                    accessorKey: 'Stars',
-                    header: 'Estrelas',
-                    cell: ({ row }: { row: { original: IPlayer } }) => {
-                      const stars = row.original?.stars
-                      return (
-                        <div className="flex items-center gap-2">
-                          <Star className="text-yellow-400 w-6 h-6" />
-                          <b className="text-lg">{stars}</b>
-                        </div>
-                      )
-                    },
-                  },
-                  {
                     id: 'actions',
                     accessorFn: () => '',
                     header: () => '',
@@ -310,7 +289,6 @@ const CaptainSelection = () => {
                   <span className="font-bold">{row.name}</span>
                   <span className="font-light">{row.nick}</span>
                 </div>
-                <span className="font-bold text-lg">{row.score}</span>
               </Card>
             ))}
           </div>

@@ -4,9 +4,9 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 import logoImg from '@/assets/logo.png'
+import modules from '@/modules'
 
 import MenuItem from './menu-item'
-import sidebarMenuItems from './menus-sidebar'
 
 type IProps = {
   showSidebar: boolean
@@ -41,7 +41,7 @@ const Sidebar = ({ showSidebar }: IProps) => {
           />
         </div>
         <div className="border border-b-0 border-x-0 border-slate-300 mt-8">
-          {sidebarMenuItems.map((item, index) => (
+          {modules.map((item, index) => (
             <div
               key={item.menu}
               className="border border-t-0 border-x-0 border-slate-300"

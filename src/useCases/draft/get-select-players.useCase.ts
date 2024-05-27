@@ -17,7 +17,11 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
     ?.filter((x) => !!x.tags)
     ?.map((x) => x.tags)
 
-  const sortByScore = [...players]?.sort(sortPlayersByScore)
+  const sortByScore = [...players]?.sort(
+    (playerA: IPlayer, playerB: IPlayer) => {
+      return Number(playerB.stars) - Number(playerA.stars)
+    },
+  )
 
   const filteredAvailablePlayers = sortByScore?.filter((player) => {
     return !listOfAllocatedPlayers.includes(player.id!)
@@ -25,26 +29,82 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
 
   if (filteredAvailablePlayers.length <= 5) return filteredAvailablePlayers
 
-  const selectedPlayers: IPlayer[] = []
+  const filteredListWithoutPlayersMatchTags: IPlayer[] = []
 
   for (const row of filteredAvailablePlayers) {
-    if (!selectedPlayers.includes(row)) {
+    if (!filteredListWithoutPlayersMatchTags.includes(row)) {
       const strigPlayerTags = row.tags?.trim()
       const listPlayerTags = strigPlayerTags?.split(',') || []
       const isMatchTags = activeTeamTags.some((x) =>
         listPlayerTags.includes(x!),
       )
       if (!isMatchTags) {
-        selectedPlayers.push(row)
+        filteredListWithoutPlayersMatchTags.push(row)
       }
     }
   }
 
-  return selectedPlayers.slice(0, 5)
-}
+  const rivvalsTotalPlayers = players.length
+  const rivvalsTotalScore = [...players].reduce((total, player) => {
+    return total + (player ? Number(player.stars) : 0)
+  }, 0)
+  const rivvalsAvgScore = Math.abs(rivvalsTotalScore / rivvalsTotalPlayers)
 
-const sortPlayersByScore = (playerA: IPlayer, playerB: IPlayer) => {
-  return Number(playerB.score) - Number(playerA.score)
+  const activeTeamTotalPlayers = activeTeam?.players.length
+  const activeTeamTotalScore = [...activeTeam.players].reduce(
+    (total, player) => {
+      return total + (player ? Number(player.stars) : 0)
+    },
+    0,
+  )
+  const activeTeamAvgScore = Math.abs(
+    activeTeamTotalScore / activeTeamTotalPlayers,
+  )
+
+  const avgLimit = 0.5
+  const avarageLimitStart = rivvalsAvgScore - avgLimit
+  const avarageLimitEnd = rivvalsAvgScore + avgLimit
+
+  const aboveAvarage = activeTeamAvgScore > avarageLimitEnd
+  const inAvarage =
+    activeTeamAvgScore >= avarageLimitStart &&
+    activeTeamAvgScore <= avarageLimitEnd
+
+  const sortCardsByAvarageTeamScore = filteredListWithoutPlayersMatchTags.sort(
+    (playerA: IPlayer, playerB: IPlayer) => {
+      if (aboveAvarage) {
+        return Number(playerA.stars) - Number(playerB.stars)
+      }
+      return Number(playerB.stars) - Number(playerA.stars)
+    },
+  )
+
+  let cardList: IPlayer[] = []
+
+  if (inAvarage) {
+    const selectedIndexes: number[] = []
+    while (cardList.length < 5) {
+      const randomIndex = Math.floor(
+        Math.random() * sortCardsByAvarageTeamScore.length,
+      )
+      if (!selectedIndexes.includes(randomIndex)) {
+        selectedIndexes.push(randomIndex)
+        cardList.push(sortCardsByAvarageTeamScore[randomIndex])
+      }
+    }
+  } else {
+    cardList = sortCardsByAvarageTeamScore.slice(0, 5)
+  }
+
+  console.log({
+    activeTeam: activeTeamIndex + 1,
+    activeTeamAvgScore,
+    rivvalsAvgScore,
+    rivvalsTotalPlayers,
+    sugestions: cardList,
+  })
+
+  return cardList
 }
 
 export const getSelectPlayersUseCase = { execute }

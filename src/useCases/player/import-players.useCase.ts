@@ -4,7 +4,7 @@ import playerStore from '@/store/player/player-store'
 
 import { uuid } from 'uuidv4'
 
-const execute = async (players: IPlayer[], cb: () => void) => {
+const execute = async (players: IPlayer[]) => {
   try {
     const { pageSize } = playerStore.getState()
     playerEvent({ isLoading: true })
@@ -18,21 +18,20 @@ const execute = async (players: IPlayer[], cb: () => void) => {
           createdAt: new Date().toISOString(),
         }
       })
-      .filter((row) => !!row?.name && !!row?.email)
+      .filter((row) => !!row?.name)
 
-    const sortPlayerByName = formattedData?.sort((playerA, playerB) => {
-      const nameA = playerA?.name || ''
-      const nameB = playerB?.name || ''
-      return nameA.localeCompare(nameB)
+    const sortPlayerByScore = formattedData?.sort((playerA, playerB) => {
+      const scoreA = playerA?.stars || '0'
+      const scoreB = playerB?.stars || '0'
+      return Number(scoreB) - Number(scoreA)
     })
 
     playerEvent({
       isLoading: false,
-      players: sortPlayerByName,
+      players: sortPlayerByScore,
       totalRegistries,
       totalPages,
     })
-    cb()
   } catch (e) {
     window.alert(
       'Ocorreu um erro, verifique o arquivo de importação e tente novamente.',
