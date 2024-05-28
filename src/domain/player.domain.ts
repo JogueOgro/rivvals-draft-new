@@ -15,7 +15,8 @@ export interface IPlayer extends BaseDomain {
     day: string
     hour: number
   }[]
-  team: number
+  team?: number
+  isExcluded?: boolean
 }
 
 export interface IPlayerPage {

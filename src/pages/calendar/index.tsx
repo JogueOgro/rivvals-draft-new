@@ -14,7 +14,7 @@ export default function CalendarPage() {
   const { players } = useStore(playerStore)
   return (
     <>
-      <HeadMetatags title="Draft" />
+      <HeadMetatags title="Calendário" />
       <div>
         <div className="w-full flex items-center gap-3">
           <span className="text-3xl font-bold">Gerenciar horários</span>

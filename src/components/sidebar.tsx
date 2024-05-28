@@ -5,6 +5,10 @@ import { useState } from 'react'
 
 import logoImg from '@/assets/logo.png'
 import modules from '@/modules'
+import { draftEvent } from '@/store/draft/draft-events'
+import { draftInitialState } from '@/store/draft/draft-state'
+import { playerEvent } from '@/store/player/player-events'
+import { playerInitialState } from '@/store/player/player-state'
 
 import MenuItem from './menu-item'
 
@@ -19,6 +23,8 @@ const Sidebar = ({ showSidebar }: IProps) => {
 
   const handleExit = () => {
     localStorage.clear()
+    playerEvent(playerInitialState)
+    draftEvent(draftInitialState)
     route.push('/')
   }
 

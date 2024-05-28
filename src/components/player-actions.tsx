@@ -83,7 +83,7 @@ const PlayerActions = ({
             <span className="pl-2">Atualizar foto</span>
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => deletePlayersUseCase.execute([row.original.id!])}
+            onClick={() => deletePlayersUseCase.execute(row.original.id!)}
           >
             <Trash className="w-5 text-red-600" />
             <span className="pl-2">Excluir player</span>

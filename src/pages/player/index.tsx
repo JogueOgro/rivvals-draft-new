@@ -108,6 +108,13 @@ const PlayerPage = () => {
                 },
               },
               {
+                id: 'team',
+                helperName: 'Time',
+                accessorKey: 'Time',
+                cell: ({ row }: { row: { original: IPlayer } }) =>
+                  row.original.team || '-',
+              },
+              {
                 id: 'twitch',
                 helperName: 'Twitch',
                 accessorKey: 'Twitch',
@@ -115,7 +122,7 @@ const PlayerPage = () => {
                   return (
                     <div>
                       <span className="font-semibold flex flex-col">
-                        {row.original?.twitch}
+                        {row.original?.twitch || '-'}
                       </span>
                     </div>
                   )
@@ -197,6 +204,19 @@ const PlayerPage = () => {
                       <Star className="text-yellow-400 w-6 h-6" />
                       <b className="text-lg">{stars}</b>
                     </div>
+                  )
+                },
+              },
+              {
+                id: 'status',
+                accessorFn: () => '',
+                header: () => '',
+                helperName: 'Status',
+                cell: ({ row }: { row: { original: IPlayer } }) => {
+                  return row.original.isExcluded ? (
+                    <Badge className="bg-red-600">Desistente</Badge>
+                  ) : (
+                    <Badge className="bg-green-600">Ativo</Badge>
                   )
                 },
               },
