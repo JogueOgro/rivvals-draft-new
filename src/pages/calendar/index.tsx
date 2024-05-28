@@ -26,7 +26,7 @@ export default function CalendarPage() {
                 SELEÇÃO DE CAPITÃES
               </TabsTrigger>
               <TabsTrigger value="2" className="px-8">
-                SELEÇÃO DE JOGADORES
+                CHECAR HORÁRIOS
               </TabsTrigger>
             </TabsList>
             {!players?.length ? (
