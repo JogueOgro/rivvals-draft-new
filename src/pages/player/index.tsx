@@ -1,5 +1,5 @@
 import { useStore } from 'effector-react'
-import { Medal, Star, Trophy, X } from 'lucide-react'
+import { Medal, Trophy, X } from 'lucide-react'
 import React, { useEffect } from 'react'
 
 import DataTable from '@/components/data-table'
