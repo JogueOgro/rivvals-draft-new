@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable prettier/prettier */
 import { useStore } from 'effector-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -20,6 +22,8 @@ const weekDays = [
   'QUARTA-FEIRA',
   'QUINTA-FEIRA',
   'SEXTA-FEIRA',
+  'SABADO',
+  'DOMINGO',
 ]
 
 export default function PlayerSchedules() {
@@ -30,8 +34,8 @@ export default function PlayerSchedules() {
       <Table className="mt-2">
         <TableHeader>
           <TableRow className="bg-muted">
-            <TableHead>Player</TableHead>
             <TableHead>Time</TableHead>
+            <TableHead>Player</TableHead>
             {weekDays.map((day) => (
               <TableHead key={day}>{day}</TableHead>
             ))}
@@ -42,6 +46,7 @@ export default function PlayerSchedules() {
             ?.sort((a, b) => Number(a.team) - Number(b.team))
             ?.map((player) => (
               <TableRow key={player.id}>
+                <TableCell className="font-medium">{player.team}</TableCell>
                 <TableCell className="font-medium">
                   <div className="flex items-center gap-3">
                     <Avatar>
@@ -60,46 +65,42 @@ export default function PlayerSchedules() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="font-medium">{player.team}</TableCell>
                 {weekDays.map((day) => (
-                  <TableCell key={day}>
+                  <TableCell key={'day' + day}>
                     <div className="flex items-center gap-1">
-                      {[19, 20, 21, 22, 23].map((hour) => {
-                        const playerScheduleList =
-                          players?.find((x) => x.id === player.id)?.schedule ||
-                          []
+                      {[19, 20, 21, 22].map((hour) => {
 
-                        const isChecked = playerScheduleList?.some(
+                        const isChecked = [...players]?.find((x) => x.id === player.id)?.schedule?.some(
                           (x) => x.hour === hour && x.day === day,
                         )
 
                         return (
                           <div
                             className="flex items-center space-x-0.5"
-                            key={hour}
+                            key={'hour' + hour}
+                          // onClick={() => console.log(day, hour, player)}
                           >
                             <Checkbox
                               id={`${player.id}_${day}_${hour}`}
                               checked={isChecked}
                               onCheckedChange={(v) => {
                                 if (v) {
-                                  playerScheduleList.push({ day, hour })
+                                  const newList = [...players]?.find((x) => x.id === player.id)?.schedule || []
+                                  newList.push({ day, hour })
                                   playerEvent({
-                                    players: players?.map((x) =>
+                                    players: [...players]?.map((x) =>
                                       x.id === player.id
-                                        ? { ...x, schedule: playerScheduleList }
+                                        ? { ...x, schedule: newList }
                                         : x,
                                     ),
                                   })
                                 } else {
-                                  const newScheduleList =
-                                    playerScheduleList?.filter(
-                                      (x) => x.day !== day && x.hour !== hour,
-                                    )
+                                  const newList = [...players]?.find((x) => x.id === player.id)?.schedule || []
+                                  const filteredList = [...newList].filter(x => !(x.day === day) && !(x.hour === hour))
                                   playerEvent({
-                                    players: players?.map((x) =>
+                                    players: [...players]?.map((x) =>
                                       x.id === player.id
-                                        ? { ...x, schedule: newScheduleList }
+                                        ? { ...x, schedule: filteredList }
                                         : x,
                                     ),
                                   })
