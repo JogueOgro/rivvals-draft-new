@@ -70,14 +70,19 @@ export default function PlayerSchedules() {
                     <div className="flex items-center gap-1">
                       {[19, 20, 21, 22].map((hour) => {
 
+                        const key = `${day}_${hour}`
+
                         const isChecked = [...players]?.find((x) => x.id === player.id)?.schedule?.some(
-                          (x) => x.hour === hour && x.day === day,
+                          (x) => {
+                            const checkKey = `${x.day}_${x.hour}`
+                            return checkKey === key
+                          },
                         )
 
                         return (
                           <div
                             className="flex items-center space-x-0.5"
-                            key={'hour' + hour}
+                            key={'hour' + key}
                           // onClick={() => console.log(day, hour, player)}
                           >
                             <Checkbox
@@ -96,7 +101,10 @@ export default function PlayerSchedules() {
                                   })
                                 } else {
                                   const newList = [...players]?.find((x) => x.id === player.id)?.schedule || []
-                                  const filteredList = [...newList].filter(x => !(x.day === day) && !(x.hour === hour))
+                                  const filteredList = [...newList].filter(x => {
+                                    const checkKey = `${x.day}_${x.hour}`
+                                    return key !== checkKey
+                                  })
                                   playerEvent({
                                     players: [...players]?.map((x) =>
                                       x.id === player.id
