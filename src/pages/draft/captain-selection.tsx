@@ -1,6 +1,6 @@
 import { useStore } from 'effector-react'
 import { ArrowRight, ArrowRightLeft, Check, Medal, Trophy } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import DataTable from '@/components/data-table'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -30,15 +30,8 @@ const CaptainSelection = () => {
   const [openDrawer, setOpenDrawer] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [selectedTeam, setSelectedTeam] = useState<ITeam | null>(null)
-  const [listOfAllocatedPlayers, setListOfAllocatedPlayers] = useState<
-    string[]
-  >([])
 
-  const filteredAvailablePlayers = [...players]?.filter(
-    (player) => !listOfAllocatedPlayers.includes(player.id!),
-  )
-
-  const filteredSearchPlayers = filteredAvailablePlayers?.filter((player) =>
+  const filteredSearchPlayers = [...players]?.filter((player) =>
     player?.name?.toLowerCase().match(searchText.toLowerCase()),
   )
 
@@ -107,18 +100,6 @@ const CaptainSelection = () => {
       ) as never,
     })
   }
-
-  useEffect(() => {
-    const newList: string[] = []
-    const list = config?.teamList ? [...config.teamList] : []
-    for (const team of list) {
-      for (const player of team.players) {
-        newList.push(player.id!)
-      }
-    }
-
-    setListOfAllocatedPlayers(newList)
-  }, [config])
 
   return (
     <>
@@ -268,7 +249,7 @@ const CaptainSelection = () => {
             />
             <small className="shrink-0 mr-8">
               Total:
-              <b className="pl-1">{filteredAvailablePlayers?.length}</b>
+              <b className="pl-1">{players?.length}</b>
             </small>
           </div>
 

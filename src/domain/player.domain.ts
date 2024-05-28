@@ -15,6 +15,7 @@ export interface IPlayer extends BaseDomain {
     day: string
     hour: number
   }[]
+  team: number
 }
 
 export interface IPlayerPage {

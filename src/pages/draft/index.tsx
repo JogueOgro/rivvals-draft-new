@@ -15,7 +15,6 @@ import playerStore from '@/store/player/player-store'
 
 import CaptainSelection from './captain-selection'
 import DraftResult from './draft-result'
-import GameSchedule from './game-schedule'
 import SortGroups from './groups'
 
 const PlayersSelect = dynamic(() => import('./players-select'), { ssr: false })
@@ -82,9 +81,6 @@ export default function DraftPage() {
               <TabsTrigger value="4" className="px-8" disabled={!config}>
                 SORTEIO DE GRUPOS
               </TabsTrigger>
-              <TabsTrigger value="5" className="px-8" disabled={!config}>
-                AGENDA DOS TIMES
-              </TabsTrigger>
             </TabsList>
             {!players?.length ? (
               <Card className="p-12 text-center w-full">
@@ -103,9 +99,6 @@ export default function DraftPage() {
                 </TabsContent>
                 <TabsContent value="4">
                   <SortGroups />
-                </TabsContent>
-                <TabsContent value="5">
-                  <GameSchedule />
                 </TabsContent>
               </>
             )}

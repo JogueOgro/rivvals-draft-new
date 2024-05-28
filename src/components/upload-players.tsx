@@ -17,11 +17,12 @@ import {
 } from '@/components/ui/dialog'
 import { Progress } from '@/components/ui/progress'
 import { getFileSize, stringTruncate } from '@/lib/utils'
+import { IType } from '@/pages/home'
 import { playerEvent } from '@/store/player/player-events'
 import playerStore from '@/store/player/player-store'
 import { readUploadFileUseCase } from '@/useCases/draft/read-upload-file.useCase'
 
-export default function ModalUploadPlayers() {
+export default function ModalUploadPlayers({ type }: { type: IType }) {
   const { progress, isLoading, openModalUpload } = useStore(playerStore)
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -32,9 +33,21 @@ export default function ModalUploadPlayers() {
 
   const route = useRouter()
 
+  const onSubmit = (file?: File | null) => {
+    if (!file) return
+    readUploadFileUseCase.execute({
+      file,
+      type,
+      callBack: () => {
+        route.push(type === 'import' ? '/draft' : '/player')
+      },
+    })
+  }
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     setSelectedFile(file || null)
+    if (file) onSubmit(file)
   }
 
   const handleClickUpload = () => {
@@ -151,12 +164,7 @@ export default function ModalUploadPlayers() {
               <Button
                 disabled={!selectedFile || isLoading}
                 className="w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 "
-                onClick={() => {
-                  readUploadFileUseCase.execute({
-                    file: selectedFile!,
-                    callBack: () => route.push('/player'),
-                  })
-                }}
+                onClick={() => onSubmit(selectedFile)}
               >
                 {isLoading ? (
                   <>

@@ -21,17 +21,15 @@ const DownloadButton = ({ text }: IProps) => {
 
   return (
     <Button
-      variant="ghost"
+      variant="outline"
       onClick={(e) => {
         e.preventDefault()
         handleDownload()
       }}
-      className="bg-white ring-[0.2px] ring-black rounded-sm py-2 cursor-pointer"
+      className="w-full flex items-center justify-center space-x-2"
     >
-      <div className="w-full flex items-center justify-center space-x-2">
-        <Download className="w-4" />
-        <span className="text-md">{text}</span>
-      </div>
+      <Download className="w-4" />
+      <span className="text-md">{text}</span>
     </Button>
   )
 }

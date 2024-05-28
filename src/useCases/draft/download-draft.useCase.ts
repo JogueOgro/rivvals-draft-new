@@ -1,49 +1,34 @@
-import { IPlayer } from '@/domain/player.domain'
-import draftStore from '@/store/draft/draft-store'
+import playerStore from '@/store/player/player-store'
 
+import { addHours } from 'date-fns'
 import * as XLSX from 'xlsx'
 
-interface IExportModel extends IPlayer {
-  team: string
-  teamAvg: number
-  playerSchedule: string
-}
-
 const execute = () => {
-  const { config } = draftStore.getState()
+  const timezone = new Date().getTimezoneOffset() / 60
+  const dt = addHours(new Date(), -timezone)
+  const now = dt.toISOString().substring(0, 19)
+  const fileName = 'resultado_do_draft_' + now + '.xlsx'
 
-  const dataSource = config?.teamList || []
-  const formattedData = [] as IExportModel[]
-
-  for (const team of dataSource) {
-    const activeTeamTotalScore = [...team.players].reduce((total, player) => {
-      return total + (player ? Number(player.stars) : 0)
-    }, 0)
-    const activeTeamAvgScore = Math.abs(
-      activeTeamTotalScore / team.players.length,
-    )
-    for (const player of team?.players) {
-      delete player.id
-      delete player.photo
-      delete player.createdAt
-
-      const obj = {
-        ...player,
-        playerSchedule: JSON.stringify(player.schedule),
-        team: team.id!.toString(),
-        teamAvg: activeTeamAvgScore,
-      }
-
-      delete obj.schedule
-
-      formattedData.push(obj)
+  const { players } = playerStore.getState()
+  const formattedData = players?.map((x) => {
+    const player = {
+      name: x.name,
+      nick: x.nick,
+      twitch: x.twitch,
+      stars: x.stars,
+      medal: x.medal,
+      wins: x.wins,
+      tags: x.tags,
+      photo: x.photo,
+      team: x.team,
+      schedule: JSON.stringify(x.schedule),
     }
-  }
-
+    return player
+  })
   const wb = XLSX.utils.book_new()
   const ws = XLSX.utils.json_to_sheet(formattedData)
-  XLSX.utils.book_append_sheet(wb, ws, 'importacao')
-  XLSX.writeFile(wb, 'draft.xlsx')
+  XLSX.utils.book_append_sheet(wb, ws, 'draft')
+  XLSX.writeFile(wb, fileName)
 }
 
 export const downloadDraftUseCase = { execute }
