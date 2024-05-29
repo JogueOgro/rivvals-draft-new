@@ -8,6 +8,7 @@ import json
 from resource_fields import player_post
 
 player_ns = Namespace("player")
+coin_ns = Namespace("coin")
 
 engine = create_engine("mysql://root:root@localhost:3306/mydb")
 Session = sessionmaker(bind=engine)
@@ -17,7 +18,6 @@ class player_resources(Resource):
     def get(self):
         session = Session()
         players = session.query(Player).all()
-        import pdb; pdb.set_trace()
         players_dicts = [player.to_dict() for player in players]
         return players_dicts
 
@@ -51,5 +51,10 @@ class player_resources(Resource):
             return jsonify({'error': str(e)}), 500
         finally:
             session.close()
+
+@coin_ns.route("/")
+class coin_resources(Resource):
+    def get(self):
+        return "coins"
 
                 
