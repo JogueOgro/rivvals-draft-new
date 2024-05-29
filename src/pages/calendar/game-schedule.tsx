@@ -29,6 +29,8 @@ const weekDays = [
   'QUARTA-FEIRA',
   'QUINTA-FEIRA',
   'SEXTA-FEIRA',
+  'SABADO',
+  'DOMINGO',
 ]
 
 export default function GameSchedule() {
@@ -96,7 +98,7 @@ export default function GameSchedule() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {[19, 20, 21, 22, 23].map((hour) => (
+            {[19, 20, 21, 22].map((hour) => (
               <TableRow key={hour}>
                 <TableCell className="border">
                   <span className="text-xl">{hour}:00 horas</span>

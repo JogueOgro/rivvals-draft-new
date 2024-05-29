@@ -1,13 +1,6 @@
 import { useStore } from 'effector-react'
-import {
-  ArrowLeft,
-  DownloadCloud,
-  Eye,
-  EyeOff,
-  Medal,
-  Trophy,
-} from 'lucide-react'
-import React, { useState } from 'react'
+import { ArrowLeft, DownloadCloud, Medal, Trophy } from 'lucide-react'
+import React from 'react'
 
 import DataTable from '@/components/data-table'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -19,7 +12,6 @@ import draftStore from '@/store/draft/draft-store'
 import { downloadDraftUseCase } from '@/useCases/draft/download-draft.useCase'
 
 const DraftResult = () => {
-  const [isShowScore, setIsShowScore] = useState(false)
   const { config, activeTeamIndex } = useStore(draftStore)
 
   const dataSource = config?.teamList ? [...config.teamList] : []
@@ -40,28 +32,9 @@ const DraftResult = () => {
 
   return (
     <div className="relative">
-      <Button
-        size="icon"
-        variant="ghost"
-        className="absolute right-0 -top-10 text-zinc-500"
-        onClick={() => setIsShowScore((x) => !x)}
-      >
-        {isShowScore ? <EyeOff /> : <Eye />}
-      </Button>
       <Card className="w-full pb-12">
-        {calculatedListWithTeamAvgScore?.map((team, i) => (
+        {calculatedListWithTeamAvgScore?.map((team) => (
           <div key={team.id} className="w-full mb-14">
-            <div className="flex items-center justify-between rounded-sm h-16 w-full bg-muted/95">
-              <span className="font-bold text-2xl pl-4">Time {i + 1}</span>
-              <div
-                className={`flex flex-col bg-muted-foreground/10 border items-center justify-center px-4 mr-2 rounded-lg ${isShowScore ? '' : 'blur-sm'}`}
-              >
-                <span className="font-bold text-2xl">
-                  {team?.avgScore.toFixed(1)}
-                </span>
-                <small>média</small>
-              </div>
-            </div>
             <div className="w-full mt-1">
               <DataTable
                 isHidePagination
@@ -93,7 +66,7 @@ const DraftResult = () => {
                     accessorKey: 'Nome',
                     cell: ({ row }: { row: { original: IPlayer } }) => {
                       return (
-                        <div className="w-[350px] text-md flex gap-4 shrink-0">
+                        <div className="w-[400px] text-md flex gap-4 shrink-0">
                           <div className="flex flex-col shrink-0">
                             <b className="shrink-0">
                               {row.original?.name?.toUpperCase()}
@@ -159,7 +132,7 @@ const DraftResult = () => {
             onClick={downloadDraftUseCase.execute}
           >
             <DownloadCloud className="w-5 h-5 mr-2" />
-            Exportar
+            Salvar
           </Button>
         </div>
       </Card>

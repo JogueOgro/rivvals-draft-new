@@ -15,7 +15,11 @@ const execute = async (players: IPlayer[]) => {
         return {
           ...row,
           id: uuid(),
+          team: !row.team ? undefined : row.team,
           createdAt: new Date().toISOString(),
+          schedule: row?.schedule
+            ? JSON.parse(row.schedule as unknown as string)
+            : [],
         }
       })
       .filter((row) => !!row?.name)

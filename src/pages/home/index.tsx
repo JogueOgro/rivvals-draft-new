@@ -3,7 +3,7 @@
 import { useStore } from 'effector-react'
 import { Upload } from 'lucide-react'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import logoImg from '@/assets/logo.png'
@@ -18,6 +18,8 @@ import {
   FormLabel,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import ModalUploadPlayers from '@/components/upload-players'
 import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
@@ -25,6 +27,8 @@ import { playerEvent } from '@/store/player/player-events'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+
+export type IType = undefined | 'new' | 'import'
 
 const defaultValues = {
   name: undefined,
@@ -39,6 +43,7 @@ const formSchema = z.object({
 })
 
 export default function LoginPage() {
+  const [type, setType] = useState<IType>(undefined)
   const { config } = useStore(draftStore)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,20 +52,17 @@ export default function LoginPage() {
     resolver: zodResolver(formSchema),
   })
 
+  useEffect(() => {
+    form.reset(defaultValues)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <>
       <HeadMetatags title="Draft" />
       <div className="bg-muted overflow-hidden flex w-full min-h-screen items-center justify-center">
         <div className="flex flex-col py-4 rounded-3xl animate-in fade-in shadow-lg transition-all duration-1000 bg-white border-md min-w-[30vw] pb-12 backdrop-filter backdrop-blur-lg bg-opacity-30">
-          <Image
-            src={logoImg}
-            alt="ilustratoin"
-            width={180}
-            className="self-center"
-          />
-          <h1 className="text-4xl font-bold text-zinc-900 text-center">
-            Rivvals Draft
-          </h1>
+          <Image src={logoImg} alt="img" width={180} className="self-center" />
           <div className="flex w-full items-center justify-center mt-4">
             <Form {...form}>
               <form
@@ -137,26 +139,56 @@ export default function LoginPage() {
                   />
                 </div>
 
-                <div className="w-full flex-col flex justify-center mt-8 gap-4">
-                  <DownloadButton text="Baixar template de importação" />
-                  <Button
-                    type="submit"
-                    disabled={!form.formState.isValid}
-                    className="w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
-                  >
-                    <div className="flex items-center gap-2">
-                      <Upload className="w-5 h-5" />
-                      <span>Upload arquivo de importação&nbsp;&nbsp;</span>
-                    </div>
-                  </Button>
-                </div>
+                <RadioGroup
+                  className="mt-4"
+                  value={type}
+                  onValueChange={(x) => setType(x as IType)}
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="new" id="new" />
+                    <Label htmlFor="new">Começar um draft novo</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="import" id="import" />
+                    <Label htmlFor="import">Importar um draft existente</Label>
+                  </div>
+                </RadioGroup>
+
+                {type === 'new' && (
+                  <div className="w-full flex-col flex justify-center mt-8 gap-4">
+                    <Button
+                      type="submit"
+                      className="w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Upload className="w-5 h-5" />
+                        <span>Upload arquivo de importação&nbsp;&nbsp;</span>
+                      </div>
+                    </Button>
+                    <DownloadButton text="Baixar template de importação" />
+                  </div>
+                )}
+
+                {type === 'import' && (
+                  <div className="w-full flex-col flex justify-center mt-8 gap-4">
+                    <Button
+                      type="submit"
+                      className="w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
+                    >
+                      <div className="flex items-center gap-2">
+                        <Upload className="w-5 h-5" />
+                        <span>Upload do draft</span>
+                      </div>
+                    </Button>
+                  </div>
+                )}
               </form>
             </Form>
           </div>
         </div>
       </div>
 
-      <ModalUploadPlayers />
+      <ModalUploadPlayers type={type} />
     </>
   )
 }

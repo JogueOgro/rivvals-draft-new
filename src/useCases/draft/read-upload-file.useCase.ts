@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IPlayer } from '@/domain/player.domain'
 import { sleep } from '@/lib/utils'
+import { IType } from '@/pages/home'
 import draftStore from '@/store/draft/draft-store'
 import { playerEvent } from '@/store/player/player-events'
 
@@ -10,10 +11,11 @@ import * as XLSX from 'xlsx'
 
 type IParams = {
   file: File | null
+  type: IType
   callBack: () => void
 }
 
-const execute = async ({ file, callBack }: IParams) => {
+const execute = async ({ file, callBack, type }: IParams) => {
   if (!file) return
 
   const { config } = draftStore.getState()
@@ -46,6 +48,8 @@ const execute = async ({ file, callBack }: IParams) => {
       wins: parseInt(row[5] as string) || 0,
       tags: row[6] || '',
       photo: row[7] || '',
+      team: row[8] || '',
+      schedule: row[9] || '',
     }))
 
     await sleep(500)
@@ -65,6 +69,7 @@ const execute = async ({ file, callBack }: IParams) => {
         playerEvent({ progress: 100 })
         callBack()
       },
+      type,
     )
 
     await sleep(500)
