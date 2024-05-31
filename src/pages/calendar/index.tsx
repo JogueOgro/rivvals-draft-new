@@ -23,7 +23,7 @@ export default function CalendarPage() {
           <Tabs defaultValue="1" className="w-full">
             <TabsList>
               <TabsTrigger value="1" className="px-8">
-                SELEÇÃO DE CAPITÃES
+                HORÁRIOS INDISPONÍVEIS (MARCAR)
               </TabsTrigger>
               <TabsTrigger value="2" className="px-8">
                 CHECAR HORÁRIOS

@@ -1,5 +1,11 @@
 import { useStore } from 'effector-react'
-import { ArrowLeft, DownloadCloud, Medal, Trophy } from 'lucide-react'
+import {
+  ArrowLeft,
+  DatabaseIcon,
+  DownloadCloud,
+  Medal,
+  Trophy,
+} from 'lucide-react'
 import React from 'react'
 
 import DataTable from '@/components/data-table'
@@ -10,6 +16,7 @@ import { IPlayer } from '@/domain/player.domain'
 import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
 import { downloadDraftUseCase } from '@/useCases/draft/download-draft.useCase'
+import { persistDraftUseCase } from '@/useCases/draft/persist-draft.useCase'
 
 const DraftResult = () => {
   const { config, activeTeamIndex } = useStore(draftStore)
@@ -133,6 +140,13 @@ const DraftResult = () => {
           >
             <DownloadCloud className="w-5 h-5 mr-2" />
             Salvar
+          </Button>
+          <Button
+            className="min-w-[300px] py-2 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
+            onClick={persistDraftUseCase.execute}
+          >
+            <DatabaseIcon className="w-5 h-5 mr-2" />
+            Inserir no Banco
           </Button>
         </div>
       </Card>
