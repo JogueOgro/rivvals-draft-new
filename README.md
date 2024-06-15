@@ -31,7 +31,7 @@ Execute:
 - yarn install
 - yarn dev
 
-Abra o navegador e acesse o endereço http://loca lhost:3000
+Abra o navegador e acesse o endereço http://localhost:3000
 
 # Extensões úteis
 ESLint
