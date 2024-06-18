@@ -15,6 +15,7 @@ const execute = () => {
       name: x.name,
       nick: x.nick,
       twitch: x.twitch,
+      email: x.email,
       stars: x.stars,
       medal: x.medal,
       wins: x.wins,

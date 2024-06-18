@@ -3,8 +3,13 @@
 import { useStore } from 'effector-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
+import {
+  DownloadCloud,
+  DatabaseIcon
+} from 'lucide-react'
 import {
   Table,
   TableBody,
@@ -16,6 +21,9 @@ import {
 import { playerEvent } from '@/store/player/player-events'
 import playerStore from '@/store/player/player-store'
 import draftStore from '@/store/draft/draft-store'
+import { downloadDraftUseCase } from '@/useCases/draft/download-draft.useCase'
+import { persistDraftUseCase } from '@/useCases/draft/persist-draft.useCase'
+
 
 const weekDays = [
   'SEGUNDA-FEIRA',
@@ -32,9 +40,23 @@ export default function PlayerSchedules() {
   const { players } = useStore(playerStore)
 
   return (
+    
     <Card className="p-8 -mt-2">
+      <Button
+            className="min-w-[300px] py-2 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
+            onClick={downloadDraftUseCase.execute}
+          ><DownloadCloud className="w-5 h-5 mr-2" />
+          Salvar</Button><span>&nbsp;&nbsp;</span>
+      <Button
+            className="min-w-[300px] py-2 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
+            onClick={persistDraftUseCase.execute}
+          >
+            <DatabaseIcon className="w-5 h-5 mr-2" />
+            Inserir no Banco
+      </Button>
       {Array.from({ length: Number(config?.teamsQuantity || 0) })?.map((_, idx) => (
         <Table className="my-4 border-t " key={idx}>
+          
           <TableHeader>
             <TableRow className="bg-muted">
               <TableHead>Player</TableHead>
