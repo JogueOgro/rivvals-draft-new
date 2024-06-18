@@ -37,7 +37,8 @@ const defaultValues = {
 }
 
 const formSchema = z.object({
-  name: z.string().min(1, '* Campo obrigatório'),
+  game: z.string().min(1, '* Campo obrigatório'),
+  edition: z.string().min(1, '* Campo obrigatório'),
   teamPlayersQuantity: z.string().min(1, '* Campo obrigatório'),
   teamsQuantity: z.string().min(1, '* Campo obrigatório'),
 })
@@ -70,34 +71,57 @@ export default function LoginPage() {
                 onSubmit={form.handleSubmit((formData) => {
                   draftEvent({
                     config: {
-                      name: formData!.name,
+                      game: formData!.game,
                       teamPlayersQuantity:
                         formData!.teamPlayersQuantity.toString(),
                       teamsQuantity: formData!.teamsQuantity.toString(),
+                      edition: Number(formData!.edition),
+                      draftDate: new Date(),
                     },
                   })
                   playerEvent({ openModalUpload: true })
                 })}
               >
-                <FormField
-                  control={form.control}
-                  name="name"
-                  defaultValue={config?.name}
-                  render={({ field: { value, onChange, name } }) => (
-                    <FormItem className="min-w-80">
-                      <FormLabel>Nome do Jogo *</FormLabel>
-                      <FormControl>
-                        <Input
-                          key={name}
-                          name={name}
-                          placeholder="Digite aqui"
-                          value={value?.toString()}
-                          onChange={(event) => onChange(event.target.value)}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+                <div className="w-full flex items-center justify-between gap-4">
+                  <FormField
+                    control={form.control}
+                    name="game"
+                    defaultValue={config?.game}
+                    render={({ field: { value, onChange, name } }) => (
+                      <FormItem className="w-full">
+                        <FormLabel>Nome do Jogo *</FormLabel>
+                        <FormControl>
+                          <Input
+                            key={name}
+                            name={name}
+                            placeholder="Digite aqui"
+                            value={value?.toString()}
+                            onChange={(event) => onChange(event.target.value)}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="edition"
+                    defaultValue="15"
+                    render={({ field: { value, onChange, name } }) => (
+                      <FormItem className="w-full">
+                        <FormLabel>Edicao*</FormLabel>
+                        <FormControl>
+                          <Input
+                            key={name}
+                            name={name}
+                            placeholder="Digite aqui"
+                            value={value?.toString()}
+                            onChange={(event) => onChange(event.target.value)}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 <div className="w-full flex items-center justify-between gap-4">
                   <FormField
                     control={form.control}

@@ -50,14 +50,30 @@ class Player(Base):
     name = Column(String(45), nullable=False)
     nick = Column(String(45))
     twitch = Column(String(45))
+    email = Column(String(45))
     schedule = Column(String)
     coins = Column(Integer)
     stars = Column(String(45))
     medal = Column(Integer)
     wins = Column(Integer)
     tags = Column(String(45))
-    email = Column(String(45))
     photo = Column(String)
+
+    def to_dict(self):
+        return {
+            'idplayer': self.idplayer,
+            'name': self.name,
+            'nick': self.nick,
+            'twitch': self.twitch,
+            'email': self.email,
+            'schedule': self.schedule,
+            'coins': self.coins,
+            'stars': self.stars,
+            'medal': self.medal,
+            'wins': self.wins,
+            'tags': self.tags,
+            'photo': self.photo
+        }
 
 
 
@@ -66,5 +82,7 @@ class Team(Base):
 
     idteam = Column(Integer, primary_key=True)
     name = Column(String(45))
-    logo = Column(String(45))
+    logo = Column(String)
     wins = Column(Integer)
+    number = Column(Integer)
+    group = Column(Integer)

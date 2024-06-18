@@ -62,7 +62,10 @@ const execute = async ({ file, callBack, type }: IParams) => {
 
     generateDraftUseCase.execute(
       {
-        name: config?.name,
+        game: config?.game,
+        edition: config?.edition,
+        draftDate: config?.draftDate,
+        finalDate: config?.finalDate,
         teamPlayersQuantity: config?.teamPlayersQuantity,
         teamsQuantity: config?.teamsQuantity,
       },
