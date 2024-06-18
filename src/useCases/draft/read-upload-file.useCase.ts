@@ -43,13 +43,14 @@ const execute = async ({ file, callBack, type }: IParams) => {
       name: row[0] || '',
       nick: row[1] || '',
       twitch: row[2] || '',
-      stars: parseInt(row[3] as string) || 0,
-      medal: parseInt(row[4] as string) || 0,
-      wins: parseInt(row[5] as string) || 0,
-      tags: row[6] || '',
-      photo: row[7] || '',
-      team: row[8] || '',
-      schedule: row[9] || '',
+      email: row[3] || '',
+      stars: parseInt(row[4] as string) || 0,
+      medal: parseInt(row[5] as string) || 0,
+      wins: parseInt(row[6] as string) || 0,
+      tags: row[7] || '',
+      photo: row[8] || '',
+      team: row[9] || '',
+      schedule: row[10] || '',
     }))
 
     await sleep(500)
