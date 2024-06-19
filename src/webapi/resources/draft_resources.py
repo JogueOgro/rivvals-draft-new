@@ -2,6 +2,7 @@ from flask import request, jsonify, Blueprint
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from model.models import *
+from datetime import datetime
 import json
 
 engine = create_engine("mysql://root:root@localhost:3306/rivvals")
@@ -51,23 +52,20 @@ def create_complete_draft():
     session = Session()
     try:
         players = request.json['players']
-        new_players = []
-        #import pdb; pdb.set_trace()
         for player in players:
-            existing_player = session.query(Player).filter_by(name=player['name']).first()
-            if existing_player:
+            new_player = session.query(Player).filter_by(name=player['name']).first()
+            if new_player:
                 # Se o jogador já existir, atualize seus atributos
-                existing_player.nick = player.get('nick')
-                existing_player.twitch = player.get('twitch')
-                existing_player.email = player.get('email')
-                existing_player.schedule = str(player.get('schedule'))
-                existing_player.coins = player.get('coins')
-                existing_player.stars = player.get('stars')
-                existing_player.medal = player.get('medal')
-                existing_player.wins = player.get('wins')
-                existing_player.tags = player.get('tags')
-                existing_player.photo = player.get('photo')
-                new_players.append(existing_player)
+                new_player.nick = player.get('nick')
+                new_player.twitch = player.get('twitch')
+                new_player.email = player.get('email')
+                new_player.schedule = str(player.get('schedule'))
+                new_player.coins = player.get('coins')
+                new_player.stars = player.get('stars')
+                new_player.medal = player.get('medal')
+                new_player.wins = player.get('wins')
+                new_player.tags = player.get('tags')
+                new_player.photo = player.get('photo')
             else:
                 # Se o jogador não existir, crie um novo jogador
                 new_player = Player(
@@ -83,12 +81,38 @@ def create_complete_draft():
                     tags=player.get('tags'),
                     photo=player.get('photo')
                 )
-                new_players.append(new_player)
+            session.add(new_player)
+            session.flush()
+            session.refresh(new_player)
+            
+            # Se o time com este numero ja existir crie relacionamento senão crie um novo time
+            team_number = player['team']
+            team = session.query(Team).filter_by(number=player['team']).first()
+            if not team:
+                team = Team(
+                name = 'Time '+str(team_number),
+                wins = 0,
+                number = team_number
+                )
 
-        session.add_all(new_players)
-        session.commit()
-        for player in new_players:
-            session.refresh(player)  # Refresh na instancia para evitar erros
+                session.add(team)
+                session.flush()
+                session.refresh(team)
+            
+            # Se uma entrada no draft ja existe ligando player e time use, senão crie.
+            edition = request.json['config']['edition']
+            draft = session.query(Draft).filter_by(player_idplayer=new_player.idplayer, team_idteam=team.idteam).first()
+            if not draft:
+                draft = Draft(
+                    player_idplayer = new_player.idplayer,
+                    team_idteam = team.idteam,
+                    edicao = edition,
+                    game = request.json['config']['game'],
+                    draftdate =  datetime.now()
+                )
+                session.add(draft)
+                session.commit()
+                    
         return jsonify({'message': 'Draft created successfully'}), 201
 
     except Exception as e:
