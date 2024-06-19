@@ -12,7 +12,8 @@ draft_blueprint = Blueprint('draft', __name__)
 
 @draft_blueprint.route('/draft', methods=['GET'])
 def get_drafts():
-    drafts = Draft.query.all()
+    session = Session()
+    drafts = session.query(Draft).all()
     return jsonify([draft.to_dict() for draft in drafts])
 
 @draft_blueprint.route('/draft', methods=['POST'])
@@ -35,17 +36,18 @@ def create_draft():
             finaldate=finaldate
         )
         
-        db.session.add(new_draft)
-        db.session.commit()
+        session = Session()
+        session.add(new_draft)
+        session.commit()
         
         return jsonify(new_draft.to_dict()), 201
     
     except Exception as e:
-        db.session.rollback()
+        session.rollback()
         return jsonify({'error': str(e)}), 500
     
     finally:
-        db.session.close()
+        session.close()
 
 @draft_blueprint.route('/complete_draft', methods=['POST'])
 def create_complete_draft():
@@ -123,7 +125,8 @@ def create_complete_draft():
 
 @draft_blueprint.route('/draft/<int:draft_id>', methods=['PUT'])
 def update_draft(draft_id):
-    draft = Draft.query.get(draft_id)
+    session = Session()
+    draft = session.query(Draft).filter_by(iddraft=draft_id).first()
     if not draft:
         return jsonify({'error': 'Draft not found'}), 404
     
@@ -136,30 +139,31 @@ def update_draft(draft_id):
     draft.finaldate = data.get('finaldate') or draft.finaldate
     
     try:
-        db.session.commit()
+        session.commit()
         return jsonify(draft.to_dict())
     
     except Exception as e:
-        db.session.rollback()
+        session.rollback()
         return jsonify({'error': str(e)}), 500
     
     finally:
-        db.session.close()
+        session.close()
 
 @draft_blueprint.route('/draft/<int:draft_id>', methods=['DELETE'])
 def delete_draft(draft_id):
-    draft = Draft.query.get(draft_id)
+    session = Session()
+    draft = session.query(Draft).filter_by(iddraft=draft_id).first()
     if not draft:
         return jsonify({'error': 'Draft not found'}), 404
     
     try:
-        db.session.delete(draft)
-        db.session.commit()
+        session.delete(draft)
+        session.commit()
         return jsonify({'message': 'Draft deleted successfully'})
     
     except Exception as e:
-        db.session.rollback()
+        session.rollback()
         return jsonify({'error': str(e)}), 500
     
     finally:
-        db.session.close()
+        session.close()

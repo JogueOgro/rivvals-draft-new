@@ -21,6 +21,26 @@ class Draft(Base):
     player = relationship('Player', primaryjoin='Draft.player_idplayer == Player.idplayer', backref='drafts')
     team = relationship('Team', primaryjoin='Draft.team_idteam == Team.idteam', backref='drafts')
 
+    def to_dict(self):
+        return {
+            'iddraft': self.iddraft,
+            'player_idplayer': self.player_idplayer,
+            'team_idteam': self.team_idteam,
+            'edicao': self.edicao,
+            'game': self.game,
+            'draftdate': self.draftdate.isoformat() if self.draftdate else None,
+            'finaldate': self.finaldate.isoformat() if self.finaldate else None,
+            'player': {
+                'idplayer': self.player.idplayer,
+                'name': self.player.name  # Exemplo de como incluir campos do jogador
+                # Adicione mais campos do jogador conforme necessário
+            },
+            'team': {
+                'idteam': self.team.idteam,
+                'name': self.team.name  # Exemplo de como incluir campos da equipe
+                # Adicione mais campos da equipe conforme necessário
+            }
+        }
 
 
 class Match(Base):
