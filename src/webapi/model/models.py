@@ -106,3 +106,13 @@ class Team(Base):
     wins = Column(Integer)
     number = Column(Integer)
     group = Column(Integer)
+
+    def to_dict(self):
+        return {
+            'idteam': self.idteam,
+            'name': self.name,
+            'logo': self.logo,
+            'wins': self.wins,
+            'number': self.number,
+            'group': self.group
+        }

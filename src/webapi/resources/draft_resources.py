@@ -16,6 +16,12 @@ def get_drafts():
     drafts = session.query(Draft).all()
     return jsonify([draft.to_dict() for draft in drafts])
 
+@draft_blueprint.route('/draft/<int:draft_id>', methods=['GET'])
+def get_draft_by_id(draft_id):
+    session = Session()
+    draft = session.query(Draft).filter_by(iddraft=draft_id).first()
+    return jsonify(draft.to_dict())
+
 @draft_blueprint.route('/draft', methods=['POST'])
 def create_draft():
     data = request.json

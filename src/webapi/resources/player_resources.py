@@ -17,7 +17,8 @@ def get_players():
 
 @player_blueprint.route('/player/<int:idplayer>', methods=['GET'])
 def get_playe_by_id(idplayer):
-    player = Player.query.get(idplayer)
+    session = Session()
+    player = session.query(Player).filter_by(idplayer=idplayer).first()
     if player:
         return jsonify(player.to_dict())
     else:
@@ -57,7 +58,8 @@ def create_player():
 
 @player_blueprint.route('/player/<int:idplayer>', methods=['PUT'])
 def update_player(idplayer):
-    player = Player.query.get(idplayer)
+    session = Session()
+    player = session.query(Player).filter_by(idplayer=idplayer).first()
     if not player:
         return jsonify({'message': 'Player not found'}), 404
 
@@ -75,17 +77,18 @@ def update_player(idplayer):
     player.tags = data.get('tags')
     player.photo = data.get('photo')
 
-    db.session.commit()
+    session.commit()
 
     return jsonify(player.to_dict())
 
 @player_blueprint.route('/player/<int:idplayer>', methods=['DELETE'])
 def delete_player(idplayer):
-    player = Player.query.get(idplayer)
+    session = Session()
+    player = session.query(Player).filter_by(idplayer=idplayer).first()
     if not player:
         return jsonify({'message': 'Player not found'}), 404
 
-    db.session.delete(player)
-    db.session.commit()
+    session.delete(player)
+    session.commit()
 
     return jsonify(player.to_dict())
