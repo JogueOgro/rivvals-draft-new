@@ -1,12 +1,8 @@
 from flask import request, jsonify, Blueprint
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from database import Session
 from model.models import *
 from datetime import datetime
 import json
-
-engine = create_engine("mysql://root:root@localhost:3306/rivvals")
-Session = sessionmaker(bind=engine)
 
 draft_blueprint = Blueprint('draft', __name__)
 
@@ -20,6 +16,8 @@ def get_drafts():
 def get_draft_by_id(draft_id):
     session = Session()
     draft = session.query(Draft).filter_by(iddraft=draft_id).first()
+    if not draft:
+        return jsonify({'message': 'Draft não encontrado'}), 404
     return jsonify(draft.to_dict())
 
 @draft_blueprint.route('/draft', methods=['POST'])
@@ -41,17 +39,17 @@ def create_draft():
             draftdate=draftdate,
             finaldate=finaldate
         )
-        
+
         session = Session()
         session.add(new_draft)
         session.commit()
-        
+
         return jsonify(new_draft.to_dict()), 201
-    
+
     except Exception as e:
         session.rollback()
         return jsonify({'error': str(e)}), 500
-    
+
     finally:
         session.close()
 
@@ -92,7 +90,7 @@ def create_complete_draft():
             session.add(new_player)
             session.flush()
             session.refresh(new_player)
-            
+
             # Se o time com este numero ja existir crie relacionamento senão crie um novo time
             team_number = player['team']
             team = session.query(Team).filter_by(number=player['team']).first()
@@ -106,7 +104,7 @@ def create_complete_draft():
                 session.add(team)
                 session.flush()
                 session.refresh(team)
-            
+
             # Se uma entrada no draft ja existe ligando player e time use, senão crie.
             edition = request.json['config']['edition']
             draft = session.query(Draft).filter_by(player_idplayer=new_player.idplayer, team_idteam=team.idteam).first()
@@ -120,7 +118,7 @@ def create_complete_draft():
                 )
                 session.add(draft)
                 session.commit()
-                    
+
         return jsonify({'message': 'Draft created successfully'}), 201
 
     except Exception as e:
@@ -134,8 +132,8 @@ def update_draft(draft_id):
     session = Session()
     draft = session.query(Draft).filter_by(iddraft=draft_id).first()
     if not draft:
-        return jsonify({'error': 'Draft not found'}), 404
-    
+        return jsonify({'message': 'Draft não encontrado'}), 404
+
     data = request.json
     draft.player_idplayer = data.get('player_id') or draft.player_idplayer
     draft.team_idteam = data.get('team_id') or draft.team_idteam
@@ -143,15 +141,15 @@ def update_draft(draft_id):
     draft.game = data.get('game') or draft.game
     draft.draftdate = data.get('draftdate') or draft.draftdate
     draft.finaldate = data.get('finaldate') or draft.finaldate
-    
+
     try:
         session.commit()
         return jsonify(draft.to_dict())
-    
+
     except Exception as e:
         session.rollback()
         return jsonify({'error': str(e)}), 500
-    
+
     finally:
         session.close()
 
@@ -160,16 +158,16 @@ def delete_draft(draft_id):
     session = Session()
     draft = session.query(Draft).filter_by(iddraft=draft_id).first()
     if not draft:
-        return jsonify({'error': 'Draft not found'}), 404
-    
+        return jsonify({'message': 'Draft não encontrado'}), 404
+
     try:
         session.delete(draft)
         session.commit()
         return jsonify({'message': 'Draft deleted successfully'})
-    
+
     except Exception as e:
         session.rollback()
         return jsonify({'error': str(e)}), 500
-    
+
     finally:
         session.close()

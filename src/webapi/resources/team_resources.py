@@ -1,11 +1,7 @@
 from flask import request, jsonify, Blueprint
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from database import Session
 from model.models import *
 import json
-
-engine = create_engine("mysql://root:root@localhost:3306/rivvals")
-Session = sessionmaker(bind=engine)
 
 team_blueprint = Blueprint('team', __name__)
 
@@ -21,6 +17,8 @@ def get_team_by_id(team_id):
     session = Session()
     team = session.query(Team).filter_by(idteam=team_id).first()
     session.close()
+    if not team:
+      return jsonify({'message': 'Time não encontrado'}), 404
     return team.to_dict()
 
 @team_blueprint.route('/team', methods=['POST'])
@@ -46,7 +44,7 @@ def update_team(team_id):
     session = Session()
     team = session.query(Team).filter_by(idteam=team_id).first()
     if not team:
-        return jsonify({'message': 'Team not found'}), 404
+        return jsonify({'message': 'Time não encontrado'}), 404
 
     data = request.json
     if team:
@@ -62,10 +60,12 @@ def update_team(team_id):
 def delete_team(team_id):
     session = Session()
     team = session.query(Team).filter_by(idteam=team_id).first()
-    if team:
+    if not team:
+      return jsonify({'message': 'Time não encontrado'}), 404
+    else:
         session.delete(team)
         session.commit()
     return team.to_dict()
 
-    
+
 

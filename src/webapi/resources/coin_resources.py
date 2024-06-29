@@ -1,11 +1,7 @@
 from flask import request, jsonify, Blueprint
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from database import Session
 from model.models import *
 import json
-
-engine = create_engine("mysql://root:root@localhost:3306/rivvals")
-Session = sessionmaker(bind=engine)
 
 coin_blueprint = Blueprint('coin', __name__)
 

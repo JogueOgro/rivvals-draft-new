@@ -1,11 +1,7 @@
 from flask import request, jsonify, Blueprint
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from model.models import *
+from database import Session
 import json
-
-engine = create_engine("mysql://root:root@localhost:3306/rivvals")
-Session = sessionmaker(bind=engine)
 
 player_blueprint = Blueprint('player', __name__)
 
@@ -22,7 +18,7 @@ def get_playe_by_id(idplayer):
     if player:
         return jsonify(player.to_dict())
     else:
-        return jsonify({'message': 'Player not found'}), 404
+        return jsonify({'message': 'Jogador não encontrado'}), 404
 
 @player_blueprint.route('/player', methods=['POST'])
 def create_player():
@@ -61,7 +57,7 @@ def update_player(idplayer):
     session = Session()
     player = session.query(Player).filter_by(idplayer=idplayer).first()
     if not player:
-        return jsonify({'message': 'Player not found'}), 404
+        return jsonify({'message': 'Jogador não encontrado'}), 404
 
     data = request.json
 
@@ -86,7 +82,7 @@ def delete_player(idplayer):
     session = Session()
     player = session.query(Player).filter_by(idplayer=idplayer).first()
     if not player:
-        return jsonify({'message': 'Player not found'}), 404
+        return jsonify({'message': 'Jogador não encontrado'}), 404
 
     session.delete(player)
     session.commit()
