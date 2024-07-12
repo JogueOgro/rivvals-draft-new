@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
+import { Redirect } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -16,7 +18,7 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const response = await fetch('http://localhost:5000/checkpassword', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -30,11 +32,18 @@ const Login = () => {
 
       const responseData = await response.json()
       console.log('Login feito com sucesso:', responseData)
-      // Aqui você pode tratar a resposta do backend conforme necessário
+      // Requer medidas adicionais de segurança, HTTPS e Criptografia
+      localStorage.setItem('loggedIn', 'true');
+      setLoggedIn(true);
+
     } catch (error) {
       console.error('Erro durante login:', error)
       // Trate erros de rede ou do servidor aqui
     }
+  }
+
+  if (loggedIn) {
+    return <Redirect to="/user" />;
   }
 
   return (
@@ -44,6 +53,7 @@ const Login = () => {
         <div className="form-control">
           <label>Email:</label>
           <input
+            placeholder="ogro@levva.io"
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -53,6 +63,7 @@ const Login = () => {
         <div className="form-control">
           <label>Password:</label>
           <input
+            placeholder="ziriguidumdekodeko"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

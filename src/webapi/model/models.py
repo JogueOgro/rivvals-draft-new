@@ -116,3 +116,22 @@ class Team(Base):
             'number': self.number,
             'group': self.group
         }
+
+class User(Base):
+    __tablename__ = 'user'
+
+    iduser = Column(Integer, primary_key=True)
+    name = Column(String(45))
+    email = Column(String(45))
+    password = Column(String(45))
+    creation_date = Column(DateTime)
+
+    def to_dict(self):
+      return {
+          'iduser': self.iduser,
+          'name': self.name,
+          'email': self.email,
+          'password': self.password,  # Note: You might want to exclude this for security reasons
+          'creation_date': self.creation_date
+      }
+
