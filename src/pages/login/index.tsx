@@ -1,13 +1,13 @@
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
-import { Redirect } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [loggedIn, setLoggedIn] = useState(false);
-
+  const [loggedIn, setLoggedIn] = useState(false)
+  const route = useRouter()
   const handleLogin = async (e) => {
     e.preventDefault()
     console.log(`Email: ${email}, Password: ${password}`)
@@ -33,17 +33,13 @@ const Login = () => {
       const responseData = await response.json()
       console.log('Login feito com sucesso:', responseData)
       // Requer medidas adicionais de segurança, HTTPS e Criptografia
-      localStorage.setItem('loggedIn', 'true');
-      setLoggedIn(true);
-
+      localStorage.setItem('loggedIn', 'true')
+      setLoggedIn(true)
+      route.push('/armadinho')
     } catch (error) {
       console.error('Erro durante login:', error)
       // Trate erros de rede ou do servidor aqui
     }
-  }
-
-  if (loggedIn) {
-    return <Redirect to="/user" />;
   }
 
   return (
