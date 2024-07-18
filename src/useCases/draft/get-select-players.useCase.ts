@@ -82,11 +82,11 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
   let cardList: IPlayer[] = []
   let scheduleList = []
 
-  function checkBlockSchedule(scheduleList, cardSchedule) {
-    /* console.log('scheduleList:', scheduleList)
+  /* function checkBlockSchedule(scheduleList, cardSchedule) {
+     console.log('scheduleList:', scheduleList)
     scheduleList = scheduleList?.pop()
-    */ const concatSchedules = scheduleList
-    /* console.log(
+     const concatSchedules = scheduleList
+     console.log(
       'concat:',
       concatSchedules,
       'concatUndefined?:',
@@ -115,9 +115,9 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
           }
         })
       })
-    } */
+    }
     return concatSchedules
-  }
+  } */
 
   if (inAvarage) {
     const selectedIndexes: number[] = []
@@ -126,10 +126,40 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
         Math.random() * sortCardsByAvarageTeamScore.length,
       )
       if (!selectedIndexes.includes(randomIndex)) {
-        scheduleList = checkBlockSchedule(
-          scheduleList,
-          sortCardsByAvarageTeamScore[randomIndex].schedule,
-        )
+        const cardSchedule = sortCardsByAvarageTeamScore[randomIndex].schedule
+        if (!scheduleList.length) {
+          scheduleList = cardSchedule
+          console.log('SCHEDULE INIT:', cardSchedule)
+        } else {
+          cardSchedule.forEach((newSchedule) => {
+            console.log('CARD', JSON.stringify(newSchedule))
+            scheduleList.forEach((schedule) => {
+              console.log('SCHEDULE ENTRY:', JSON.stringify(schedule))
+            })
+          })
+        }
+        /* else {
+          cardSchedule.forEach((newSchedule) => {
+             console.log('CARD', JSON.stringify(newSchedule))
+
+            scheduleList.forEach((schedule) => {
+              console.log('SCHEDULE ENTRY:', JSON.stringify(schedule))
+              console.log(
+                'newSchedule:',
+                JSON.stringify(newSchedule),
+                'schedule:',
+                JSON.stringify(schedule),
+                'COMPARA:',
+                JSON.stringify(newSchedule) === JSON.stringify(schedule),
+              )
+              if (JSON.stringify(newSchedule) === JSON.stringify(schedule)) {
+                //concatSchedules.push(newSchedule)
+                console.log('NOVO SCHEDULE', JSON.stringify(schedule))
+              }
+
+
+        } */
+
         selectedIndexes.push(randomIndex)
         cardList.push(sortCardsByAvarageTeamScore[randomIndex])
       }
