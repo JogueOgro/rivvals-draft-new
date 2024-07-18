@@ -80,6 +80,44 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
   )
 
   let cardList: IPlayer[] = []
+  let scheduleList = []
+
+  function checkBlockSchedule(scheduleList, cardSchedule) {
+    /* console.log('scheduleList:', scheduleList)
+    scheduleList = scheduleList?.pop()
+    */ const concatSchedules = scheduleList
+    /* console.log(
+      'concat:',
+      concatSchedules,
+      'concatUndefined?:',
+      concatSchedules?.length == 0,
+    )
+    if (concatSchedules == undefined) {
+      console.log('Inicizalizado:', JSON.stringify(cardSchedule))
+      concatSchedules = cardSchedule
+    } else {
+      cardSchedule.forEach((newSchedule) => {
+        // console.log('CARD', JSON.stringify(newSchedule))
+
+        scheduleList.forEach((schedule) => {
+          // console.log('SCHEDULE ENTRY:', JSON.stringify(schedule))
+          console.log(
+            'newSchedule:',
+            JSON.stringify(newSchedule),
+            'schedule:',
+            JSON.stringify(schedule),
+            'COMPARA:',
+            JSON.stringify(newSchedule) === JSON.stringify(schedule),
+          )
+          if (JSON.stringify(newSchedule) === JSON.stringify(schedule)) {
+            concatSchedules.push(newSchedule)
+            console.log('NOVO SCHEDULE', JSON.stringify(schedule))
+          }
+        })
+      })
+    } */
+    return concatSchedules
+  }
 
   if (inAvarage) {
     const selectedIndexes: number[] = []
@@ -88,6 +126,10 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
         Math.random() * sortCardsByAvarageTeamScore.length,
       )
       if (!selectedIndexes.includes(randomIndex)) {
+        scheduleList = checkBlockSchedule(
+          scheduleList,
+          sortCardsByAvarageTeamScore[randomIndex].schedule,
+        )
         selectedIndexes.push(randomIndex)
         cardList.push(sortCardsByAvarageTeamScore[randomIndex])
       }
@@ -103,7 +145,7 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
     rivvalsTotalPlayers,
     sugestions: cardList,
   })
-
+  console.log(cardList)
   return cardList
 }
 
