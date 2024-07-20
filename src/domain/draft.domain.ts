@@ -6,6 +6,7 @@ export interface ITeam {
   id?: string
   photo?: string
   players: IPlayer[]
+  schedules: []
 }
 
 export interface IDraft extends BaseDomain {

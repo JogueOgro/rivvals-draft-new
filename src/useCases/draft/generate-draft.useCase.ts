@@ -36,6 +36,7 @@ const execute = (
     const team: ITeam = {
       id: String(teamNum),
       players: [],
+      schedules: [],
     }
 
     const availablePlayers = players?.filter(

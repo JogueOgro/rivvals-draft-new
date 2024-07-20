@@ -126,16 +126,15 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
         Math.random() * sortCardsByAvarageTeamScore.length,
       )
       if (!selectedIndexes.includes(randomIndex)) {
-        const cardSchedule = sortCardsByAvarageTeamScore[randomIndex].schedule
-        if (!scheduleList.length) {
-          scheduleList = cardSchedule
-          console.log('SCHEDULE INIT:', cardSchedule)
-        } else {
+        const cardSchedule =
+          sortCardsByAvarageTeamScore[randomIndex]?.schedule || []
+        scheduleList = [...cardSchedule]
+
+        // console.log(scheduleList)
+
+        if (scheduleList.length) {
           cardSchedule.forEach((newSchedule) => {
-            console.log('CARD', JSON.stringify(newSchedule))
-            scheduleList.forEach((schedule) => {
-              console.log('SCHEDULE ENTRY:', JSON.stringify(schedule))
-            })
+            // console.log('CARD', JSON.stringify(newSchedule))
           })
         }
         /* else {
