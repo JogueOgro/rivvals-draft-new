@@ -2,6 +2,8 @@ import { IPlayer } from '@/domain/player.domain'
 import draftStore from '@/store/draft/draft-store'
 import playerStore from '@/store/player/player-store'
 
+import { max } from 'date-fns'
+
 type IParams = {
   listOfAllocatedPlayers: string[]
 }
@@ -61,110 +63,93 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
     activeTeamTotalScore / activeTeamTotalPlayers,
   )
 
-  const avgLimit = 0.5
-  const avarageLimitStart = rivvalsAvgScore - avgLimit
-  const avarageLimitEnd = rivvalsAvgScore + avgLimit
+  const avgLimit = rivvalsAvgScore * 0.25
+  const lowerLimit = rivvalsAvgScore - avgLimit
+  const higherLimit = rivvalsAvgScore + avgLimit
 
-  const aboveAvarage = activeTeamAvgScore > avarageLimitEnd
-  const inAvarage =
-    activeTeamAvgScore >= avarageLimitStart &&
-    activeTeamAvgScore <= avarageLimitEnd
+  const muchHigher = activeTeamAvgScore > higherLimit
+  const muchLower = activeTeamAvgScore < lowerLimit
+  const inAverage =
+    activeTeamAvgScore >= lowerLimit && activeTeamAvgScore <= higherLimit
 
-  const sortCardsByAvarageTeamScore = filteredListWithoutPlayersMatchTags.sort(
-    (playerA: IPlayer, playerB: IPlayer) => {
-      if (aboveAvarage) {
-        return Number(playerA.stars) - Number(playerB.stars)
-      }
-      return Number(playerB.stars) - Number(playerA.stars)
-    },
+  // if (filteredAvailablePlayers.length == config?.teamsQuantity) {
+  //   // Ultima rodada
+  // }
+
+  console.log(
+    'Quantos Players:',
+    filteredListWithoutPlayersMatchTags.length,
+    'Section:',
+    filteredListWithoutPlayersMatchTags.length / 3,
   )
 
-  let cardList: IPlayer[] = []
-  let scheduleList = []
+  const sectionSize = filteredListWithoutPlayersMatchTags.length / 3
+  let sortCardsByAverageTeamScore = []
 
-  /* function checkBlockSchedule(scheduleList, cardSchedule) {
-     console.log('scheduleList:', scheduleList)
-    scheduleList = scheduleList?.pop()
-     const concatSchedules = scheduleList
-     console.log(
-      'concat:',
-      concatSchedules,
-      'concatUndefined?:',
-      concatSchedules?.length == 0,
+  if (muchHigher) {
+    sortCardsByAverageTeamScore = filteredListWithoutPlayersMatchTags.slice(
+      -sectionSize,
+      -1,
     )
-    if (concatSchedules == undefined) {
-      console.log('Inicizalizado:', JSON.stringify(cardSchedule))
-      concatSchedules = cardSchedule
-    } else {
-      cardSchedule.forEach((newSchedule) => {
-        // console.log('CARD', JSON.stringify(newSchedule))
+    console.log('MuchHigher:', sortCardsByAverageTeamScore)
+  }
+  if (muchLower) {
+    sortCardsByAverageTeamScore = filteredListWithoutPlayersMatchTags.slice(
+      0,
+      sectionSize,
+    )
+    console.log('MuchLower', sortCardsByAverageTeamScore)
+  }
+  if (inAverage) {
+    sortCardsByAverageTeamScore = filteredListWithoutPlayersMatchTags.slice(
+      sectionSize,
+      2 * sectionSize,
+    )
+    console.log('Avg:', sortCardsByAverageTeamScore)
+  }
 
-        scheduleList.forEach((schedule) => {
-          // console.log('SCHEDULE ENTRY:', JSON.stringify(schedule))
-          console.log(
-            'newSchedule:',
-            JSON.stringify(newSchedule),
-            'schedule:',
-            JSON.stringify(schedule),
-            'COMPARA:',
-            JSON.stringify(newSchedule) === JSON.stringify(schedule),
-          )
-          if (JSON.stringify(newSchedule) === JSON.stringify(schedule)) {
-            concatSchedules.push(newSchedule)
-            console.log('NOVO SCHEDULE', JSON.stringify(schedule))
-          }
-        })
-      })
-    }
-    return concatSchedules
-  } */
+  const cardList: IPlayer[] = []
+  let maxTries = 15
 
-  if (inAvarage) {
-    const selectedIndexes: number[] = []
-    while (cardList.length < 5) {
-      const randomIndex = Math.floor(
-        Math.random() * sortCardsByAvarageTeamScore.length,
-      )
-      if (!selectedIndexes.includes(randomIndex)) {
-        const cardSchedule =
-          sortCardsByAvarageTeamScore[randomIndex]?.schedule || []
-        scheduleList = [...cardSchedule]
-
-        // console.log(scheduleList)
-
-        if (scheduleList.length) {
-          cardSchedule.forEach((newSchedule) => {
-            // console.log('CARD', JSON.stringify(newSchedule))
-          })
-        }
-        /* else {
-          cardSchedule.forEach((newSchedule) => {
-             console.log('CARD', JSON.stringify(newSchedule))
-
-            scheduleList.forEach((schedule) => {
-              console.log('SCHEDULE ENTRY:', JSON.stringify(schedule))
-              console.log(
-                'newSchedule:',
-                JSON.stringify(newSchedule),
-                'schedule:',
-                JSON.stringify(schedule),
-                'COMPARA:',
-                JSON.stringify(newSchedule) === JSON.stringify(schedule),
-              )
-              if (JSON.stringify(newSchedule) === JSON.stringify(schedule)) {
-                //concatSchedules.push(newSchedule)
-                console.log('NOVO SCHEDULE', JSON.stringify(schedule))
-              }
-
-
-        } */
-
+  const selectedIndexes: number[] = []
+  while (cardList.length < 5) {
+    const randomIndex = Math.floor(
+      Math.random() * sortCardsByAverageTeamScore.length,
+    )
+    if (!selectedIndexes.includes(randomIndex)) {
+      if (maxTries === 0) {
+        console.log('CHEQUE MATE...')
         selectedIndexes.push(randomIndex)
-        cardList.push(sortCardsByAvarageTeamScore[randomIndex])
+        cardList.push(sortCardsByAverageTeamScore[randomIndex])
+      } else {
+        const cardSchedule =
+          sortCardsByAverageTeamScore[randomIndex]?.schedule || []
+        const teamSchedule = activeTeam.schedules
+
+        for (let pindex = 0; pindex < cardSchedule.length; pindex++) {
+          for (let tindex = 0; tindex < teamSchedule.length; tindex++) {
+            if (
+              JSON.stringify(cardSchedule[pindex]) ===
+              JSON.stringify(teamSchedule[tindex])
+            ) {
+              break
+            }
+            if (tindex === teamSchedule.length - 1) {
+              teamSchedule.push(cardSchedule[pindex])
+              break
+            }
+          }
+        }
+
+        if (teamSchedule.length < 12) {
+          selectedIndexes.push(randomIndex)
+          cardList.push(sortCardsByAverageTeamScore[randomIndex])
+        } else {
+          console.log('Poucos Horários Livres, tentando outras cartas...')
+          maxTries--
+        }
       }
     }
-  } else {
-    cardList = sortCardsByAvarageTeamScore.slice(0, 5)
   }
 
   console.log({

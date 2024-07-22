@@ -24,21 +24,19 @@ const execute = (selectedPlayer: IPlayer) => {
   let newTeamSchedule = [...teamSchedule]
 
   console.log('SELECTED PLAYER SCHEDULE', selectedPlayer.schedule)
-  console.log('TEAM SCHEDULE', teamSchedule)
 
-  if (newTeamSchedule.length == 0) newTeamSchedule = [...playerSchedule]
+  if (newTeamSchedule.length === 0) newTeamSchedule = [...playerSchedule]
   else {
-    console.log('ENTROU PRA TENTAR ADD')
     for (let pindex = 0; pindex < playerSchedule.length; pindex++) {
       for (let tindex = 0; tindex < newTeamSchedule.length; tindex++) {
         if (
-          JSON.stringify(playerSchedule[pindex]) ==
+          JSON.stringify(playerSchedule[pindex]) ===
           JSON.stringify(newTeamSchedule[tindex])
         ) {
           break
         }
-        if (tindex == newTeamSchedule.length - 1) {
-          console.log('NOVO ELEMENTO', playerSchedule[pindex])
+        if (tindex === newTeamSchedule.length - 1) {
+          console.log('NOVA RESTRICAO DE AGENDA', playerSchedule[pindex])
           newTeamSchedule.push(playerSchedule[pindex])
           break
         }

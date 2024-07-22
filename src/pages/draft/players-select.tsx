@@ -53,6 +53,7 @@ const PlayersSelect = () => {
     [listOfAllocatedPlayers],
   )
 
+
   function onPlayerSelect(selectedPlayer: IPlayer) {
     if (audioClock) {
       audioClock.pause()
