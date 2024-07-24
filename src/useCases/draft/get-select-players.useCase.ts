@@ -2,8 +2,6 @@ import { IPlayer } from '@/domain/player.domain'
 import draftStore from '@/store/draft/draft-store'
 import playerStore from '@/store/player/player-store'
 
-import { max } from 'date-fns'
-
 type IParams = {
   listOfAllocatedPlayers: string[]
 }
@@ -28,8 +26,6 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
   const filteredAvailablePlayers = sortByScore?.filter((player) => {
     return !listOfAllocatedPlayers.includes(player.id!)
   })
-
-  if (filteredAvailablePlayers.length <= 5) return filteredAvailablePlayers
 
   const filteredListWithoutPlayersMatchTags: IPlayer[] = []
 
@@ -59,6 +55,7 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
     },
     0,
   )
+
   const activeTeamAvgScore = Math.abs(
     activeTeamTotalScore / activeTeamTotalPlayers,
   )
@@ -72,9 +69,22 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
   const inAverage =
     activeTeamAvgScore >= lowerLimit && activeTeamAvgScore <= higherLimit
 
-  // if (filteredAvailablePlayers.length == config?.teamsQuantity) {
-  //   // Ultima rodada
-  // }
+  if (filteredListWithoutPlayersMatchTags.length === 0) {
+    return filteredListWithoutPlayersMatchTags
+  }
+
+  if (
+    filteredListWithoutPlayersMatchTags.length <= Number(config?.teamsQuantity)
+  ) {
+    const magicPlayer = filteredListWithoutPlayersMatchTags[0]
+    let len = filteredAvailablePlayers.length
+    if (len > 5) {
+      len = 5
+    }
+    const magicCardList = new Array(len).fill(magicPlayer)
+    console.log(magicCardList)
+    return magicCardList
+  }
 
   console.log(
     'Quantos Players:',
@@ -152,14 +162,14 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
     }
   }
 
-  console.log({
+  /* console.log({
     activeTeam: activeTeamIndex + 1,
     activeTeamAvgScore,
     rivvalsAvgScore,
     rivvalsTotalPlayers,
     sugestions: cardList,
   })
-  console.log(cardList)
+  console.log(cardList) */
   return cardList
 }
 

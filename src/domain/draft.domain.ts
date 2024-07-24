@@ -5,6 +5,7 @@ import { ChatUserstate } from 'tmi.js'
 export interface ITeam {
   id?: string
   photo?: string
+  avgScore: number
   players: IPlayer[]
   schedules: []
 }

@@ -1,3 +1,4 @@
+import { ITeam } from '@/domain/draft.domain'
 import { IPlayer } from '@/domain/player.domain'
 import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
@@ -23,7 +24,21 @@ const execute = (selectedPlayer: IPlayer) => {
   const teamSchedule = newTeamList[activeTeamIndex].schedules
   let newTeamSchedule = [...teamSchedule]
 
-  console.log('SELECTED PLAYER SCHEDULE', selectedPlayer.schedule)
+  const days = [
+    'SEGUNDA-FEIRA',
+    'TERÇA-FEIRA',
+    'QUARTA-FEIRA',
+    'QUIINTA-FEIRA',
+    'SEXTA-FEIRA',
+    'SÁBADO',
+    'DOMINGO',
+  ]
+
+  const sortDays = function (a, b) {
+    a = days.indexOf(a)
+    b = days.indexOf(b)
+    return a - b
+  }
 
   if (newTeamSchedule.length === 0) newTeamSchedule = [...playerSchedule]
   else {
@@ -36,7 +51,6 @@ const execute = (selectedPlayer: IPlayer) => {
           break
         }
         if (tindex === newTeamSchedule.length - 1) {
-          console.log('NOVA RESTRICAO DE AGENDA', playerSchedule[pindex])
           newTeamSchedule.push(playerSchedule[pindex])
           break
         }
@@ -44,9 +58,34 @@ const execute = (selectedPlayer: IPlayer) => {
     }
   }
 
-  console.log('TIME SCHEDULE', newTeamSchedule)
+  newTeamList[activeTeamIndex].schedules = [...newTeamSchedule].sort(sortDays)
 
-  newTeamList[activeTeamIndex].schedules = [...newTeamSchedule]
+  const teams = !config?.teamList ? [] : [...config.teamList]
+  const activeTeam = teams[activeTeamIndex]
+
+  const activeTeamTotalPlayers = activeTeam?.players.length
+  const activeTeamTotalScore = [...activeTeam.players].reduce(
+    (total, player) => {
+      return total + (player ? Number(player.stars) : 0)
+    },
+    0,
+  )
+
+  const activeTeamAvgScore = Math.abs(
+    activeTeamTotalScore / activeTeamTotalPlayers,
+  )
+
+  newTeamList[activeTeamIndex].avgScore = activeTeamAvgScore
+
+  // Rodada de Balanceamento
+  if (
+    activeTeamIndex + 1 >= newTeamList.length &&
+    teams[0].players.length === Number(config?.teamPlayersQuantity) - 1
+  ) {
+    newTeamList?.sort((teamA: ITeam, teamB: ITeam) => {
+      return Number(teamA.avgScore) - Number(teamB.avgScore)
+    })
+  }
 
   if (activeTeamIndex + 1 >= newTeamList.length) {
     draftEvent({
