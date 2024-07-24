@@ -1,4 +1,3 @@
-import { ITeam } from '@/domain/draft.domain'
 import { IPlayer } from '@/domain/player.domain'
 import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
@@ -76,16 +75,6 @@ const execute = (selectedPlayer: IPlayer) => {
   )
 
   newTeamList[activeTeamIndex].avgScore = activeTeamAvgScore
-
-  // Rodada de Balanceamento
-  if (
-    activeTeamIndex + 1 >= newTeamList.length &&
-    teams[0].players.length === Number(config?.teamPlayersQuantity) - 1
-  ) {
-    newTeamList?.sort((teamA: ITeam, teamB: ITeam) => {
-      return Number(teamA.avgScore) - Number(teamB.avgScore)
-    })
-  }
 
   if (activeTeamIndex + 1 >= newTeamList.length) {
     draftEvent({

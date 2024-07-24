@@ -56,9 +56,10 @@ const CaptainSelection = () => {
       return { ...team, avgScore }
     })
 
-    const sortTeamByScore = calculateTeamAvgScore?.sort(
+    const sortTeamByScore = calculateTeamAvgScore
+    /* ?.sort(
       (teamA, teamB) => teamA.avgScore - teamB.avgScore,
-    )
+    ) */
 
     draftEvent({
       activeTab: '2',

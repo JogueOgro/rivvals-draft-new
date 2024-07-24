@@ -1,3 +1,4 @@
+import { ITeam } from '@/domain/draft.domain'
 import { IPlayer } from '@/domain/player.domain'
 import draftStore from '@/store/draft/draft-store'
 import playerStore from '@/store/player/player-store'
@@ -27,17 +28,17 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
     return !listOfAllocatedPlayers.includes(player.id!)
   })
 
-  const filteredListWithoutPlayersMatchTags: IPlayer[] = []
+  const unmatchedPlayersList: IPlayer[] = []
 
   for (const row of filteredAvailablePlayers) {
-    if (!filteredListWithoutPlayersMatchTags.includes(row)) {
+    if (!unmatchedPlayersList.includes(row)) {
       const strigPlayerTags = row.tags?.trim()
       const listPlayerTags = strigPlayerTags?.split(',') || []
       const isMatchTags = activeTeamTags.some((x) =>
         listPlayerTags.includes(x!),
       )
       if (!isMatchTags) {
-        filteredListWithoutPlayersMatchTags.push(row)
+        unmatchedPlayersList.push(row)
       }
     }
   }
@@ -69,49 +70,52 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
   const inAverage =
     activeTeamAvgScore >= lowerLimit && activeTeamAvgScore <= higherLimit
 
-  if (filteredListWithoutPlayersMatchTags.length === 0) {
-    return filteredListWithoutPlayersMatchTags
+  if (unmatchedPlayersList.length === 0) {
+    return unmatchedPlayersList
   }
 
-  if (
-    filteredListWithoutPlayersMatchTags.length <= Number(config?.teamsQuantity)
-  ) {
-    const magicPlayer = filteredListWithoutPlayersMatchTags[0]
+  if (unmatchedPlayersList.length <= Number(config?.teamsQuantity)) {
+    let orderedTeamsList = [...teams]
+    orderedTeamsList = orderedTeamsList?.sort((teamA: ITeam, teamB: ITeam) => {
+      return Number(teamA.avgScore) - Number(teamB.avgScore)
+    })
+
+    orderedTeamsList = orderedTeamsList.filter(
+      (team) => team.players.length < Number(config?.teamPlayersQuantity),
+    )
+
+    const orderedIndex = orderedTeamsList.findIndex(
+      (x) => x.id === teams[activeTeamIndex].id,
+    )
+
+    let magicPlayer: IPlayer
+    if (orderedIndex > 0) {
+      magicPlayer = unmatchedPlayersList[orderedIndex]
+    } else {
+      magicPlayer = unmatchedPlayersList[unmatchedPlayersList.length / 2]
+    }
     let len = filteredAvailablePlayers.length
     if (len > 5) {
       len = 5
     }
     const magicCardList = new Array(len).fill(magicPlayer)
-    console.log(magicCardList)
+    // console.log(magicCardList)
     return magicCardList
   }
 
-  console.log(
-    'Quantos Players:',
-    filteredListWithoutPlayersMatchTags.length,
-    'Section:',
-    filteredListWithoutPlayersMatchTags.length / 3,
-  )
-
-  const sectionSize = filteredListWithoutPlayersMatchTags.length / 3
+  const sectionSize = unmatchedPlayersList.length / 3
   let sortCardsByAverageTeamScore = []
 
   if (muchHigher) {
-    sortCardsByAverageTeamScore = filteredListWithoutPlayersMatchTags.slice(
-      -sectionSize,
-      -1,
-    )
+    sortCardsByAverageTeamScore = unmatchedPlayersList.slice(-sectionSize, -1)
     console.log('MuchHigher:', sortCardsByAverageTeamScore)
   }
   if (muchLower) {
-    sortCardsByAverageTeamScore = filteredListWithoutPlayersMatchTags.slice(
-      0,
-      sectionSize,
-    )
+    sortCardsByAverageTeamScore = unmatchedPlayersList.slice(0, sectionSize)
     console.log('MuchLower', sortCardsByAverageTeamScore)
   }
   if (inAverage) {
-    sortCardsByAverageTeamScore = filteredListWithoutPlayersMatchTags.slice(
+    sortCardsByAverageTeamScore = unmatchedPlayersList.slice(
       sectionSize,
       2 * sectionSize,
     )
@@ -150,7 +154,7 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
             }
           }
         }
-
+        // São 20 horários na semana, queremos 8 livres
         if (teamSchedule.length < 12) {
           selectedIndexes.push(randomIndex)
           cardList.push(sortCardsByAverageTeamScore[randomIndex])
