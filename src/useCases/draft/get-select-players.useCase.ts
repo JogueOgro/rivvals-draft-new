@@ -89,11 +89,15 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
     )
 
     let magicPlayer: IPlayer
-    if (orderedIndex > 0) {
-      magicPlayer = unmatchedPlayersList[orderedIndex]
-    } else {
-      magicPlayer = unmatchedPlayersList[unmatchedPlayersList.length / 2]
+
+    magicPlayer = unmatchedPlayersList[orderedIndex]
+
+    // Remover players em ordens arbitrárias pode causar undefined aqui
+    if (magicPlayer === undefined) {
+      magicPlayer =
+        unmatchedPlayersList[Math.floor(unmatchedPlayersList.length / 2)]
     }
+
     let len = filteredAvailablePlayers.length
     if (len > 5) {
       len = 5
@@ -103,23 +107,29 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
     return magicCardList
   }
 
-  const sectionSize = unmatchedPlayersList.length / 3
+  let sectionSize = unmatchedPlayersList.length / 3
+
+  // manter no minimo 8 cartas para que sejam escolhidas 5 (mesmo que pegue de outro balde)
+  if (sectionSize < unmatchedPlayersList.length / 2) {
+    sectionSize = unmatchedPlayersList.length / 2
+  }
+
   let sortCardsByAverageTeamScore = []
 
   if (muchHigher) {
     sortCardsByAverageTeamScore = unmatchedPlayersList.slice(-sectionSize, -1)
-    console.log('MuchHigher:', sortCardsByAverageTeamScore)
+    // console.log('MuchHigher:', sortCardsByAverageTeamScore)
   }
   if (muchLower) {
     sortCardsByAverageTeamScore = unmatchedPlayersList.slice(0, sectionSize)
-    console.log('MuchLower', sortCardsByAverageTeamScore)
+    // console.log('MuchLower', sortCardsByAverageTeamScore)
   }
   if (inAverage) {
     sortCardsByAverageTeamScore = unmatchedPlayersList.slice(
       sectionSize,
       2 * sectionSize,
     )
-    console.log('Avg:', sortCardsByAverageTeamScore)
+    // console.log('Avg:', sortCardsByAverageTeamScore)
   }
 
   const cardList: IPlayer[] = []
