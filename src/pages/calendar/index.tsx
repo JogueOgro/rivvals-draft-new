@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import playerStore from '@/store/player/player-store'
 
+import AutoMatcher from './auto_matcher'
 import GameSchedule from './game-schedule'
 import PlayerSchedules from './player-schedules'
 
@@ -28,6 +29,9 @@ export default function CalendarPage() {
               <TabsTrigger value="2" className="px-8">
                 CHECAR HORÁRIOS
               </TabsTrigger>
+              <TabsTrigger value="3" className="px-8">
+                MARCAÇÃO AUTOMÁTICA
+              </TabsTrigger>
             </TabsList>
             {!players?.length ? (
               <Card className="p-12 text-center w-full">
@@ -40,6 +44,9 @@ export default function CalendarPage() {
                 </TabsContent>
                 <TabsContent value="2">
                   <GameSchedule />
+                </TabsContent>
+                <TabsContent value="3">
+                  <AutoMatcher />
                 </TabsContent>
               </>
             )}

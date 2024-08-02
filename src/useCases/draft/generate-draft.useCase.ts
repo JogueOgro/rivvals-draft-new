@@ -28,6 +28,22 @@ const execute = (
     return
   }
 
+  const days = [
+    'SEGUNDA-FEIRA',
+    'TERÇA-FEIRA',
+    'QUARTA-FEIRA',
+    'QUINTA-FEIRA',
+    'SEXTA-FEIRA',
+    'SÁBADO',
+    'DOMINGO',
+  ]
+
+  const sortDays = function (a, b) {
+    a = days.indexOf(a.day)
+    b = days.indexOf(b.day)
+    return a - b
+  }
+
   const teamList = [] as ITeam[]
   const totalTeams = Number(config!.teamsQuantity)
 
@@ -57,14 +73,36 @@ const execute = (
 
     if (type === 'new') {
       team.players.push(playerToInsert)
+      team.schedules.push(...playerToInsert.schedule)
     } else {
       const formattedTeamList = filteredTeamPlayers.map((x, o) => ({
         ...x,
         isCaptain: o === 0,
       }))
       team.players.push(...formattedTeamList)
-    }
 
+      formattedTeamList.forEach((teamPlayer) => {
+        if (team.schedules.length === 0) {
+          team.schedules = [...teamPlayer.schedule]
+        } else {
+          for (let pindex = 0; pindex < teamPlayer.schedule.length; pindex++) {
+            for (let tindex = 0; tindex < team.schedules.length; tindex++) {
+              if (
+                JSON.stringify(teamPlayer.schedule[pindex]) ===
+                JSON.stringify(team.schedules[tindex])
+              ) {
+                break
+              }
+              if (tindex === team.schedules.length - 1) {
+                team.schedules.push(teamPlayer.schedule[pindex])
+                break
+              }
+            }
+          }
+        }
+      })
+    }
+    team.schedules.sort(sortDays)
     teamList.push(team)
   }
 

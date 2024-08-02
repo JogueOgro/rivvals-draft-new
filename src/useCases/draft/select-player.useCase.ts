@@ -34,8 +34,8 @@ const execute = (selectedPlayer: IPlayer) => {
   ]
 
   const sortDays = function (a, b) {
-    a = days.indexOf(a)
-    b = days.indexOf(b)
+    a = days.indexOf(a.day)
+    b = days.indexOf(b.day)
     return a - b
   }
 

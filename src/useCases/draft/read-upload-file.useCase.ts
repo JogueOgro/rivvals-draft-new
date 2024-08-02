@@ -50,7 +50,7 @@ const execute = async ({ file, callBack, type }: IParams) => {
       tags: row[7] || '',
       photo: row[8] || '',
       team: row[9] || '',
-      schedule: row[10] || '',
+      schedule: row[10] || [],
     }))
 
     await sleep(500)

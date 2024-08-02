@@ -8,6 +8,8 @@ import tenas from '@/assets/tenas.gif'
 import { AlertDialog, AlertDialogContent } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { sleep } from '@/lib/utils'
+import { draftEvent } from '@/store/draft/draft-events'
+import draftStore from '@/store/draft/draft-store'
 import groupsStore from '@/store/groups/groups-store'
 
 export default function RaffleButton() {
@@ -15,6 +17,7 @@ export default function RaffleButton() {
   const [isLoading, setIsLoading] = useState(false)
 
   const { groupsQuantity, teamsPerGroup } = useStore(groupsStore)
+  const { config } = draftStore.getState()
   const [positions, setPositions] = useState<number[]>([])
   const total = Number(groupsQuantity) * Number(teamsPerGroup)
 
@@ -24,8 +27,14 @@ export default function RaffleButton() {
     setPositions(new Array(total))
   }, [total])
 
+  const teamList = config?.teamList
+
   const handleClickRaffle = async () => {
     if (currentTeam > total) {
+      draftEvent({
+        config: { ...config, teamList },
+        activeTab: '4',
+      })
       window.alert('Sorteio Concluído!')
     } else {
       setTenasOpen(true)
@@ -36,6 +45,9 @@ export default function RaffleButton() {
         raffle = Math.floor(Math.random() * positions.length) + 1
       }
       positions[currentTeam - 1] = raffle
+      teamList[currentTeam - 1].group = Math.ceil(
+        raffle / Number(teamsPerGroup),
+      )
       document.getElementById(String(raffle))!.innerHTML = 'Time ' + currentTeam
       setCurrentTeam((oldState) => oldState + 1)
       setIsLoading(false)

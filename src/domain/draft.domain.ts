@@ -8,6 +8,7 @@ export interface ITeam {
   avgScore: number
   players: IPlayer[]
   schedules: []
+  group?: number
 }
 
 export interface IDraft extends BaseDomain {

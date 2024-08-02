@@ -108,18 +108,18 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
 
   if (muchHigher) {
     sortCardsByAverageTeamScore = unmatchedPlayersList.slice(-sectionSize, -1)
-    console.log('MuchHigher:', sortCardsByAverageTeamScore)
+    // console.log('MuchHigher:', sortCardsByAverageTeamScore)
   }
   if (muchLower) {
     sortCardsByAverageTeamScore = unmatchedPlayersList.slice(0, sectionSize)
-    console.log('MuchLower', sortCardsByAverageTeamScore)
+    // console.log('MuchLower', sortCardsByAverageTeamScore)
   }
   if (inAverage) {
     sortCardsByAverageTeamScore = unmatchedPlayersList.slice(
       sectionSize,
       2 * sectionSize,
     )
-    console.log('Avg:', sortCardsByAverageTeamScore)
+    // console.log('Avg:', sortCardsByAverageTeamScore)
   }
 
   const cardList: IPlayer[] = []
