@@ -1,6 +1,6 @@
-import { IGroups } from '@/domain/groups.domain'
+import { IGroup } from '@/domain/group.domain'
 
-export const groupsInitialState: IGroups = {
+export const groupsInitialState: IGroup = {
   groupsQuantity: '',
   teamsPerGroup: '',
 }

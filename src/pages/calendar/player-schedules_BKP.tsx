@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
@@ -27,7 +27,7 @@ const weekDays = [
 ]
 
 export default function PlayerSchedules() {
-  const { players } = useStore(playerStore)
+  const { players } = useUnit(playerStore)
 
   return (
     <Card className="p-8 -mt-2">

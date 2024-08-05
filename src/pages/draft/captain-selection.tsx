@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import { ArrowRight, ArrowRightLeft, Check, Medal, Trophy } from 'lucide-react'
 import React, { useState } from 'react'
 
@@ -24,8 +24,8 @@ import playerStore from '@/store/player/player-store'
 import { addSeconds } from 'date-fns'
 
 const CaptainSelection = () => {
-  const { config } = useStore(draftStore)
-  const { players } = useStore(playerStore)
+  const { config } = useUnit(draftStore)
+  const { players } = useUnit(playerStore)
 
   const [openDrawer, setOpenDrawer] = useState(false)
   const [searchText, setSearchText] = useState('')

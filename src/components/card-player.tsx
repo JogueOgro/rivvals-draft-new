@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import { Medal, Trophy } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
@@ -24,7 +24,7 @@ const audioFlip =
   typeof window !== 'undefined' ? new Audio('/static/flip.mp3') : null
 
 const PlayerCard = ({ player, onSelect, cardNumber }: IProps) => {
-  const { chat, } = useStore(draftStore)
+  const { chat, } = useUnit(draftStore)
   const [isOpen, setIsOpen] = useState(false)
 
   if (!player) {

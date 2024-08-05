@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import { Group, Settings } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
@@ -19,7 +19,7 @@ import GroupsRaffle from './raffle-tables'
 
 const SortGroups = () => {
   const [activeView, setActiveView] = useState('1')
-  const { groupsQuantity, teamsPerGroup } = useStore(groupsStore)
+  const { groupsQuantity, teamsPerGroup } = useUnit(groupsStore)
 
   useEffect(() => {
     groupsEvent(groupsInitialState)

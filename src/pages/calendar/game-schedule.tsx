@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -34,8 +34,8 @@ const weekDays = [
 ]
 
 export default function GameSchedule() {
-  const { config } = useStore(draftStore)
-  const { players } = useStore(playerStore)
+  const { config } = useUnit(draftStore)
+  const { players } = useUnit(playerStore)
   const [selectedTeamA, setSelectedTeamA] = useState('')
   const [selectedTeamB, setSelectedTeamB] = useState('')
 

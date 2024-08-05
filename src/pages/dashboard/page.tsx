@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import { Ban, Pin, ShieldHalf, Swords } from 'lucide-react'
 
 import {
@@ -16,8 +16,8 @@ import Overview from './components/overview'
 import TeamsList from './components/teams-list'
 
 export default function DashboardPage() {
-  const { players } = useStore(playerStore)
-  const { config } = useStore(draftStore)
+  const { players } = useUnit(playerStore)
+  const { config } = useUnit(draftStore)
 
   const rivvalsTotalPlayers = players.length
   const rivvalsTotalScore = [...players].reduce((total, player) => {

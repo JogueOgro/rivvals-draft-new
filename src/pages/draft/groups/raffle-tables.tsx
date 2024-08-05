@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import React from 'react'
 
 import {
@@ -12,7 +12,7 @@ import {
 import groupsStore from '@/store/groups/groups-store'
 
 export default function GroupsRaffle() {
-  const { groupsQuantity, teamsPerGroup } = useStore(groupsStore)
+  const { groupsQuantity, teamsPerGroup } = useUnit(groupsStore)
 
   const content = []
   let id = 0

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -36,11 +36,11 @@ const weekDays = [
 ]
 
 export default function PlayerSchedules() {
-  const { config } = useStore(draftStore)
-  const { players } = useStore(playerStore)
+  const { config } = useUnit(draftStore)
+  const { players } = useUnit(playerStore)
 
   return (
-    
+
     <Card className="p-8 -mt-2">
       <Button
             className="min-w-[300px] py-2 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
@@ -56,7 +56,7 @@ export default function PlayerSchedules() {
       </Button>
       {Array.from({ length: Number(config?.teamsQuantity || 0) })?.map((_, idx) => (
         <Table className="my-4 border-t " key={idx}>
-          
+
           <TableHeader>
             <TableRow className="bg-muted">
               <TableHead>Player</TableHead>

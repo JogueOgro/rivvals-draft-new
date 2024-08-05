@@ -1,7 +1,7 @@
 'use client'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 
 import draftStore from '@/store/draft/draft-store'
 
@@ -16,7 +16,7 @@ import {
 } from 'recharts'
 
 export default function Overview() {
-  const { config } = useStore(draftStore)
+  const { config } = useUnit(draftStore)
   const dataSource = config?.teamList?.map((team) => {
     const teamScore = [...team.players].reduce((total, player) => {
       return total + (player ? Number(player.stars) : 0)

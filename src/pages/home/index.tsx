@@ -1,6 +1,6 @@
 'use client'
 
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import { Upload } from 'lucide-react'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
@@ -45,7 +45,7 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const [type, setType] = useState<IType>(undefined)
-  const { config } = useStore(draftStore)
+  const { config } = useUnit(draftStore)
 
   const form = useForm<z.infer<typeof formSchema>>({
     mode: 'all',

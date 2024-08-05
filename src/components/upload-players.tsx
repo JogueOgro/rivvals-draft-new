@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import { Loader2, X } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -23,7 +23,7 @@ import playerStore from '@/store/player/player-store'
 import { readUploadFileUseCase } from '@/useCases/draft/read-upload-file.useCase'
 
 export default function ModalUploadPlayers({ type }: { type: IType }) {
-  const { progress, isLoading, openModalUpload } = useStore(playerStore)
+  const { progress, isLoading, openModalUpload } = useUnit(playerStore)
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [isDragging, setIsDragging] = useState<boolean>(false)

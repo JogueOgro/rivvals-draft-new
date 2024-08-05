@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import { PlayCircle, XCircle } from 'lucide-react'
 import { useEffect, useMemo } from 'react'
 
@@ -8,7 +8,7 @@ import draftStore from '@/store/draft/draft-store'
 import { Button } from './ui/button'
 
 const TimerClock = () => {
-  const { isActiveTimer, timerSeconds } = useStore(draftStore)
+  const { isActiveTimer, timerSeconds } = useUnit(draftStore)
 
   useEffect(() => {
     let interval: NodeJS.Timeout

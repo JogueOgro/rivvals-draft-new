@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import { Medal, Trophy, X } from 'lucide-react'
 import React, { useEffect } from 'react'
 
@@ -24,7 +24,7 @@ const PlayerPage = () => {
     isLoading,
     filters,
     totalRegistries,
-  } = useStore(playerStore)
+  } = useUnit(playerStore)
 
   const searchText = filters?.name?.trim()?.toLowerCase() || ''
   const filteredData = [...players]?.filter((obj) =>

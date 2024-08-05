@@ -281,3 +281,24 @@ export const formatFileName = (file: File): string => {
   const formattedName = name.replaceAll(' ', '_')
   return `${formattedName}_${timestamp}.${extension}`
 }
+
+const days = [
+  'SEGUNDA-FEIRA',
+  'TERÇA-FEIRA',
+  'QUARTA-FEIRA',
+  'QUINTA-FEIRA',
+  'SEXTA-FEIRA',
+  'SÁBADO',
+  'DOMINGO',
+]
+
+export const sortDays = (a, b) => {
+  a = days.indexOf(a.day)
+  b = days.indexOf(b.day)
+  if (a === b) {
+    return a.hour - b.hour
+  }
+  else {
+    return a - b
+  }
+}

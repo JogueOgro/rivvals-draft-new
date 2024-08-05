@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import { Shuffle } from 'lucide-react'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
@@ -16,7 +16,7 @@ export default function RaffleButton() {
   const [tenasOpen, setTenasOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const { groupsQuantity, teamsPerGroup } = useStore(groupsStore)
+  const { groupsQuantity, teamsPerGroup } = useUnit(groupsStore)
   const { config } = draftStore.getState()
   const [positions, setPositions] = useState<number[]>([])
   const total = Number(groupsQuantity) * Number(teamsPerGroup)

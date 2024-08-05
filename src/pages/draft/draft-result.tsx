@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import {
   ArrowLeft,
   DatabaseIcon,
@@ -19,7 +19,7 @@ import { downloadDraftUseCase } from '@/useCases/draft/download-draft.useCase'
 import { persistDraftUseCase } from '@/useCases/draft/persist-draft.useCase'
 
 const DraftResult = () => {
-  const { config, activeTeamIndex } = useStore(draftStore)
+  const { config, activeTeamIndex } = useUnit(draftStore)
 
   const dataSource = config?.teamList ? [...config.teamList] : []
 

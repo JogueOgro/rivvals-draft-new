@@ -1,6 +1,6 @@
 'use client'
 
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 
 import HeadMetatags from '@/components/head-metatags'
 import { Card } from '@/components/ui/card'
@@ -12,7 +12,7 @@ import GameSchedule from './game-schedule'
 import PlayerSchedules from './player-schedules'
 
 export default function CalendarPage() {
-  const { players } = useStore(playerStore)
+  const { players } = useUnit(playerStore)
   return (
     <>
       <HeadMetatags title="Calendário" />

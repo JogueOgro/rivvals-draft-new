@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -32,7 +32,7 @@ const formSchema = z.object({
 })
 
 export default function GroupsConfig({ setActiveView }: IProps) {
-  const { groupsQuantity, teamsPerGroup } = useStore(groupsStore)
+  const { groupsQuantity, teamsPerGroup } = useUnit(groupsStore)
   const form = useForm<z.infer<typeof formSchema>>({
     mode: 'all',
     defaultValues,

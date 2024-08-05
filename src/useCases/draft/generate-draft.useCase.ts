@@ -1,5 +1,6 @@
 import { IDraft, ITeam } from '@/domain/draft.domain'
 import { IPlayer } from '@/domain/player.domain'
+import { sortDays } from '@/lib/utils'
 import { IType } from '@/pages/home'
 import { draftEvent } from '@/store/draft/draft-events'
 import { draftInitialState } from '@/store/draft/draft-state'
@@ -26,22 +27,6 @@ const execute = (
     playerEvent({ openModalUpload: false })
     window.alert('Não há quantidade de jogadores suficiente.')
     return
-  }
-
-  const days = [
-    'SEGUNDA-FEIRA',
-    'TERÇA-FEIRA',
-    'QUARTA-FEIRA',
-    'QUINTA-FEIRA',
-    'SEXTA-FEIRA',
-    'SÁBADO',
-    'DOMINGO',
-  ]
-
-  const sortDays = function (a, b) {
-    a = days.indexOf(a.day)
-    b = days.indexOf(b.day)
-    return a - b
   }
 
   const teamList = [] as ITeam[]

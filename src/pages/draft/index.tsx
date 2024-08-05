@@ -1,6 +1,6 @@
 'use client'
 
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import dynamic from 'next/dynamic'
 import { useEffect } from 'react'
 
@@ -20,8 +20,8 @@ import SortGroups from './groups'
 const PlayersSelect = dynamic(() => import('./players-select'), { ssr: false })
 
 export default function DraftPage() {
-  const { players } = useStore(playerStore)
-  const { activeTab, config, activeTeamIndex } = useStore(draftStore)
+  const { players } = useUnit(playerStore)
+  const { activeTab, config, activeTeamIndex } = useUnit(draftStore)
 
   const filterSelectionCaptain =
     config?.teamList &&

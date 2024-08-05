@@ -1,4 +1,4 @@
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import Image from 'next/image'
 
 import userIconImg from '@/assets/user-icon.png'
@@ -6,7 +6,7 @@ import draftStore from '@/store/draft/draft-store'
 
 /* eslint-disable @next/next/no-img-element */
 export default function TwitchChat() {
-  const { chat: chatList } = useStore(draftStore)
+  const { chat: chatList } = useUnit(draftStore)
 
   const commandRegexChoose = /^!(escolher)\b/i
 

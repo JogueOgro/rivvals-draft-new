@@ -1,11 +1,11 @@
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import { ShieldHalf } from 'lucide-react'
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import draftStore from '@/store/draft/draft-store'
 
 export default function TeamsList() {
-  const { config } = useStore(draftStore)
+  const { config } = useUnit(draftStore)
 
   const calculatedListWithTeamAvgScore = config?.teamList
     ?.map((team) => {

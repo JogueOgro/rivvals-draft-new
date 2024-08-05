@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
-import { useStore } from 'effector-react'
+import { useUnit } from 'effector-react'
 import {
   ArrowLeft,
   ArrowLeftCircle,
@@ -38,7 +38,7 @@ const PlayersSelect = () => {
     isOpenModalStart,
     isActiveTimer,
     activeTab,
-  } = useStore(draftStore)
+  } = useUnit(draftStore)
 
   const [listOfAllocatedPlayers, setListOfAllocatedPlayers] = useState<
     string[]
