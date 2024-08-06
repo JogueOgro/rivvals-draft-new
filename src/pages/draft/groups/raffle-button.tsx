@@ -27,7 +27,7 @@ export default function RaffleButton() {
     setPositions(new Array(total))
   }, [total])
 
-  const teamList = config?.teamList
+  const teamList = [...config!.teamList!]
 
   const handleClickRaffle = async () => {
     if (currentTeam > total) {

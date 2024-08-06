@@ -32,7 +32,7 @@ export interface IDraftChat {
 
 export interface IDraftPage {
   activeTab: string
-  config: IDraft | null
+  config: IDraft
   isActiveTimer: boolean
   isOpenModalStart: boolean
   timerSeconds: number
