@@ -1,0 +1,31 @@
+import { IPlayer } from '@/domain/player.domain'
+import { playerEvent } from '@/store/player/player-events'
+import playerStore from '@/store/player/player-store'
+
+const execute = async (players: IPlayer[]) => {
+  try {
+    const { pageSize } = playerStore.getState()
+    playerEvent({ isLoading: true })
+    const totalRegistries = players.length
+    const totalPages = Math.ceil(totalRegistries / pageSize)
+
+    const sortPlayerByScore = players?.sort((playerA, playerB) => {
+      const scoreA = playerA?.stars || '0'
+      const scoreB = playerB?.stars || '0'
+      return Number(scoreB) - Number(scoreA)
+    })
+
+    playerEvent({
+      isLoading: false,
+      players: sortPlayerByScore,
+      totalRegistries,
+      totalPages,
+    })
+  } catch (e) {
+    window.alert(
+      'Ocorreu um erro, verifique o arquivo de importação e tente novamente.',
+    )
+  }
+}
+
+export const importPlayersFromDBUseCase = { execute }

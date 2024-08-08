@@ -23,6 +23,7 @@ export interface IPlayer extends BaseDomain {
 export interface IPlayerPage {
   isLoading: boolean
   openModalUpload: boolean
+  openModalDB: boolean
   pageSize: number
   progress: number
   currentPage: number

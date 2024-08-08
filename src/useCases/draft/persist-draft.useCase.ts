@@ -4,7 +4,7 @@ import playerStore from '@/store/player/player-store'
 const execute = () => {
   const { players } = playerStore.getState()
   const { config } = draftStore.getState()
-  console.log(config)
+
   fetch('http://localhost:5000/complete_draft', {
     mode: 'cors',
     method: 'POST',

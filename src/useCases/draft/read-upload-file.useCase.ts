@@ -15,8 +15,8 @@ type IParams = {
   callBack: () => void
 }
 
-const execute = async ({ file, callBack, type }: IParams) => {
-  if (!file) return
+const execute = async ({ draft, callBack, type }: IParams) => {
+  if (!draft) return
 
   const { config } = draftStore.getState()
 
