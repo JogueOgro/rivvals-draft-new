@@ -12,5 +12,5 @@ export interface IMatch extends BaseDomain {
   isDone?: boolean
   isScheduled?: boolean
   score?: string[]
-  freeSchedule?: []
+  freeSchedule?: { day: string; hour: number }[]
 }
