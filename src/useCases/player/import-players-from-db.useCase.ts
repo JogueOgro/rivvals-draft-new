@@ -1,4 +1,5 @@
 import { IPlayer } from '@/domain/player.domain'
+import { sortDays } from '@/lib/utils'
 import { playerEvent } from '@/store/player/player-events'
 import playerStore from '@/store/player/player-store'
 
@@ -8,6 +9,11 @@ const execute = async (players: IPlayer[]) => {
     playerEvent({ isLoading: true })
     const totalRegistries = players.length
     const totalPages = Math.ceil(totalRegistries / pageSize)
+
+    players.forEach((player) => {
+      const formalJSON = player.schedule.replace(/'/g, '"')
+      player.schedule = JSON.parse(formalJSON).sort(sortDays)
+    })
 
     const sortPlayerByScore = players?.sort((playerA, playerB) => {
       const scoreA = playerA?.stars || '0'

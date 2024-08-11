@@ -32,8 +32,8 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
 
   for (const row of filteredAvailablePlayers) {
     if (!unmatchedPlayersList.includes(row)) {
-      const strigPlayerTags = row.tags?.trim()
-      const listPlayerTags = strigPlayerTags?.split(',') || []
+      const stringPlayerTags = row.tags?.trim()
+      const listPlayerTags = stringPlayerTags?.split(',') || []
       const isMatchTags = activeTeamTags.some((x) =>
         listPlayerTags.includes(x!),
       )

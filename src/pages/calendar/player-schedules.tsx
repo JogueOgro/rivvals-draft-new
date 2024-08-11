@@ -98,7 +98,7 @@ export default function PlayerSchedules() {
 
                           const key = `${day}_${hour}`
 
-                          const isChecked = [...players]?.find((x) => x.id === player.id)?.schedule?.some(
+                          const isChecked = [...players]?.find((x) => x.idplayer === player.idplayer)?.schedule?.some(
                             (x) => {
                               const checkKey = `${x.day}_${x.hour}`
                               return checkKey === key

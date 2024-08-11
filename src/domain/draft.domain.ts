@@ -12,6 +12,7 @@ export interface ITeam {
 }
 
 export interface IDraft extends BaseDomain {
+  active?: number
   game?: string
   edition?: number
   draftDate?: Date

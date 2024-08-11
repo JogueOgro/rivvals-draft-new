@@ -11,10 +11,11 @@ const execute = async (players: IPlayer[]) => {
     const totalRegistries = players.length
     const totalPages = Math.ceil(totalRegistries / pageSize)
     const formattedData = [...players]
-      ?.map((row) => {
+      ?.map((row, index) => {
         return {
           ...row,
           id: uuid(),
+          idplayer: index,
           team: !row.team ? undefined : row.team,
           createdAt: new Date().toISOString(),
           schedule: row?.schedule

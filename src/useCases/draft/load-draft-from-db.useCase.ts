@@ -54,7 +54,7 @@ const execute = async ({ draftEdition, callBack, type }: IParams) => {
 
   await importPlayersFromDBUseCase.execute(players)
 
-  const singleDraft = fullDraft.slice(1)
+  const singleDraft = fullDraft[0]
 
   groupsEvent({
     groupsQuantity: singleDraft.groupsQuantity,
@@ -63,6 +63,7 @@ const execute = async ({ draftEdition, callBack, type }: IParams) => {
 
   generateDraftUseCase.execute(
     {
+      active: singleDraft?.active,
       game: singleDraft?.game,
       edition: singleDraft?.edition,
       draftDate: singleDraft?.draftDate,

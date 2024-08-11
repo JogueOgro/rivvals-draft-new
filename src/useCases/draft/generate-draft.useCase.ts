@@ -31,6 +31,18 @@ const execute = (
 
   const teamList = [] as ITeam[]
   const totalTeams = Number(config!.teamsQuantity)
+  let availablePlayers = [] as IPlayer[]
+
+  if (type === 'database') {
+    availablePlayers = players?.filter(
+      (x) =>
+        !teamList.some((y) => y.players.some((z) => z.idplayer === x.idplayer)),
+    )
+  } else {
+    availablePlayers = players?.filter(
+      (x) => !teamList.some((y) => y.players.some((z) => z.id === x.id)),
+    )
+  }
 
   for (let i = 0; i < totalTeams; i++) {
     const teamNum = i + 1
@@ -39,10 +51,6 @@ const execute = (
       players: [],
       schedules: [],
     }
-
-    const availablePlayers = players?.filter(
-      (x) => !teamList.some((y) => y.players.some((z) => z.id === x.id)),
-    )
 
     const sortByTwitch: IPlayer[] = availablePlayers?.sort((a, b) => {
       const twitchA = a?.twitch?.toString() || ''
@@ -54,7 +62,7 @@ const execute = (
       (x) => Number(x.team) === teamNum,
     )
 
-    const playerToInsert = { ...sortByTwitch[0], isCaptain: true }
+    const playerToInsert = { ...sortByTwitch[0], isCaptain: 1 }
 
     if (type === 'new') {
       team.players.push(playerToInsert)

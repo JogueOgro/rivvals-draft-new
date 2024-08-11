@@ -1,6 +1,7 @@
 import { BaseDomain } from './base.domain'
 
 export interface IPlayer extends BaseDomain {
+  idplayer?: number
   photo?: string
   twitch?: string
   email?: string
