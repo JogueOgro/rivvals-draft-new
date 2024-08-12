@@ -13,6 +13,7 @@ const execute = async (players: IPlayer[]) => {
     players.forEach((player) => {
       const formalJSON = player.schedule.replace(/'/g, '"')
       player.schedule = JSON.parse(formalJSON).sort(sortDays)
+      player.id = String(player.idplayer)
     })
 
     const sortPlayerByScore = players?.sort((playerA, playerB) => {

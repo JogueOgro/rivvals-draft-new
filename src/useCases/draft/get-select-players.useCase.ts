@@ -57,9 +57,11 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
     0,
   )
 
-  const activeTeamAvgScore = Math.abs(
+  let activeTeamAvgScore = Math.abs(
     activeTeamTotalScore / activeTeamTotalPlayers,
   )
+
+  activeTeamAvgScore = activeTeamAvgScore || 0
 
   const avgLimit = rivvalsAvgScore * 0.25
   const lowerLimit = rivvalsAvgScore - avgLimit
