@@ -68,7 +68,6 @@ export default function LoginPage() {
 
   useEffect(() => {
     form.reset(defaultValues)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

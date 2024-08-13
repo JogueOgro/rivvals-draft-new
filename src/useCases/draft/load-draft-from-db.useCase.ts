@@ -15,7 +15,7 @@ type IParams = {
 const fetchDraftsByEdition = async (draftEdition: string) => {
   try {
     const response = await fetch(
-      'http://localhost:5000/draft_by_edition/' + draftEdition,
+      'http://localhost:5000/drafts_by_edition/' + draftEdition,
       {
         mode: 'cors',
         method: 'GET',

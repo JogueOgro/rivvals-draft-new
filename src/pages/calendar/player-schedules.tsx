@@ -23,6 +23,7 @@ import playerStore from '@/store/player/player-store'
 import draftStore from '@/store/draft/draft-store'
 import { downloadDraftUseCase } from '@/useCases/draft/download-draft.useCase'
 import { persistDraftUseCase } from '@/useCases/draft/persist-draft.useCase'
+import { sortDays } from '@/lib/utils'
 
 
 const weekDays = [
@@ -109,7 +110,6 @@ export default function PlayerSchedules() {
                             <div
                               className="flex items-center space-x-0.5"
                               key={'hour' + key}
-                            // onClick={() => console.log(day, hour, player)}
 
                             >
                               <Checkbox
@@ -122,7 +122,7 @@ export default function PlayerSchedules() {
                                     playerEvent({
                                       players: [...players]?.map((x) =>
                                         x.id === player.id
-                                          ? { ...x, schedule: newList }
+                                          ? { ...x, schedule: newList.sort(sortDays) }
                                           : x,
                                       ),
                                     })
@@ -135,7 +135,7 @@ export default function PlayerSchedules() {
                                     playerEvent({
                                       players: [...players]?.map((x) =>
                                         x.id === player.id
-                                          ? { ...x, schedule: filteredList }
+                                          ? { ...x, schedule: filteredList.sort(sortDays) }
                                           : x,
                                       ),
                                     })
