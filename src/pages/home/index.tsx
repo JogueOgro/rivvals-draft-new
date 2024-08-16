@@ -125,7 +125,7 @@ export default function LoginPage() {
                       defaultValue="15"
                       render={({ field: { value, onChange, name } }) => (
                         <FormItem className="w-full">
-                          <FormLabel>Edicao*</FormLabel>
+                          <FormLabel>Edicao *</FormLabel>
                           <FormControl>
                             <Input
                               key={name}
