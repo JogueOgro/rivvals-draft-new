@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react'
-import { Upload } from 'lucide-react'
+import { Loader2, Upload } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
@@ -25,7 +25,7 @@ import playerStore from '@/store/player/player-store'
 import { loadDraftFromDB } from '@/useCases/draft/load-draft-from-db.useCase'
 
 export default function ModalQueryPlayers({ type }: { type: IType }) {
-  const { openModalDB } = useUnit(playerStore)
+  const { isLoading, openModalDB } = useUnit(playerStore)
   const [drafts, setDrafts] = useState([])
   const [selectedDraft, setSelectedDraft] = useState('')
 
@@ -54,6 +54,7 @@ export default function ModalQueryPlayers({ type }: { type: IType }) {
 
   const onSubmit = (draftEdition?: string | null) => {
     if (!draftEdition) return
+    playerEvent({ isLoading: true })
     loadDraftFromDB.execute({
       draftEdition,
       type,
@@ -65,7 +66,7 @@ export default function ModalQueryPlayers({ type }: { type: IType }) {
 
   useEffect(() => {
     fetchDrafts()
-  }, [])
+  }, [openModalDB])
 
   return (
     <Dialog
@@ -102,14 +103,23 @@ export default function ModalQueryPlayers({ type }: { type: IType }) {
               </Select>
               <div className="mt-4">
                 <Button
-                  type="submit"
+                  disabled={isLoading}
                   className="w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
                   onClick={() => onSubmit(selectedDraft)}
                 >
-                  <div className="flex items-center gap-2">
-                    <Upload className="w-5 h-5" />
-                    <span>Carregar</span>
-                  </div>
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="h-7 w-7 animate-spin" />
+                      <span className="text-md ml-2">Carregando...</span>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex items-center gap-2">
+                        <Upload className="w-5 h-5" />
+                        <span>Carregar</span>
+                      </div>
+                    </>
+                  )}
                 </Button>
               </div>
             </div>
