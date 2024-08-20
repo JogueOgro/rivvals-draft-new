@@ -18,6 +18,15 @@ const PageLayout = ({ children }: { children: ReactNode }) => {
     )
   }
 
+  if (asPath === '/form_rocket_league') {
+    return (
+      <>
+        <AnimatedBackground />
+        {children}
+      </>
+    )
+  }
+
   return (
     <div
       className="flex min-h-screen"

@@ -1,11 +1,11 @@
+/* eslint-disable prettier/prettier */
 'use client'
 
-import { useUnit } from 'effector-react'
 import Image from 'next/image'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
-import logoImg from '@/assets/logo.png'
+import bannerImg from '@/assets/banner_rocket.png'
 import HeadMetatags from '@/components/head-metatags'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -19,14 +19,14 @@ import {
 import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
-import draftStore from '@/store/draft/draft-store'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
 const defaultValues = {
-  game: undefined,
-  edition: undefined,
+  twitch: undefined,
+  name: undefined,
+  email: undefined,
   capitao_ou_reserva: undefined,
   jajogou: undefined,
   frequencia: undefined,
@@ -68,12 +68,11 @@ const items = [
   },
 ] as const
 
-export default function LoginPage() {
-  const { config } = useUnit(draftStore)
-
+export default function FormPage() {
   const formSchema = z.object({
-    game: z.string().min(1, '* Campo obrigatório'),
-    edition: z.string().min(1, '* Campo obrigatório'),
+    name: z.string().min(1, '* Campo obrigatório'),
+    email: z.string().email('* E-mail inválido'),
+    twitch: z.string(),
     capitao_ou_reserva: z.enum(['normal', 'capitao', 'reserva'], {
       required_error: 'Você deixou alguma opção em branco!',
     }),
@@ -107,51 +106,61 @@ export default function LoginPage() {
 
   return (
     <>
-      <HeadMetatags title="Inscrição Rocket League" />
-      <div className="overflow-hidden flex w-full min-h-screen items-center justify-center">
-        <div className="flex flex-col py-4 rounded-3xl animate-in fade-in shadow-lg transition-all duration-1000 bg-white border-2 min-w-[70vw] pb-12 backdrop-filter backdrop-blur-lg bg-opacity-30">
-          <Image src={logoImg} alt="img" width={180} className="self-center" />
-
-          <div className="flex w-full items-center justify-center mt-6">
+      <HeadMetatags title="Inscrição Rocket League" description='Inscrição Rivvals Rocket League - Edição 15' />
+      <div className="p-4 overflow-hidden flex w-full min-h-screen items-center justify-center">
+        <div className="flex flex-col pb-12 rounded animate-in fade-in shadow-lg transition-all duration-1000 bg-white w-full max-w-[1000px] my-4 backdrop-filter backdrop-blur-lg bg-opacity-40">
+          <Image src={bannerImg} alt="img" className="self-center" />
+          <div className="flex w-full items-center justify-center mt-6 p-4">
             <Form {...form}>
               <form
                 className="flex flex-col max-w-[900px] gap-2"
                 onSubmit={form.handleSubmit(onSubmit)}
               >
-                <div className="w-full flex items-center justify-between gap-4">
+                <div className="w-full">
                   <FormField
                     control={form.control}
-                    name="game"
-                    defaultValue={config?.game}
-                    render={({ field: { name } }) => (
+                    name="name"
+                    render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel>Nome do Jogo *</FormLabel>
+                        <FormLabel>Nome</FormLabel>
                         <FormControl>
                           <Input
-                            disabled
-                            key={name}
-                            name={name}
-                            placeholder="Digite aqui"
-                            value="Rocket League"
+                            placeholder="Digite seu nome completo"
+                            {...field}
                           />
                         </FormControl>
                       </FormItem>
                     )}
                   />
+                </div>
+                <div className="w-full">
                   <FormField
                     control={form.control}
-                    name="edition"
-                    defaultValue="15"
-                    render={({ field: { name } }) => (
+                    name="email"
+                    render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel>Edicao *</FormLabel>
+                        <FormLabel>E-mail *</FormLabel>
                         <FormControl>
                           <Input
-                            disabled
-                            key={name}
-                            name={name}
-                            placeholder="Digite aqui"
-                            value="15"
+                            placeholder="Digite seu e-mail"
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="w-full">
+                  <FormField
+                    control={form.control}
+                    name="twitch"
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <FormLabel>Usuário da twitch</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Insira seu nome de usuário da Twitch"
+                            {...field}
                           />
                         </FormControl>
                       </FormItem>
@@ -161,16 +170,14 @@ export default function LoginPage() {
                 <FormField
                   control={form.control}
                   name="capitao_ou_reserva"
-                  render={({ field: { value, onChange, name } }) => (
+                  render={({ field: { value, onChange } }) => (
                     <FormItem className="space-y-3 mt-6">
                       <FormLabel>
                         Gostaria de se cadastrar como capitão ou reserva?
                       </FormLabel>
                       <FormControl>
                         <RadioGroup
-                          onValueChange={(event) =>
-                            onChange(event.target.value)
-                          }
+                          onValueChange={(value) => onChange(value)}
                           defaultValue={value}
                           className="flex flex-col space-y-1"
                         >
@@ -208,13 +215,12 @@ export default function LoginPage() {
                 <FormField
                   control={form.control}
                   name="jajogou"
-                  render={({ field: { name } }) => (
+                  render={({ field }) => (
                     <FormItem className="space-y-3 mt-6">
                       <FormLabel>Já jogou Rocket League?</FormLabel>
                       <FormControl>
                         <RadioGroup
-                          // onValueChange={}
-                          defaultValue={config?.game}
+                          onValueChange={(value) => field.onChange(value)}
                           className="flex flex-col space-y-1"
                         >
                           <FormItem className="flex items-center space-x-3 space-y-0">
@@ -241,13 +247,12 @@ export default function LoginPage() {
                 <FormField
                   control={form.control}
                   name="frequencia"
-                  render={({ field: { name } }) => (
+                  render={({ field }) => (
                     <FormItem className="space-y-3 mt-6">
                       <FormLabel>Se joga, com que frequência? ⏳</FormLabel>
                       <FormControl>
                         <RadioGroup
-                          // onValueChange={}
-                          defaultValue={config?.game}
+                          onValueChange={(value) => field.onChange(value)}
                           className="flex flex-col space-y-1"
                         >
                           <FormItem className="flex items-center space-x-3 space-y-0">
@@ -290,13 +295,12 @@ export default function LoginPage() {
                 <FormField
                   control={form.control}
                   name="modos"
-                  render={({ field: { name } }) => (
+                  render={({ field }) => (
                     <FormItem className="space-y-3 mt-6">
                       <FormLabel>Que modos joga?</FormLabel>
                       <FormControl>
                         <RadioGroup
-                          // onValueChange={}
-                          defaultValue={config?.game}
+                          onValueChange={(value) => field.onChange(value)}
                           className="flex flex-col space-y-1"
                         >
                           <FormItem className="flex items-center space-x-3 space-y-0">
@@ -323,13 +327,12 @@ export default function LoginPage() {
                 <FormField
                   control={form.control}
                   name="nivel_ranqueado"
-                  render={({ field: { name } }) => (
+                  render={({ field }) => (
                     <FormItem className="space-y-3 mt-6">
                       <FormLabel>Qual o seu maior nível ranqueado?</FormLabel>
                       <FormControl>
                         <RadioGroup
-                          // onValueChange={}
-                          defaultValue={config?.game}
+                          onValueChange={(value) => field.onChange(value)}
                           className="flex flex-col space-y-1"
                         >
                           <FormItem className="flex items-center space-x-3 space-y-0">
@@ -369,69 +372,70 @@ export default function LoginPage() {
                     </FormItem>
                   )}
                 />
-                <FormItem className="space-y-3 mt-6">
-                  <FormLabel>
-                    Quais outros jogos vc pratica e quais seus níveis
-                    ranqueados?
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Por favor seja detalhista"
-                      className="resize-none"
-                      // {...field}
-                    />
-                  </FormControl>
-                </FormItem>
                 <FormField
                   control={form.control}
-                  name="items"
-                  render={() => (
+                  name="nivel_ranqueado"
+                  render={({ field }) => (
                     <FormItem className="space-y-3 mt-6">
-                      <div className="mb-4">
-                        <FormLabel>Quais habilidades você domina?</FormLabel>
-                      </div>
-                      {items.map((item) => (
-                        <FormField
-                          key={item.id}
-                          control={form.control}
-                          name="items"
-                          render={({ field }) => {
-                            return (
-                              <FormItem
-                                key={item.id}
-                                className="flex flex-row items-start space-x-3 space-y-0"
-                              >
-                                <FormControl>
-                                  <Checkbox
-                                    checked={field.value?.includes(item.id)}
-                                    onCheckedChange={(checked) => {
-                                      return checked
-                                        ? field.onChange([
-                                            ...field.value,
-                                            item.id,
-                                          ])
-                                        : field.onChange(
-                                            field.value?.filter(
-                                              (value) => value !== item.id,
-                                            ),
-                                          )
-                                    }}
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  {item.label}
-                                </FormLabel>
-                              </FormItem>
-                            )
-                          }}
+                      <FormLabel>
+                        Quais outros jogos vc pratica e quais seus níveis
+                        ranqueados?
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Por favor seja detalhista"
+                          className="resize-none"
+                          {...field}
                         />
-                      ))}
+                      </FormControl>
                     </FormItem>
                   )}
                 />
+                <FormItem className="space-y-3 mt-6">
+                  <div className="mb-4">
+                    <FormLabel>Quais habilidades você domina?</FormLabel>
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="items"
+                    render={({ field }) => {
+                      return (
+                        <>
+                          {items.map((item) => (
+                            <FormItem
+                              key={item.id}
+                              className="flex flex-row items-start space-x-3 space-y-0"
+                            >
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value?.includes(item.id)}
+                                  onCheckedChange={(checked) => {
+                                    return checked
+                                      ? field.onChange([
+                                        ...(field?.value || []),
+                                        item.id,
+                                      ])
+                                      : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value !== item.id,
+                                        ),
+                                      )
+                                  }}
+                                />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                {item.label}
+                              </FormLabel>
+                            </FormItem>
+                          ))}
+                        </>
+                      )
+                    }}
+                  />
+                </FormItem>
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600 mt-6"
+                  className="w-full mt-12 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
                 >
                   <div className="flex items-center gap-2">
                     <span>Confirmar Inscrição</span>
