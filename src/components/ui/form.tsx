@@ -16,6 +16,12 @@ import {
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
 
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable prettier/prettier */
+
 const Form = FormProvider
 
 type FormFieldContextValue<
@@ -175,6 +181,5 @@ export {
   FormItem,
   FormLabel,
   FormMessage,
-  useFormField
+  useFormField,
 }
-

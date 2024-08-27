@@ -1,8 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
 /* eslint-disable prettier/prettier */
 'use client'
 
+import { ArrowRight, Loader2 } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -25,10 +28,20 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
 import { sleep } from '@/lib/utils'
 import { subscribePlayer } from '@/useCases/player/subscribe-player.useCase'
+
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ArrowRight, Loader2 } from 'lucide-react'
-import Link from 'next/link'
 import { z } from 'zod'
+
+/* eslint-disable react-hooks/exhaustive-deps */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable react-hooks/exhaustive-deps */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prettier/prettier */
 
 const defaultValues = {
   twitch: '',
@@ -109,8 +122,8 @@ export default function FormPage() {
 
   async function onSubmit(formData: z.infer<typeof formSchema>) {
     try {
-      setIsLoading(true);
-      await sleep(2000);
+      setIsLoading(true)
+      await sleep(2000)
       const payload = {
         ...formData,
         edition: 15,
@@ -122,7 +135,6 @@ export default function FormPage() {
       // await axios.post('/api/form-rocket-league', payload);
 
       setIsSubmited(true)
-
     } catch (error) {
       console.log(error)
       setIsSubmited(false)
@@ -137,7 +149,10 @@ export default function FormPage() {
 
   return (
     <>
-      <HeadMetatags title="Inscrição Rocket League" description='Inscrição Rivvals Rocket League - Edição 15' />
+      <HeadMetatags
+        title="Inscrição Rocket League"
+        description="Inscrição Rivvals Rocket League - Edição 15"
+      />
       <div className="p-4 overflow-hidden flex w-full min-h-screen items-center justify-center">
         <div className="flex flex-col pb-12 rounded animate-in fade-in shadow-lg transition-all duration-1000 bg-white w-full max-w-[1000px] my-4 backdrop-filter backdrop-blur-lg bg-opacity-40">
           <Image src={bannerImg} alt="img" className="self-center" />
@@ -145,18 +160,28 @@ export default function FormPage() {
             {isSubmited ? (
               <div className="text-center flex items-center justify-center flex-col">
                 <div className="w-20 h-20">
-                  <LottiePlayer path="/static/success_animation.json" loop={false} />
+                  <LottiePlayer
+                    path="/static/success_animation.json"
+                    loop={false}
+                  />
                 </div>
-                <h1 className="font-bold text-3xl text-center text-green-600">Sucesso!!!</h1>
+                <h1 className="font-bold text-3xl text-center text-green-600">
+                  Sucesso!!!
+                </h1>
                 <p className="mt-2 text-center max-w-[600px]">
-                  Obrigado por se inscrever no RIVVALS, Edição 15! 🚀 Fique atento nas nossas comunidades para ver o que vai rolar.
-                  Boa sorte e divirta-se!
+                  Obrigado por se inscrever no RIVVALS, Edição 15! 🚀 Fique
+                  atento nas nossas comunidades para ver o que vai rolar. Boa
+                  sorte e divirta-se!
                 </p>
                 <p className="pb-2 text-center max-w-[600px]">
                   Vamos fazer desse evento um momento incrível juntos.
                 </p>
                 <div className="flex items-center justify-center gap-4 mt-4">
-                  <Link target='_blank' href="https://www.twitch.tv/rivvalsgg" className="p-2 rounded border bg-white">
+                  <Link
+                    target="_blank"
+                    href="https://www.twitch.tv/rivvalsgg"
+                    className="p-2 rounded border bg-white"
+                  >
                     <Image
                       src={twitchImg}
                       alt="Twitch"
@@ -165,7 +190,11 @@ export default function FormPage() {
                       className="h-auto w-full"
                     />
                   </Link>
-                  <Link target='_blank' href="https://www.instagram.com/rivvals.gg" className="p-2 rounded border bg-white">
+                  <Link
+                    target="_blank"
+                    href="https://www.instagram.com/rivvals.gg"
+                    className="p-2 rounded border bg-white"
+                  >
                     <Image
                       src={instaImg}
                       alt="Instagram"
@@ -207,10 +236,7 @@ export default function FormPage() {
                         <FormItem className="w-full">
                           <FormLabel>E-mail *</FormLabel>
                           <FormControl>
-                            <Input
-                              placeholder="Digite seu e-mail"
-                              {...field}
-                            />
+                            <Input placeholder="Digite seu e-mail" {...field} />
                           </FormControl>
                         </FormItem>
                       )}
@@ -260,8 +286,8 @@ export default function FormPage() {
                                 <RadioGroupItem value="capitao" />
                               </FormControl>
                               <FormLabel className="font-normal">
-                                Sim, gostaria de ser capitão do meu time! (Pontos
-                                Bonus)
+                                Sim, gostaria de ser capitão do meu time!
+                                (Pontos Bonus)
                               </FormLabel>
                             </FormItem>
                             <FormItem className="flex items-center space-x-3 space-y-0">
@@ -449,7 +475,7 @@ export default function FormPage() {
                         </FormLabel>
                         <FormControl>
                           <Textarea
-                            defaultValue={"Nenhum"}
+                            defaultValue={'Nenhum'}
                             placeholder="Por favor seja detalhista"
                             className="resize-none"
                             {...field}
@@ -479,14 +505,14 @@ export default function FormPage() {
                                     onCheckedChange={(checked) => {
                                       return checked
                                         ? field.onChange([
-                                          ...(field?.value || []),
-                                          item.id,
-                                        ])
+                                            ...(field?.value || []),
+                                            item.id,
+                                          ])
                                         : field.onChange(
-                                          field.value?.filter(
-                                            (value) => value !== item.id,
-                                          ),
-                                        )
+                                            field.value?.filter(
+                                              (value) => value !== item.id,
+                                            ),
+                                          )
                                     }}
                                   />
                                 </FormControl>
@@ -520,10 +546,9 @@ export default function FormPage() {
                 </form>
               </Form>
             )}
-
           </div>
         </div>
-      </div >
+      </div>
     </>
   )
 }

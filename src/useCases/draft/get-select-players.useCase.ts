@@ -116,7 +116,7 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
     sectionSize = unmatchedPlayersList.length / 2
   }
 
-  let sortCardsByAverageTeamScore = []
+  let sortCardsByAverageTeamScore: IPlayer[] = []
 
   if (muchHigher) {
     sortCardsByAverageTeamScore = unmatchedPlayersList.slice(-sectionSize, -1)

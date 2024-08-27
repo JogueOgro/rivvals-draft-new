@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
@@ -8,6 +9,17 @@ import { DayPicker } from 'react-day-picker'
 
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 

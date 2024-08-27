@@ -1,4 +1,4 @@
-import { IDraft, ITeam } from '@/domain/draft.domain'
+import { IDraft, ISchedule, ITeam } from '@/domain/draft.domain'
 import { IPlayer } from '@/domain/player.domain'
 import { sortDays } from '@/lib/utils'
 import { IType } from '@/pages/home'
@@ -52,7 +52,7 @@ const execute = (
     const team: ITeam = {
       id: String(teamNum),
       players: [],
-      schedules: [],
+      schedules: [] as ISchedule[],
     }
 
     const sortByTwitch: IPlayer[] = availablePlayers?.sort((a, b) => {
@@ -102,6 +102,7 @@ const execute = (
     teamList.push(team)
   }
 
+  // @ts-ignore
   draftEvent({
     config: { ...config, teamList },
     activeTab: '2',

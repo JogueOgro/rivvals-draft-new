@@ -11,7 +11,7 @@ const execute = async (players: IPlayer[]) => {
     const totalPages = Math.ceil(totalRegistries / pageSize)
 
     players.forEach((player) => {
-      const formalJSON = player.schedule.replace(/'/g, '"')
+      const formalJSON = player.schedule.toString().replace(/'/g, '"')
       player.schedule = JSON.parse(formalJSON).sort(sortDays)
       player.id = String(player.idplayer)
     })

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "npx eslint src --fix"
+    "lint": "eslint . --fix",
+    "build:lint": "next build && npm run lint"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.2",

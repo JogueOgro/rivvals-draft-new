@@ -77,6 +77,7 @@ const execute = (selectedPlayer: IPlayer) => {
   newTeamList[activeTeamIndex].avgScore = activeTeamAvgScore
 
   if (activeTeamIndex + 1 >= newTeamList.length) {
+    // @ts-ignore
     draftEvent({
       config: { ...config, teamList: newTeamList },
       activeTeamIndex: 0,
@@ -86,6 +87,7 @@ const execute = (selectedPlayer: IPlayer) => {
     return
   }
 
+  // @ts-ignore
   draftEvent({
     config: { ...config, teamList: newTeamList },
     activeTeamIndex: activeTeamIndex + 1,

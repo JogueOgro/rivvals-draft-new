@@ -8,7 +8,13 @@ type IParams = {
 }
 
 const execute = ({ cardNumber, handlePlayerSelect }: IParams) => {
-  const { chat, activeTeamIndex, activeTeamStartTurnDate, activeTeamEndTurnDate, config } = draftStore.getState()
+  const {
+    chat,
+    activeTeamIndex,
+    activeTeamStartTurnDate,
+    activeTeamEndTurnDate,
+    config,
+  } = draftStore.getState()
   if (!chat || !chat.length) return
 
   const filteredChat = [...chat].filter((x) => x.isAction && !x.isExecuted)
@@ -21,8 +27,8 @@ const execute = ({ cardNumber, handlePlayerSelect }: IParams) => {
 
     const listMembersTwitchName = config?.teamList?.length
       ? config?.teamList[activeTeamIndex]?.players
-        ?.filter((obj) => !!obj.twitch && obj.twitch !== '')
-        ?.map((obj) => obj.twitch)
+          ?.filter((obj) => !!obj.twitch && obj.twitch !== '')
+          ?.map((obj) => obj.twitch)
       : []
 
     const isMemberOfTeam = listMembersTwitchName?.some((twitchUserName) => {
@@ -30,9 +36,15 @@ const execute = ({ cardNumber, handlePlayerSelect }: IParams) => {
       return playerName.includes(userName || '')
     })
 
-    const isValidMessageDateWithinTheTeamTurn = row.created.getTime() >= activeTeamStartTurnDate.getTime() && row.created.getTime() <= activeTeamEndTurnDate.getTime()
+    const isValidMessageDateWithinTheTeamTurn =
+      row.created.getTime() >= activeTeamStartTurnDate.getTime() &&
+      row.created.getTime() <= activeTeamEndTurnDate.getTime()
 
-    const isValidSelection = isCommandChose && isCardToSelect && isMemberOfTeam && isValidMessageDateWithinTheTeamTurn
+    const isValidSelection =
+      isCommandChose &&
+      isCardToSelect &&
+      isMemberOfTeam &&
+      isValidMessageDateWithinTheTeamTurn
 
     if (isValidSelection) {
       const newChatList = [...chat]?.map((obj) =>

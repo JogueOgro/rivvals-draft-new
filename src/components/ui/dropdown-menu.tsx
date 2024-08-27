@@ -7,6 +7,12 @@ import * as React from 'react'
 
 import { cn } from '@/lib/utils'
 
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable prettier/prettier */
+
+/* eslint-disable prettier/prettier */
+
 const DropdownMenu = DropdownMenuPrimitive.Root
 
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
@@ -197,6 +203,5 @@ export {
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 }
-

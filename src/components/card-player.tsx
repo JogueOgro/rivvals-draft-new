@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+
 /* eslint-disable react-hooks/exhaustive-deps */
 
 /* eslint-disable react-hooks/rules-of-hooks */
@@ -9,9 +10,9 @@ import React, { useEffect, useState } from 'react'
 import { IPlayer } from '@/domain/player.domain'
 import { sleep } from '@/lib/utils'
 import draftStore from '@/store/draft/draft-store'
+import { handleChatPlayerSelectUseCase } from '@/useCases/draft/handle-chat-player-select.useCase'
 
 import { motion } from 'framer-motion'
-import { handleChatPlayerSelectUseCase } from '@/useCases/draft/handle-chat-player-select.useCase'
 
 type IProps = {
   cardNumber: number
@@ -24,7 +25,7 @@ const audioFlip =
   typeof window !== 'undefined' ? new Audio('/static/flip.mp3') : null
 
 const PlayerCard = ({ player, onSelect, cardNumber }: IProps) => {
-  const { chat, } = useUnit(draftStore)
+  const { chat } = useUnit(draftStore)
   const [isOpen, setIsOpen] = useState(false)
 
   if (!player) {

@@ -12,9 +12,10 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable
+  useReactTable,
 } from '@tanstack/react-table'
 import { Columns3, Download, Filter } from 'lucide-react'
+import dynamic from 'next/dynamic'
 import React, { ReactNode, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -34,7 +35,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import dynamic from 'next/dynamic'
 import * as XLSX from 'xlsx'
 
 const DataTablePagination = dynamic(() => import('@/components/pagination'), {
@@ -63,15 +63,14 @@ function DataTableConfig<TData>({
   totalPages,
   pageSize,
   currentPage,
-  onChangeCurrentPage = () => { },
-  onChangePageSize = () => { },
+  onChangeCurrentPage = () => {},
+  onChangePageSize = () => {},
   isHideFilterButton = true,
   isHidePagination = false,
 }: DataTableProps<TData>) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-
 
   const getColumnNameStr = (columnID: string) => {
     if (!columns || !columnID) return ''
@@ -86,11 +85,11 @@ function DataTableConfig<TData>({
   }
 
   const handleExport = () => {
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(data);
-    XLSX.utils.book_append_sheet(wb, ws, 'dados');
-    XLSX.writeFile(wb, 'dados.xlsx');
-  };
+    const wb = XLSX.utils.book_new()
+    const ws = XLSX.utils.json_to_sheet(data)
+    XLSX.utils.book_append_sheet(wb, ws, 'dados')
+    XLSX.writeFile(wb, 'dados.xlsx')
+  }
 
   const getHeader = () => {
     try {
@@ -111,7 +110,7 @@ function DataTableConfig<TData>({
   const getColumns = () => {
     try {
       return table?.getAllColumns()?.filter((column) => column?.getCanHide())
-    } catch (err) { }
+    } catch (err) {}
   }
 
   const getCoreRow = () => {
@@ -221,9 +220,8 @@ function DataTableConfig<TData>({
               </>
             )}
           </div>
-
         </div>
-      </div >
+      </div>
 
       <div className="rounded-md border">
         <Table>
@@ -236,9 +234,9 @@ function DataTableConfig<TData>({
                       {header?.isPlaceholder
                         ? null
                         : flexRender(
-                          header?.column?.columnDef?.header,
-                          header?.getContext(),
-                        )}
+                            header?.column?.columnDef?.header,
+                            header?.getContext(),
+                          )}
                     </TableHead>
                   )
                 })}
@@ -267,7 +265,6 @@ function DataTableConfig<TData>({
               <>
                 {tableGetRowModel()?.rows?.length ? (
                   tableGetRowModel()?.rows?.map((row) => {
-
                     const getVisibleCell = () => {
                       try {
                         return row?.getVisibleCells()

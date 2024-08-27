@@ -2,12 +2,17 @@ import { BaseDomain } from './base.domain'
 import { IPlayer } from './player.domain'
 import { ChatUserstate } from 'tmi.js'
 
+export interface ISchedule {
+  day: string
+  hour: number
+}
+
 export interface ITeam {
   id?: string
   photo?: string
   avgScore?: number
   players: IPlayer[]
-  schedules: []
+  schedules: ISchedule[]
   group?: number
 }
 

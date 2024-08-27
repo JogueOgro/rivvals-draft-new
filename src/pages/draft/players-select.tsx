@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
 /* eslint-disable prettier/prettier */
 import { useUnit } from 'effector-react'
 import {
@@ -25,11 +26,13 @@ import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
 import { getSelectPlayersUseCase } from '@/useCases/draft/get-select-players.useCase'
 import { selectPlayerUseCase } from '@/useCases/draft/select-player.useCase'
+
 import { addSeconds } from 'date-fns'
 
-
-const audioStart = typeof window !== 'undefined' ? new Audio('/static/start.mp3') : null;
-const audioClock = typeof window !== 'undefined' ? new Audio('/static/clock.mp3') : null;
+const audioStart =
+  typeof window !== 'undefined' ? new Audio('/static/start.mp3') : null
+const audioClock =
+  typeof window !== 'undefined' ? new Audio('/static/clock.mp3') : null
 
 const PlayersSelect = () => {
   const {
@@ -53,7 +56,6 @@ const PlayersSelect = () => {
     [listOfAllocatedPlayers],
   )
 
-
   function onPlayerSelect(selectedPlayer: IPlayer) {
     if (audioClock) {
       audioClock.pause()
@@ -72,7 +74,7 @@ const PlayersSelect = () => {
   }
 
   useEffect(() => {
-    ; (async () => {
+    ;(async () => {
       if (isOpenModalStart) {
         await sleep(4500)
         draftEvent({
@@ -109,7 +111,6 @@ const PlayersSelect = () => {
       audioClock.pause()
       audioClock.currentTime = 0
     }
-
   }, [isActiveTimer])
 
   useEffect(() => {
@@ -167,7 +168,7 @@ const PlayersSelect = () => {
                 draftEvent({
                   activeTeamIndex: activeTeamIndex - 1,
                   activeTeamStartTurnDate: new Date(),
-                  activeTeamEndTurnDate: addSeconds(new Date(), 60)
+                  activeTeamEndTurnDate: addSeconds(new Date(), 60),
                 })
               }
             >
@@ -183,7 +184,7 @@ const PlayersSelect = () => {
                 draftEvent({
                   activeTeamIndex: activeTeamIndex + 1,
                   activeTeamStartTurnDate: new Date(),
-                  activeTeamEndTurnDate: addSeconds(new Date(), 60)
+                  activeTeamEndTurnDate: addSeconds(new Date(), 60),
                 })
               }
             >
@@ -245,9 +246,7 @@ const PlayersSelect = () => {
                     return (
                       <div className="text-md flex gap-4 shrink-0">
                         <div className="flex flex-col shrink-0">
-                          <b className="shrink-0">
-                            {row.original?.twitch}
-                          </b>
+                          <b className="shrink-0">{row.original?.twitch}</b>
                         </div>
                       </div>
                     )

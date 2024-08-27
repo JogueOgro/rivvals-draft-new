@@ -1,46 +1,49 @@
-import { IPlayer } from '@/domain/player.domain'
-
 const execute = (data) => {
-  const player = { name: '' }
-  player.name = data.name
-  player.twitch = data.twitch
-  player.email = data.email
-  player.score_rocketleague = 0
-  if (data.capitao_ou_reserva == 'capitao') player.isCaptain = 1
-  if (data.capitao_ou_reserva == 'reserva') player.isBackup = 1
+  const player = {
+    name: data.name,
+    twitch: data.twitch,
+    email: data.email,
+    score_rocketleague: 0,
+    isCaptain: 0,
+    isBackup: 0,
+    stars: 0,
+  }
 
-  if (data.jajogou == 'claro')
+  if (data.capitao_ou_reserva === 'capitao') player.isCaptain = 1
+  if (data.capitao_ou_reserva === 'reserva') player.isBackup = 1
+
+  if (data.jajogou === 'claro')
     player.score_rocketleague = player.score_rocketleague + 2
 
-  if (data.frequencia == '1x')
+  if (data.frequencia === '1x')
     player.score_rocketleague = player.score_rocketleague + 1
-  if (data.frequencia == '3x')
+  if (data.frequencia === '3x')
     player.score_rocketleague = player.score_rocketleague + 3
-  if (data.frequencia == 'sempre')
+  if (data.frequencia === 'sempre')
     player.score_rocketleague = player.score_rocketleague + 4
 
-  if (data.modos == 'ranqueado')
+  if (data.modos === 'ranqueado')
     player.score_rocketleague = player.score_rocketleague + 3
 
-  if (data.nivel_ranqueado == 'bronze')
+  if (data.nivel_ranqueado === 'bronze')
     player.score_rocketleague = player.score_rocketleague + 1
-  if (data.nivel_ranqueado == 'dima')
+  if (data.nivel_ranqueado === 'dima')
     player.score_rocketleague = player.score_rocketleague + 3
-  if (data.nivel_ranqueado == 'max')
+  if (data.nivel_ranqueado === 'max')
     player.score_rocketleague = player.score_rocketleague + 5
 
   data.items.forEach((item) => {
-    if (item == 'controle')
+    if (item === 'controle')
       player.score_rocketleague = player.score_rocketleague + 3
-    if (item == 'saltos')
+    if (item === 'saltos')
       player.score_rocketleague = player.score_rocketleague + 3
-    if (item == 'powerslide')
+    if (item === 'powerslide')
       player.score_rocketleague = player.score_rocketleague + 2
-    if (item == 'wallhits')
+    if (item === 'wallhits')
       player.score_rocketleague = player.score_rocketleague + 3
-    if (item == 'posicionamento')
+    if (item === 'posicionamento')
       player.score_rocketleague = player.score_rocketleague + 3
-    if (item == 'leitura_de_jogo')
+    if (item === 'leitura_de_jogo')
       player.score_rocketleague = player.score_rocketleague + 4
   })
 

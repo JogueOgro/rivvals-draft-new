@@ -7,7 +7,6 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import logoImg from '@/assets/logo.png'
-import DownloadButton from '@/components/download-button'
 import HeadMetatags from '@/components/head-metatags'
 import ModalQueryPlayers from '@/components/query-players'
 import { Button } from '@/components/ui/button'
@@ -212,7 +211,6 @@ export default function LoginPage() {
                         <span>Upload arquivo de importação&nbsp;&nbsp;</span>
                       </div>
                     </Button>
-                    <DownloadButton text="Baixar template de importação" />
                   </div>
                 )}
 

@@ -1,4 +1,5 @@
 import { BaseDomain } from './base.domain'
+import { ISchedule } from './draft.domain'
 
 export interface IPlayer extends BaseDomain {
   idplayer?: number
@@ -14,10 +15,7 @@ export interface IPlayer extends BaseDomain {
   stars?: number
   isCaptain?: boolean
   isBackup?: boolean
-  schedule?: {
-    day: string
-    hour: number
-  }[]
+  schedule: ISchedule[]
   team?: number
   isExcluded?: boolean
   riot?: string
