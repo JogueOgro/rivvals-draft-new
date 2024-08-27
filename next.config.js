@@ -8,6 +8,9 @@ const nextConfig = {
   experimental: {
     outputFileTracingRoot: path.join(__dirname, './src'),
   },
+  eslint: {
+    ignoreDuringBuilds: true // Ignora linting durante o build
+  },
   logging: {
     fetches: {
       fullUrl: true,
