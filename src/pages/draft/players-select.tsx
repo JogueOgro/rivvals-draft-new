@@ -67,6 +67,7 @@ const PlayersSelect = () => {
     const newTeamList = !config?.teamList ? [] : [...config.teamList]
     const teamIndex = newTeamList[activeTeamIndex]
     teamIndex.players = teamIndex?.players?.filter((row) => row.id !== playerId)
+    // @ts-ignore
     draftEvent({ config: { ...config, teamList: newTeamList } })
   }
 

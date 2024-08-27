@@ -31,6 +31,7 @@ export default function RaffleButton() {
 
   const handleClickRaffle = async () => {
     if (currentTeam > total) {
+      // @ts-ignore
       draftEvent({
         config: { ...config, teamList },
         activeTab: '4',

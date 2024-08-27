@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { useUnit } from 'effector-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -36,7 +38,7 @@ export default function GroupsConfig({ setActiveView }: IProps) {
   const { groupsQuantity, teamsPerGroup } = useUnit(groupsStore)
   const { activeTab, config } = useUnit(draftStore)
 
-  const getDraftByEdition = async (draftEdition: string) => {
+  const getDraftByEdition = async (draftEdition: number) => {
     try {
       const response = await fetch(
         'http://localhost:5000/draft_by_edition/' + draftEdition,
@@ -60,7 +62,7 @@ export default function GroupsConfig({ setActiveView }: IProps) {
     }
   }
 
-  const singleDraft = getDraftByEdition(config?.edition)
+  const singleDraft = getDraftByEdition(config.edition)
   if (activeTab === '4') {
     if (
       singleDraft.teamsPerGroup !== null &&

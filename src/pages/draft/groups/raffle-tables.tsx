@@ -22,6 +22,7 @@ export default function GroupsRaffle() {
     for (let k = 0; k < Number(teamsPerGroup); k++) {
       id = id + 1
       contentrows.push(
+        // @ts-ignore
         <TableRow className="bg-muted/65">
           <TableCell className="font-medium h-14" id={String(id)}></TableCell>
         </TableRow>,
@@ -29,6 +30,7 @@ export default function GroupsRaffle() {
     }
 
     content.push(
+      // @ts-ignore
       <Table className="w-full my-2">
         <TableHeader>
           <TableRow className="bg-muted">

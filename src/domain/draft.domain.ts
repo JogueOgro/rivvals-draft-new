@@ -5,16 +5,16 @@ import { ChatUserstate } from 'tmi.js'
 export interface ITeam {
   id?: string
   photo?: string
-  avgScore: number
+  avgScore?: number
   players: IPlayer[]
   schedules: []
   group?: number
 }
 
 export interface IDraft extends BaseDomain {
-  active?: number
+  isActive?: boolean
   game?: string
-  edition?: number
+  edition: number
   draftDate?: Date
   finalDate?: Date
   teamPlayersQuantity?: string
@@ -33,7 +33,7 @@ export interface IDraftChat {
 
 export interface IDraftPage {
   activeTab: string
-  config: IDraft
+  config?: IDraft
   isActiveTimer: boolean
   isOpenModalStart: boolean
   timerSeconds: number

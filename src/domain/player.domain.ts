@@ -13,12 +13,22 @@ export interface IPlayer extends BaseDomain {
   tags?: string
   stars?: number
   isCaptain?: boolean
+  isBackup?: boolean
   schedule?: {
     day: string
     hour: number
   }[]
   team?: number
   isExcluded?: boolean
+  riot?: string
+  epic?: string
+  xbox?: string
+  psn?: string
+  score_cs?: string
+  score_valorant?: string
+  score_lol?: string
+  score_rocketleague?: string
+  score_fallguys?: string
 }
 
 export interface IPlayerPage {

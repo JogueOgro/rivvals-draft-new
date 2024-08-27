@@ -7,7 +7,10 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import bannerImg from '@/assets/banner_rocket.png'
+import instaImg from '@/assets/instagram.png'
+import twitchImg from '@/assets/twitch.png'
 import HeadMetatags from '@/components/head-metatags'
+import LottiePlayer from '@/components/lottie-player'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -20,14 +23,12 @@ import {
 import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { ArrowRight, Loader2 } from 'lucide-react'
 import { sleep } from '@/lib/utils'
-import LottiePlayer from '@/components/lottie-player'
+import { subscribePlayer } from '@/useCases/player/subscribe-player.useCase'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ArrowRight, Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import twitchImg from '@/assets/twitch.png'
-import instaImg from '@/assets/instagram.png'
+import { z } from 'zod'
 
 const defaultValues = {
   twitch: '',
@@ -92,6 +93,7 @@ const formSchema = z.object({
     required_error: 'Você deixou alguma opção em branco!',
   }),
   nivel_ranqueado: z.string().min(0),
+  outros_jogos: z.string().email().optional().or(z.literal('')),
   items: z.array(z.string()),
 })
 
@@ -115,7 +117,7 @@ export default function FormPage() {
         game: 'Rocket League',
       }
 
-      console.log(payload);
+      subscribePlayer.execute(payload)
 
       // await axios.post('/api/form-rocket-league', payload);
 
@@ -401,7 +403,7 @@ export default function FormPage() {
                           >
                             <FormItem className="flex items-center space-x-3 space-y-0">
                               <FormControl>
-                                <RadioGroupItem value="claro, vou voar!" />
+                                <RadioGroupItem value="zero" />
                               </FormControl>
                               <FormLabel className="font-normal">
                                 Nunca tive. 😵
@@ -409,7 +411,7 @@ export default function FormPage() {
                             </FormItem>
                             <FormItem className="flex items-center space-x-3 space-y-0">
                               <FormControl>
-                                <RadioGroupItem value="mentions" />
+                                <RadioGroupItem value="bronze" />
                               </FormControl>
                               <FormLabel className="font-normal">
                                 Bronze, Prata ou Ouro.
@@ -417,7 +419,7 @@ export default function FormPage() {
                             </FormItem>
                             <FormItem className="flex items-center space-x-3 space-y-0">
                               <FormControl>
-                                <RadioGroupItem value="asd" />
+                                <RadioGroupItem value="dima" />
                               </FormControl>
                               <FormLabel className="font-normal">
                                 Platina ou Diamante.
@@ -425,7 +427,7 @@ export default function FormPage() {
                             </FormItem>
                             <FormItem className="flex items-center space-x-3 space-y-0">
                               <FormControl>
-                                <RadioGroupItem value="asdasd" />
+                                <RadioGroupItem value="max" />
                               </FormControl>
                               <FormLabel className="font-normal">
                                 Campeão, Grão Mestre ou Supersônico.
@@ -438,7 +440,7 @@ export default function FormPage() {
                   />
                   <FormField
                     control={form.control}
-                    name="nivel_ranqueado"
+                    name="outros_jogos"
                     render={({ field }) => (
                       <FormItem className="space-y-3 mt-6">
                         <FormLabel>
@@ -447,6 +449,7 @@ export default function FormPage() {
                         </FormLabel>
                         <FormControl>
                           <Textarea
+                            defaultValue={"Nenhum"}
                             placeholder="Por favor seja detalhista"
                             className="resize-none"
                             {...field}

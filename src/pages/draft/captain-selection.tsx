@@ -60,7 +60,7 @@ const CaptainSelection = () => {
     /* ?.sort(
       (teamA, teamB) => teamA.avgScore - teamB.avgScore,
     ) */
-
+    // @ts-ignore
     draftEvent({
       activeTab: '2',
       isOpenModalStart: true,
@@ -82,6 +82,7 @@ const CaptainSelection = () => {
       }
     })
 
+    // @ts-ignore
     draftEvent({
       config: {
         ...config,

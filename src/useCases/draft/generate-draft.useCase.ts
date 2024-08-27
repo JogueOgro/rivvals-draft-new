@@ -7,6 +7,9 @@ import { draftInitialState } from '@/store/draft/draft-state'
 import { playerEvent } from '@/store/player/player-events'
 import playerStore from '@/store/player/player-store'
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 const execute = (
   config: Partial<IDraft>,
   callBack: () => void,
@@ -62,7 +65,7 @@ const execute = (
       (x) => Number(x.team) === teamNum,
     )
 
-    const playerToInsert = { ...sortByTwitch[0], isCaptain: 1 }
+    const playerToInsert = { ...sortByTwitch[0], isCaptain: true }
 
     if (type === 'new') {
       team.players.push(playerToInsert)

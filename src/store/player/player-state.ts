@@ -7,6 +7,7 @@ export const playerInitialState: IPlayerPage = {
   selectedRows: [],
   isLoading: false,
   openModalUpload: false,
+  openModalDB: false,
   totalRegistries: 0,
   progress: 0,
   filters: {

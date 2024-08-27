@@ -4,7 +4,7 @@ import { addSeconds } from 'date-fns'
 
 export const draftInitialState: IDraftPage = {
   chat: [],
-  config: null,
+  config: undefined,
   activeTab: '1',
   timerSeconds: 60,
   isActiveTimer: false,
