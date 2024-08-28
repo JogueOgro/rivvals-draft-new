@@ -40,17 +40,14 @@ export default function GroupsConfig({ setActiveView }: IProps) {
 
   const getDraftByEdition = async (draftEdition: number) => {
     try {
-      const response = await fetch(
-        apiHost + '/draft_by_edition/' + draftEdition,
-        {
-          mode: 'cors',
-          method: 'GET',
-          headers: {
-            Accept: 'application/json, text/plain, */*',
-            'Content-Type': 'application/json',
-          },
+      const response = await fetch('/draft_by_edition/' + draftEdition, {
+        mode: 'cors',
+        method: 'GET',
+        headers: {
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
         },
-      )
+      })
 
       if (!response.ok) {
         throw new Error('Network response was not ok')

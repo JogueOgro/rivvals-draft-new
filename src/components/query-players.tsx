@@ -3,6 +3,7 @@ import { Loader2, Upload } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
+import { apiHost } from '@/api_host'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -33,7 +34,7 @@ export default function ModalQueryPlayers({ type }: { type: IType }) {
 
   const fetchDrafts = async () => {
     try {
-      const response = await fetch(apiHost + '/unique_drafts', {
+      const response = await fetch('/unique_drafts', {
         mode: 'cors',
         method: 'GET',
         headers: {
