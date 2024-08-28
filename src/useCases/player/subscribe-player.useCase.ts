@@ -1,6 +1,6 @@
-import { apiHost } from '@/api_host'
+import api from '@/clients/api'
 
-const execute = (data) => {
+const execute = async (data) => {
   const player = {
     name: data.name,
     twitch: data.twitch,
@@ -53,32 +53,18 @@ const execute = (data) => {
   if (player.score_rocketleague > 6) player.score_rocketleague = 6
   player.stars = player.score_rocketleague
 
-  // console.log(player)
-
   const config = { game: data.game, edition: data.edition }
 
-  fetch(apiHost + '/player_new_draft', {
-    mode: 'cors',
-    method: 'POST',
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ player, config }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-      return response.json()
+  return api
+    .post('/player_new_draft', JSON.stringify({ player, config }))
+    .then((successData) => {
+      console.log(successData)
+      return true
     })
-    .then((data) => {
-      console.log(data)
-      // Aqui você pode processar a resposta recebida do servidor
-    })
-    .catch((error) => {
-      const errorJson = { error: error.message }
+    .catch((errorData) => {
+      const errorJson = { error: errorData.message }
       console.log('Error JSON:', errorJson)
+      return false
     })
 }
 

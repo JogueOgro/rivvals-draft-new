@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-
 /* eslint-disable prettier/prettier */
 'use client'
 
@@ -26,22 +25,10 @@ import {
 import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
-import { sleep } from '@/lib/utils'
 import { subscribePlayer } from '@/useCases/player/subscribe-player.useCase'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable prettier/prettier */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable prettier/prettier */
 
 const defaultValues = {
   twitch: '',
@@ -106,7 +93,7 @@ const formSchema = z.object({
     required_error: 'Você deixou alguma opção em branco!',
   }),
   nivel_ranqueado: z.string().min(0),
-  outros_jogos: z.string().email().optional().or(z.literal('')),
+  outros_jogos: z.string().optional().or(z.literal('')),
   items: z.array(z.string()),
 })
 
@@ -121,30 +108,24 @@ export default function FormPage() {
   })
 
   async function onSubmit(formData: z.infer<typeof formSchema>) {
-    try {
-      setIsLoading(true)
-      await sleep(2000)
-      const payload = {
-        ...formData,
-        edition: 15,
-        game: 'Rocket League',
-      }
+    setIsLoading(true)
 
-      subscribePlayer.execute(payload)
+    const result = await subscribePlayer.execute({
+      ...formData,
+      edition: 15,
+      game: 'Rocket League',
+    });
 
-      // await axios.post('/api/form-rocket-league', payload);
-
-      setIsSubmited(true)
-    } catch (error) {
-      console.log(error)
-      setIsSubmited(false)
-    } finally {
-      setIsLoading(false)
+    if (result) {
+      setIsSubmited(true);
+    } else {
+      window.alert('Ocorreu um erro, tente novamente mais tarde.');
     }
   }
 
   useEffect(() => {
     form.reset(defaultValues)
+    setIsSubmited(false)
   }, [])
 
   return (
@@ -505,14 +486,14 @@ export default function FormPage() {
                                     onCheckedChange={(checked) => {
                                       return checked
                                         ? field.onChange([
-                                            ...(field?.value || []),
-                                            item.id,
-                                          ])
+                                          ...(field?.value || []),
+                                          item.id,
+                                        ])
                                         : field.onChange(
-                                            field.value?.filter(
-                                              (value) => value !== item.id,
-                                            ),
-                                          )
+                                          field.value?.filter(
+                                            (value) => value !== item.id,
+                                          ),
+                                        )
                                     }}
                                   />
                                 </FormControl>
