@@ -4,7 +4,6 @@ import { useUnit } from 'effector-react'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { apiHost } from '@/api_host'
 import { Button } from '@/components/ui/button'
 import {
   Form,

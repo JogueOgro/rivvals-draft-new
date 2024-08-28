@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
-import { apiHost } from '@/api_host'
+
 import { Button } from '@/components/ui/button'
 
 const Login = () => {

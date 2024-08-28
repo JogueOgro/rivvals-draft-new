@@ -3,7 +3,6 @@ import { Loader2, Upload } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-import { apiHost } from '@/api_host'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
