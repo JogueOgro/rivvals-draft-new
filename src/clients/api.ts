@@ -1,11 +1,11 @@
 import axios from 'axios'
 
 const getApiHost = (): string => {
-  const isDev = process.env.NODE_ENV !== 'production'
-  const link = isDev
-    ? process.env.NEXT_PUBLIC_API_HOST_LOCAL
-    : process.env.NEXT_PUBLIC_API_HOST
-  return link || ''
+  const link =
+    process.env.NEXT_PUBLIC_API_HOST ||
+    process.env.NEXT_PUBLIC_API_HOST_LOCAL ||
+    ''
+  return link
 }
 
 const api = axios.create({
