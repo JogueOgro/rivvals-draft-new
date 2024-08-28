@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { IPlayer } from '@/domain/player.domain'
 import { IType } from '@/pages/home'
 import { groupsEvent } from '@/store/groups/groups-events'
@@ -15,17 +14,14 @@ type IParams = {
 
 const fetchDraftsByEdition = async (draftEdition: string) => {
   try {
-    const response = await fetch(
-      apiHost + '/drafts_by_edition/' + draftEdition,
-      {
-        mode: 'cors',
-        method: 'GET',
-        headers: {
-          Accept: 'application/json, text/plain, */*',
-          'Content-Type': 'application/json',
-        },
+    const response = await fetch('/drafts_by_edition/' + draftEdition, {
+      mode: 'cors',
+      method: 'GET',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
       },
-    )
+    })
 
     if (!response.ok) {
       throw new Error('Network response was not ok')
