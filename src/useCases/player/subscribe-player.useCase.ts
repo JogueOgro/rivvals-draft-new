@@ -56,7 +56,7 @@ const execute = async (data) => {
   const config = { game: data.game, edition: data.edition }
 
   return api
-    .post('/player_new_draft', JSON.stringify({ player, config }))
+    .post('/subscribe_player', { player, config })
     .then((successData) => {
       console.log(successData)
       return true
