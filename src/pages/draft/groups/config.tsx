@@ -1,9 +1,10 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { useUnit } from 'effector-react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { apiHost } from '@/api_host'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -41,7 +42,7 @@ export default function GroupsConfig({ setActiveView }: IProps) {
   const getDraftByEdition = async (draftEdition: number) => {
     try {
       const response = await fetch(
-        'http://localhost:5000/draft_by_edition/' + draftEdition,
+        apiHost + '/draft_by_edition/' + draftEdition,
         {
           mode: 'cors',
           method: 'GET',

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { apiHost } from '@/api_host'
 import { IPlayer } from '@/domain/player.domain'
 import { IType } from '@/pages/home'
 import { groupsEvent } from '@/store/groups/groups-events'
@@ -15,7 +16,7 @@ type IParams = {
 const fetchDraftsByEdition = async (draftEdition: string) => {
   try {
     const response = await fetch(
-      'http://localhost:5000/drafts_by_edition/' + draftEdition,
+      apiHost + '/drafts_by_edition/' + draftEdition,
       {
         mode: 'cors',
         method: 'GET',

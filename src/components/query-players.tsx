@@ -1,10 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { useUnit } from 'effector-react'
 import { Loader2, Upload } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
+import { apiHost } from '@/api_host'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -35,7 +34,7 @@ export default function ModalQueryPlayers({ type }: { type: IType }) {
 
   const fetchDrafts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/unique_drafts', {
+      const response = await fetch(apiHost + '/unique_drafts', {
         mode: 'cors',
         method: 'GET',
         headers: {

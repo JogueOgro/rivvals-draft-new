@@ -1,3 +1,5 @@
+import { apiHost } from '@/api_host'
+
 const execute = (data) => {
   const player = {
     name: data.name,
@@ -51,11 +53,11 @@ const execute = (data) => {
   if (player.score_rocketleague > 6) player.score_rocketleague = 6
   player.stars = player.score_rocketleague
 
-  console.log(player)
+  // console.log(player)
 
   const config = { game: data.game, edition: data.edition }
 
-  fetch('http://localhost:5000/player_new_draft', {
+  fetch(apiHost + '/player_new_draft', {
     mode: 'cors',
     method: 'POST',
     headers: {

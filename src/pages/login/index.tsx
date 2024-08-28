@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
+import { apiHost } from '@/api_host'
 import { Button } from '@/components/ui/button'
 
 const Login = () => {
@@ -18,7 +19,7 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/checkpassword', {
+      const response = await fetch({ apiHost } + '/checkpassword', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

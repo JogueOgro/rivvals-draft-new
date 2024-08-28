@@ -1,3 +1,4 @@
+import { apiHost } from '@/api_host'
 import draftStore from '@/store/draft/draft-store'
 import playerStore from '@/store/player/player-store'
 
@@ -5,7 +6,7 @@ const execute = () => {
   const { players } = playerStore.getState()
   const { config } = draftStore.getState()
 
-  fetch('http://localhost:5000/complete_draft', {
+  fetch(apiHost + '/complete_draft', {
     mode: 'cors',
     method: 'POST',
     headers: {
