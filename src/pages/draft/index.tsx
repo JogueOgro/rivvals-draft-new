@@ -4,6 +4,7 @@ import { useUnit } from 'effector-react'
 import dynamic from 'next/dynamic'
 import { useEffect } from 'react'
 
+import tmiClient from '@/clients/twitch'
 import HeadMetatags from '@/components/head-metatags'
 import TimerClock from '@/components/timer'
 import TwitchChat from '@/components/twitch.chat'
@@ -29,6 +30,13 @@ export default function DraftPage() {
 
   useEffect(() => {
     draftEvent({ timerSeconds: 60, isActiveTimer: false, activeTab: '1' })
+  }, [])
+
+  useEffect(() => {
+    tmiClient.connect()
+    return () => {
+      tmiClient.disconnect()
+    }
   }, [])
 
   return (
