@@ -34,7 +34,7 @@ export default function ModalQueryPlayers({ type }: { type: IType }) {
 
   const fetchDrafts = async () => {
     try {
-      const response = await api.get('/unique_drafts')
+      const response = await api.get('/unique_active_drafts')
       const data = response.data
       setDrafts(data)
     } catch (error) {
@@ -70,7 +70,7 @@ export default function ModalQueryPlayers({ type }: { type: IType }) {
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Carregar dados do banco</DialogTitle>
+          <DialogTitle>Carregar draft completo</DialogTitle>
           <div>
             <div
               className={`flex flex-col items-center justify-center border-2 rounded-lg py-6 mt-6 'bg-blue-100 border-solid' : 'border-dashed'}`}

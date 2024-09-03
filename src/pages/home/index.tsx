@@ -28,7 +28,7 @@ import { playerEvent } from '@/store/player/player-events'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-export type IType = undefined | 'new' | 'import' | 'database'
+export type IType = undefined | 'new' | 'import' | 'database' | 'database_new'
 
 const defaultValues = {
   name: undefined,
@@ -195,8 +195,14 @@ export default function LoginPage() {
                     <Label htmlFor="import">Importar um draft existente</Label>
                   </div>
                   <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="database_new" id="database_new" />
+                    <Label htmlFor="new">Começar um draft novo (Banco)</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
                     <RadioGroupItem value="database" id="database" />
-                    <Label htmlFor="import">Buscar do banco</Label>
+                    <Label htmlFor="import">
+                      Carregar draft completo (Banco)
+                    </Label>
                   </div>
                 </RadioGroup>
 
@@ -223,6 +229,20 @@ export default function LoginPage() {
                       <div className="flex items-center gap-2">
                         <Upload className="w-5 h-5" />
                         <span>Upload do draft</span>
+                      </div>
+                    </Button>
+                  </div>
+                )}
+
+                {type === 'database_new' && (
+                  <div className="w-full flex-col flex justify-center mt-8 gap-4">
+                    <Button
+                      type="submit"
+                      className="w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
+                    >
+                      <div className="flex items-center gap-2">
+                        <DatabaseBackup className="w-5 h-5" />
+                        <span>Iniciar</span>
                       </div>
                     </Button>
                   </div>
