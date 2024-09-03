@@ -55,17 +55,17 @@ const execute = async (data) => {
 
   const config = { game: data.game, edition: data.edition }
 
-  return api
-    .post('/subscribe_player', { player, config })
-    .then((successData) => {
-      console.log(successData)
-      return true
-    })
-    .catch((errorData) => {
-      const errorJson = { error: errorData.message }
-      console.log('Error JSON:', errorJson)
-      return false
-    })
+  try {
+    const response = await api.post('/subscribe_player', { player, config })
+    console.log(response.data)
+  } catch (error) {
+    const errorJson = {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+    }
+    console.log('Error JSON:', errorJson)
+  }
 }
 
 export const subscribePlayer = { execute }

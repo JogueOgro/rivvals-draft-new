@@ -4,6 +4,7 @@ import { useUnit } from 'effector-react'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
+import api from '@/clients/api'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -40,22 +41,15 @@ export default function GroupsConfig({ setActiveView }: IProps) {
 
   const getDraftByEdition = async (draftEdition: number) => {
     try {
-      const response = await fetch('/draft_by_edition/' + draftEdition, {
-        mode: 'cors',
-        method: 'GET',
-        headers: {
-          Accept: 'application/json, text/plain, */*',
-          'Content-Type': 'application/json',
-        },
-      })
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-      const data = await response.json()
+      const response = await api.get('/draft_by_edition/' + draftEdition)
+      const data = response.data
       return data
     } catch (error) {
-      console.error('Erro ao buscar dados:', error)
+      console.error('Erro ao buscar dados:', error.message)
+      if (error.response) {
+        console.error('Status do erro:', error.response.status)
+        console.error('Dados do erro:', error.response.data)
+      }
     }
   }
 

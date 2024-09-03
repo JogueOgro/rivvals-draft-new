@@ -3,6 +3,7 @@ import { Loader2, Upload } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
+import api from '@/clients/api'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -33,22 +34,15 @@ export default function ModalQueryPlayers({ type }: { type: IType }) {
 
   const fetchDrafts = async () => {
     try {
-      const response = await fetch('/unique_drafts', {
-        mode: 'cors',
-        method: 'GET',
-        headers: {
-          Accept: 'application/json, text/plain, */*',
-          'Content-Type': 'application/json',
-        },
-      })
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok')
-      }
-      const data = await response.json()
+      const response = await api.get('/unique_drafts')
+      const data = response.data
       setDrafts(data)
     } catch (error) {
-      console.error('Erro ao buscar dados:', error)
+      console.error('Erro ao buscar dados:', error.message)
+      if (error.response) {
+        console.error('Status do erro:', error.response.status)
+        console.error('Dados do erro:', error.response.data)
+      }
     }
   }
 
@@ -65,6 +59,7 @@ export default function ModalQueryPlayers({ type }: { type: IType }) {
   }
 
   useEffect(() => {
+    playerEvent({ isLoading: false })
     fetchDrafts()
   }, [openModalDB])
 

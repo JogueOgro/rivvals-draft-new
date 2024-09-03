@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
+import api from '@/clients/api'
 import { Button } from '@/components/ui/button'
 
 const Login = () => {
@@ -8,6 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [loggedIn, setLoggedIn] = useState(false)
   const route = useRouter()
+
   const handleLogin = async (e) => {
     e.preventDefault()
     console.log(`Email: ${email}, Password: ${password}`)
@@ -18,27 +20,18 @@ const Login = () => {
     }
 
     try {
-      const response = await fetch('/checkpassword', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-
-      if (!response.ok) {
-        throw new Error('Erro no login!')
-      }
-
-      const responseData = await response.json()
+      const response = await api.post('/checkpassword', data)
+      const responseData = response.data
       console.log('Login feito com sucesso:', responseData)
-      // Requer medidas adicionais de segurança, HTTPS e Criptografia
       localStorage.setItem('loggedIn', 'true')
       setLoggedIn(true)
       route.push('/armadinho')
     } catch (error) {
-      console.error('Erro durante login:', error)
-      // Trate erros de rede ou do servidor aqui
+      console.error('Erro durante login:', error.message)
+      if (error.response) {
+        console.error('Status do erro:', error.response.status)
+        console.error('Dados do erro:', error.response.data)
+      }
     }
   }
 

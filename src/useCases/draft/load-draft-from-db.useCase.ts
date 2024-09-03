@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import api from '@/clients/api'
 import { IPlayer } from '@/domain/player.domain'
 import { IType } from '@/pages/home'
 import { groupsEvent } from '@/store/groups/groups-events'
@@ -14,22 +15,15 @@ type IParams = {
 
 const fetchDraftsByEdition = async (draftEdition: string) => {
   try {
-    const response = await fetch('/drafts_by_edition/' + draftEdition, {
-      mode: 'cors',
-      method: 'GET',
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'Content-Type': 'application/json',
-      },
-    })
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    }
-    const data = await response.json()
+    const response = await api.get('/drafts_by_edition/' + draftEdition)
+    const data = response.data
     return data
   } catch (error) {
-    console.error('Erro ao buscar dados:', error)
+    console.error('Erro ao buscar dados:', error.message)
+    if (error.response) {
+      console.error('Status do erro:', error.response.status)
+      console.error('Dados do erro:', error.response.data)
+    }
   }
 }
 
