@@ -65,11 +65,20 @@ const execute = (
       (x) => Number(x.team) === teamNum,
     )
 
-    const playerToInsert = { ...sortByTwitch[0], isCaptain: true }
+    let captains = [...sortByTwitch]
+    captains = captains.splice(0, totalTeams - i)
+    captains.sort((capA, capB) => capB?.stars - capA?.stars)
+    captains.reverse()
 
-    if (type === 'new') {
+    const playerToInsert = { ...captains[0], isCaptain: true }
+
+    if (type === 'new' || type === 'database_new') {
+      playerToInsert.team = teamNum
       team.players.push(playerToInsert)
       team.schedules.push(...playerToInsert.schedule)
+      availablePlayers = availablePlayers.filter(function (e) {
+        return e.idplayer !== playerToInsert.idplayer
+      })
     } else {
       const formattedTeamList = filteredTeamPlayers.map((x, o) => ({
         ...x,

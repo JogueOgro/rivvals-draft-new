@@ -23,18 +23,18 @@ import { IDraft } from '@/domain/draft.domain'
 import { IType } from '@/pages/home'
 import { playerEvent } from '@/store/player/player-events'
 import playerStore from '@/store/player/player-store'
-import { loadDraftFromDB } from '@/useCases/draft/load-draft-from-db.useCase'
+import { createDraftFromDB } from '@/useCases/draft/create-draft-from-db.useCase'
 
-export default function ModalQueryPlayers({ type }: { type: IType }) {
-  const { isLoading, openModalDB } = useUnit(playerStore)
+export default function ModalQueryPlayersNew({ type }: { type: IType }) {
+  const { isLoading, openModalDBNew } = useUnit(playerStore)
   const [drafts, setDrafts] = useState([])
   const [selectedDraft, setSelectedDraft] = useState('')
 
   const route = useRouter()
 
-  const fetchCompletedDrafts = async () => {
+  const fetchActiveDrafts = async () => {
     try {
-      const response = await api.get('/unique_completed_drafts')
+      const response = await api.get('/unique_active_drafts')
       const data = response.data
       setDrafts(data)
     } catch (error) {
@@ -49,7 +49,7 @@ export default function ModalQueryPlayers({ type }: { type: IType }) {
   const onSubmit = (draftEdition?: string | null) => {
     if (!draftEdition) return
     playerEvent({ isLoading: true })
-    loadDraftFromDB.execute({
+    createDraftFromDB.execute({
       draftEdition,
       type,
       callBack: () => {
@@ -60,17 +60,17 @@ export default function ModalQueryPlayers({ type }: { type: IType }) {
 
   useEffect(() => {
     playerEvent({ isLoading: false })
-    fetchCompletedDrafts()
-  }, [openModalDB])
+    fetchActiveDrafts()
+  }, [openModalDBNew])
 
   return (
     <Dialog
-      open={openModalDB}
-      onOpenChange={(v) => playerEvent({ openModalDB: v })}
+      open={openModalDBNew}
+      onOpenChange={(v) => playerEvent({ openModalDBNew: v })}
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Carregar draft completo</DialogTitle>
+          <DialogTitle>Iniciar novo draft</DialogTitle>
           <div>
             <div
               className={`flex flex-col items-center justify-center border-2 rounded-lg py-6 mt-6 'bg-blue-100 border-solid' : 'border-dashed'}`}
@@ -105,13 +105,13 @@ export default function ModalQueryPlayers({ type }: { type: IType }) {
                   {isLoading ? (
                     <>
                       <Loader2 className="h-7 w-7 animate-spin" />
-                      <span className="text-md ml-2">Carregando...</span>
+                      <span className="text-md ml-2">Iniciando...</span>
                     </>
                   ) : (
                     <>
                       <div className="flex items-center gap-2">
                         <Upload className="w-5 h-5" />
-                        <span>Carregar</span>
+                        <span>Draftar!</span>
                       </div>
                     </>
                   )}

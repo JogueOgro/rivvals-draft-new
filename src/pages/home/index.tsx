@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form'
 import logoImg from '@/assets/logo.png'
 import HeadMetatags from '@/components/head-metatags'
 import ModalQueryPlayers from '@/components/query-players'
+import ModalQueryPlayersNew from '@/components/query-players-new'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -91,12 +92,18 @@ export default function LoginPage() {
                       draftDate: new Date(),
                     },
                   })
-                  type === 'database'
-                    ? playerEvent({ openModalDB: true })
-                    : playerEvent({ openModalUpload: true })
+                  if (type === 'new' || type === 'import') {
+                    playerEvent({ openModalUpload: true })
+                  }
+                  if (type === 'database') {
+                    playerEvent({ openModalDB: true })
+                  }
+                  if (type === 'database_new') {
+                    playerEvent({ openModalDBNew: true })
+                  }
                 })}
               >
-                {type !== 'database' && (
+                {type !== 'database' && type !== 'database_new' && (
                   <div className="w-full flex items-center justify-between gap-4">
                     <FormField
                       control={form.control}
@@ -138,7 +145,7 @@ export default function LoginPage() {
                     />
                   </div>
                 )}
-                {type !== 'database' && (
+                {type !== 'database' && type !== 'database_new' && (
                   <div className="w-full flex items-center justify-between gap-4">
                     <FormField
                       control={form.control}
@@ -267,8 +274,11 @@ export default function LoginPage() {
         </div>
       </div>
 
+      {type === 'database_new' && <ModalQueryPlayersNew type={type} />}
       {type === 'database' && <ModalQueryPlayers type={type} />}
-      {type !== 'database' && <ModalUploadPlayers type={type} />}
+      {(type === 'new' || type === 'import') && (
+        <ModalUploadPlayers type={type} />
+      )}
     </>
   )
 }

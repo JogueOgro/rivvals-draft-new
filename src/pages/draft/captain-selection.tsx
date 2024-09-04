@@ -57,9 +57,9 @@ const CaptainSelection = () => {
     })
 
     const sortTeamByScore = calculateTeamAvgScore
-    /* ?.sort(
-      (teamA, teamB) => teamA.avgScore - teamB.avgScore,
-    ) */
+    // ?.sort(
+    //   (teamA, teamB) => teamB.avgScore - teamA.avgScore,
+    // )
     // @ts-ignore
     draftEvent({
       activeTab: '2',

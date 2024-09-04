@@ -8,6 +8,7 @@ export const playerInitialState: IPlayerPage = {
   isLoading: false,
   openModalUpload: false,
   openModalDB: false,
+  openModalDBNew: false,
   totalRegistries: 0,
   progress: 0,
   filters: {

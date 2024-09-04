@@ -12,7 +12,7 @@ export interface IPlayer extends BaseDomain {
   power?: number
   wins?: number
   tags?: string
-  stars?: number
+  stars: number
   isCaptain?: boolean
   isBackup?: boolean
   schedule: ISchedule[]
@@ -33,6 +33,7 @@ export interface IPlayerPage {
   isLoading: boolean
   openModalUpload: boolean
   openModalDB: boolean
+  openModalDBNew: boolean
   pageSize: number
   progress: number
   currentPage: number
