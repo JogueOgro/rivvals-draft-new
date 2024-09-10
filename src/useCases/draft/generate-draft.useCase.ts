@@ -47,6 +47,8 @@ const execute = (
     )
   }
 
+  const allCaptains: IPlayer[] = []
+
   for (let i = 0; i < totalTeams; i++) {
     const teamNum = i + 1
     const team: ITeam = {
@@ -71,6 +73,7 @@ const execute = (
     captains.reverse()
 
     const playerToInsert = { ...captains[0], isCaptain: true }
+    allCaptains.push(playerToInsert)
 
     if (type === 'new' || type === 'database_new') {
       playerToInsert.team = teamNum
@@ -110,6 +113,9 @@ const execute = (
     team.schedules.sort(sortDays)
     teamList.push(team)
   }
+
+  const allPlayers = availablePlayers.concat(allCaptains)
+  playerEvent({ players: allPlayers })
 
   // @ts-ignore
   draftEvent({

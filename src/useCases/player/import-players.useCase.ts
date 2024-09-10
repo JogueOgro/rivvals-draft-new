@@ -38,9 +38,16 @@ const execute = async (players: IPlayer[]) => {
       totalPages,
     })
   } catch (e) {
-    window.alert(
-      'Ocorreu um erro, verifique o arquivo de importação e tente novamente.',
-    )
+    let errorMessage =
+      'Ocorreu um erro, verifique o arquivo de importação e tente novamente.'
+
+    if (e.response && e.response.data && e.response.data.message) {
+      errorMessage += ` Detalhes: ${e.response.data.message}`
+    } else if (e.message) {
+      errorMessage += ` Detalhes: ${e.message}`
+    }
+
+    window.alert(errorMessage)
   }
 }
 

@@ -53,21 +53,22 @@ export default function GroupsConfig({ setActiveView }: IProps) {
     }
   }
 
-  const singleDraft = getDraftByEdition(config.edition)
-  if (activeTab === '4') {
-    if (
-      singleDraft.teamsPerGroup !== null &&
-      singleDraft.groupsQuantity !== null
-    ) {
-      window.alert(
-        'O sorteio de grupos para o Draft - Edição ' +
-          config.edition +
-          '  de ' +
-          config.game +
-          ' já foi feito. Se houver um outro sorteio, o atual será sobrescrito.',
-      )
-    }
-  }
+  // const singleDraft = getDraftByEdition(config.edition)
+  // Este código roda 4X, consertar
+  // if (activeTab === '4') {
+  //   if (
+  //     singleDraft.teamsPerGroup !== null &&
+  //     singleDraft.groupsQuantity !== null
+  //   ) {
+  //     window.alert(
+  //       'O sorteio de grupos para o Draft - Edição ' +
+  //         config.edition +
+  //         '  de ' +
+  //         config.game +
+  //         ' já foi feito. Se houver um outro sorteio, o atual será sobrescrito.',
+  //     )
+  //   }
+  // }
 
   const form = useForm<z.infer<typeof formSchema>>({
     mode: 'all',
@@ -76,7 +77,7 @@ export default function GroupsConfig({ setActiveView }: IProps) {
   })
 
   useEffect(() => {
-    getDraftByEdition(config?.edition)
+    // getDraftByEdition(config?.edition)
     form.reset({ groupsQuantity, teamsPerGroup })
   }, [form, groupsQuantity, teamsPerGroup])
 
