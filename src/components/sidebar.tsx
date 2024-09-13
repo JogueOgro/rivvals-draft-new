@@ -30,7 +30,7 @@ const Sidebar = ({ showSidebar }: IProps) => {
 
   return (
     <div
-      className="flex flex-col h-screen justify-between fixed shadow-2xl transition-width duration-200 ease-in-out bg-white"
+      className="flex flex-col h-screen justify-between fixed shadow-2xl transition-width duration-200 ease-in-out bg-white no-print"
       style={{
         width: showSidebar ? 250 : 75,
         borderRadius: showSidebar ? '0 32px 32px 0' : '',

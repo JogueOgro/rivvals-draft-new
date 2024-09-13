@@ -67,7 +67,7 @@ export default function DraftPage() {
             </div>
           )}
         </div>
-        <div className="w-full rounded-md mt-12">
+        <div className="print-mt w-full rounded-md mt-12">
           <Tabs
             defaultValue="1"
             value={activeTab}

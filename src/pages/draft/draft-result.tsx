@@ -41,8 +41,11 @@ const DraftResult = () => {
     <div className="relative">
       <Card className="w-full pb-12">
         {calculatedListWithTeamAvgScore?.map((team) => (
-          <div key={team.id} className="w-full mb-14">
-            <div className="w-full mt-1">
+          <div key={team.id} className="print-mb w-full mb-14">
+            <div className="print-font capitalize font-bold text-zinc-700 text-2xl pl-4 flex items-center rounded-sm h-16 w-full bg-muted/95">
+              Time {team.id}
+            </div>
+            <div className="w-full">
               <DataTable
                 isHidePagination
                 data={team?.players || []}
@@ -73,9 +76,9 @@ const DraftResult = () => {
                     accessorKey: 'Nome',
                     cell: ({ row }: { row: { original: IPlayer } }) => {
                       return (
-                        <div className="w-[400px] text-md flex gap-4 shrink-0">
+                        <div className="w-[400px] text-md flex gap-4 shrink-0 col-name">
                           <div className="flex flex-col shrink-0">
-                            <b className="shrink-0">
+                            <b className="shrink-0 print-font">
                               {row.original?.name?.toUpperCase()}
                             </b>
                             <small>{row.original?.nick}</small>

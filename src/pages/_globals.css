@@ -130,3 +130,46 @@
     transform: rotateY(360deg);
   }
 }
+
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow: visible !important; /* Garante que o conteúdo não tenha barra de rolagem */
+  }
+
+  /* Esconde elementos desnecessários na impressão */
+  nav, footer, .no-print {
+    display: none;
+  }
+
+  .col-name {
+    width: 200px !important;
+  }
+
+  .print-font {
+    font-size: medium;
+    background-color: hsl(var(--muted) / 0.95);
+  }
+
+  .medal-wins {
+    width: 20px !important;
+  }
+
+  .relative tr {
+    height: 1px !important;
+  }
+
+  .print-mb {
+    margin-bottom: 4px !important;
+  }
+
+  .print-mt {
+    margin-top: 4px !important;
+  }
+
+  .central-box {
+    margin-left: 0px !important;
+  }
+}

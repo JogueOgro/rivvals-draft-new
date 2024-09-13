@@ -38,7 +38,7 @@ const PageLayout = ({ children }: { children: ReactNode }) => {
       <AnimatedBackground />
       <Sidebar {...{ showSidebar }} />
       <div
-        className="flex flex-col flex-1 overflow-hidden"
+        className="flex flex-col flex-1 overflow-hidden central-box"
         style={{
           marginLeft: showSidebar ? 250 : 75,
         }}
