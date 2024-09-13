@@ -61,7 +61,8 @@ const PlayersSelect = () => {
       audioClock.pause()
       audioClock.currentTime = 0
     }
-
+    // @ts-ignore
+    selectedPlayer.team = Number(config?.teamList[activeTeamIndex].id)
     selectPlayerUseCase.execute(selectedPlayer)
   }
 
