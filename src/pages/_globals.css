@@ -139,6 +139,11 @@
     overflow: visible !important; /* Garante que o conteúdo não tenha barra de rolagem */
   }
 
+  .main-print {
+    overflow-y: hidden !important;
+    page-break-inside: avoid !important;
+  }
+
   /* Esconde elementos desnecessários na impressão */
   nav, footer, .no-print {
     display: none;

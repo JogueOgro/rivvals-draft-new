@@ -44,7 +44,7 @@ const PageLayout = ({ children }: { children: ReactNode }) => {
         }}
       >
         <main
-          className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-12"
+          className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-12 main-print"
           style={{ zIndex: 1 }}
         >
           {children}
