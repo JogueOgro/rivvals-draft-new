@@ -133,10 +133,13 @@
 
 @media print {
   body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;  
     margin: 0;
     padding: 0;
     width: 100%;
-    overflow: visible !important; /* Garante que o conteúdo não tenha barra de rolagem */
+    overflow: visible !important;
+    page-break-inside: avoid !important;;
   }
 
   .main-print {
