@@ -38,13 +38,13 @@ const PageLayout = ({ children }: { children: ReactNode }) => {
       <AnimatedBackground />
       <Sidebar {...{ showSidebar }} />
       <div
-        className="flex flex-col flex-1 overflow-hidden"
+        className="flex flex-col flex-1 overflow-hidden central-box"
         style={{
           marginLeft: showSidebar ? 250 : 75,
         }}
       >
         <main
-          className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-12"
+          className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-12 main-print"
           style={{ zIndex: 1 }}
         >
           {children}
