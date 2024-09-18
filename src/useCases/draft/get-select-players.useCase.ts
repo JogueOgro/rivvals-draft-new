@@ -109,13 +109,13 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
     return magicCardList
   }
 
-  let sectionSize = unmatchedPlayersList.length / 3
+  let sectionSize = unmatchedPlayersList.length / 4
 
   // manter no minimo 8 cartas para que sejam escolhidas 5 (mesmo que pegue de outro balde)
-  if (sectionSize < unmatchedPlayersList.length / 2) {
+  if (sectionSize < 8) {
     sectionSize = unmatchedPlayersList.length / 2
   }
-
+  // console.log('Section:', sectionSize)
   let sortCardsByAverageTeamScore: IPlayer[] = []
 
   if (muchHigher) {
@@ -185,7 +185,8 @@ const execute = ({ listOfAllocatedPlayers }: IParams) => {
     rivvalsTotalPlayers,
     sugestions: cardList,
   })
-  console.log(cardList) */
+  */
+  // console.log(cardList)
   return cardList
 }
 

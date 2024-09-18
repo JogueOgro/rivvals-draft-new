@@ -114,8 +114,11 @@ const execute = (
     teamList.push(team)
   }
 
-  const allPlayers = availablePlayers.concat(allCaptains)
-  playerEvent({ players: allPlayers })
+  if (type === 'new' || type === 'database_new') {
+    availablePlayers = availablePlayers.concat(allCaptains)
+  }
+
+  playerEvent({ players: availablePlayers })
 
   // @ts-ignore
   draftEvent({

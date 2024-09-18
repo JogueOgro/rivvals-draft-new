@@ -39,7 +39,7 @@ const execute = async ({ draftEdition, callBack, type }: IParams) => {
 
   const players: IPlayer[] = []
   for (let index = 0; index < fullDraft.length; index++) {
-    fullDraft[index].player.team = fullDraft[index].team.idteam
+    fullDraft[index].player.team = fullDraft[index].team.number
     players.push(fullDraft[index].player)
   }
 
