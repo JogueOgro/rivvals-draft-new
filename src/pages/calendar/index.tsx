@@ -30,7 +30,7 @@ export default function CalendarPage() {
                 CHECAR HORÁRIOS
               </TabsTrigger>
               <TabsTrigger value="3" className="px-8">
-                MARCAÇÃO AUTOMÁTICA
+                MARCAÇÃO DE JOGOS
               </TabsTrigger>
             </TabsList>
             {!players?.length ? (

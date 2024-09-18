@@ -14,16 +14,18 @@ export interface ITeam {
   players: IPlayer[]
   schedules: ISchedule[]
   group?: number
+  number?: number
 }
 
 export interface IDraft extends BaseDomain {
-  isActive?: boolean
+  isActive?: number
   game?: string
   edition: number
   draftDate?: Date
   finalDate?: Date
   teamPlayersQuantity?: string
   teamsQuantity?: string
+  team?: ITeam // No DB um draft relaciona time a player, esta é uma adaptação
   teamList?: ITeam[]
 }
 

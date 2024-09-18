@@ -181,8 +181,14 @@ function getPageData(groupsQuantity?: string, teamList?: ITeam[]) {
           ...teams[team1].schedules,
           ...teams[team2].schedules,
         ]
-        const matchData = findMatch(teams[team1], teams[team2], jointSchedules)
-        newListMatch.push(matchData)
+        if (team1 !== team2) {
+          const matchData = findMatch(
+            teams[team1],
+            teams[team2],
+            jointSchedules,
+          )
+          newListMatch.push(matchData)
+        }
       }
     }
   }

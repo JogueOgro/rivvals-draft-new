@@ -27,6 +27,20 @@ const fetchDraftsByEdition = async (draftEdition: string) => {
   }
 }
 
+// const fetchAllGroups = async () => {
+//   try {
+//     const response = await api.get('/teams')
+//     const data = response.data
+//     return data
+//   } catch (error) {
+//     console.error('Erro ao buscar dados:', error.message)
+//     if (error.response) {
+//       console.error('Status do erro:', error.response.status)
+//       console.error('Dados do erro:', error.response.data)
+//     }
+//   }
+// }
+
 const execute = async ({ draftEdition, callBack, type }: IParams) => {
   if (!draftEdition) return
 
@@ -53,6 +67,7 @@ const execute = async ({ draftEdition, callBack, type }: IParams) => {
   })
 
   generateDraftUseCase.execute(
+    fullDraft,
     {
       isActive: singleDraft?.active,
       game: singleDraft?.game,

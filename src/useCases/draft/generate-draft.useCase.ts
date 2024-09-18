@@ -11,6 +11,7 @@ import playerStore from '@/store/player/player-store'
 // @ts-nocheck
 
 const execute = (
+  fullDraft: IDraft[],
   config: Partial<IDraft>,
   callBack: () => void,
   type: IType,
@@ -66,6 +67,13 @@ const execute = (
     const filteredTeamPlayers = availablePlayers?.filter(
       (x) => Number(x.team) === teamNum,
     )
+
+    if (fullDraft[0].isActive === 0) {
+      const filteredDrafts = fullDraft.filter(
+        (x) => Number(x.team.number) === teamNum,
+      )
+      team.group = filteredDrafts[0].team?.group
+    }
 
     let captains = [...sortByTwitch]
     captains = captains.splice(0, totalTeams - i)

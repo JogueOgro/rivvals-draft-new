@@ -37,21 +37,21 @@ const formSchema = z.object({
 
 export default function GroupsConfig({ setActiveView }: IProps) {
   const { groupsQuantity, teamsPerGroup } = useUnit(groupsStore)
-  const { activeTab, config } = useUnit(draftStore)
+  // const { activeTab, config } = useUnit(draftStore)
 
-  const getDraftByEdition = async (draftEdition: number) => {
-    try {
-      const response = await api.get('/draft_by_edition/' + draftEdition)
-      const data = response.data
-      return data
-    } catch (error) {
-      console.error('Erro ao buscar dados:', error.message)
-      if (error.response) {
-        console.error('Status do erro:', error.response.status)
-        console.error('Dados do erro:', error.response.data)
-      }
-    }
-  }
+  // const getDraftByEdition = async (draftEdition: number) => {
+  //   try {
+  //     const response = await api.get('/draft_by_edition/' + draftEdition)
+  //     const data = response.data
+  //     return data
+  //   } catch (error) {
+  //     console.error('Erro ao buscar dados:', error.message)
+  //     if (error.response) {
+  //       console.error('Status do erro:', error.response.status)
+  //       console.error('Dados do erro:', error.response.data)
+  //     }
+  //   }
+  // }
 
   // const singleDraft = getDraftByEdition(config.edition)
   // Este código roda 4X, consertar
