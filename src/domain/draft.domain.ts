@@ -9,12 +9,13 @@ export interface ISchedule {
 
 export interface ITeam {
   id?: string
+  name?: string
+  number?: number
+  group?: number
   photo?: string
   avgScore?: number
   players: IPlayer[]
   schedules: ISchedule[]
-  group?: number
-  number?: number
 }
 
 export interface IDraft extends BaseDomain {

@@ -54,8 +54,8 @@ export default function AutoMatcher() {
                     className="p-4 rounded-sm bg-muted flex items-center gap-8"
                   >
                     <div className="space-y-1">
-                      <h4 className="text-sm font-medium leading-none">
-                        {`Time ${x?.team1?.id} x Time ${x?.team2?.id}`}
+                      <h4 className="text-sm font-medium leading-none min-w-[400px]">
+                        {`${x?.team1?.name} (${x?.team1?.number}) x ${x?.team2?.name} (${x?.team2?.number})`}
                       </h4>
                     </div>
                     <div className="flex items-center space-x-4 text-sm">
@@ -174,7 +174,7 @@ function getPageData(groupsQuantity?: string, teamList?: ITeam[]) {
   for (let index = 1; index <= Number(groupsQuantity); index++) {
     const teams = teamList?.filter((x) => x.group === index) || []
     for (let s = 0; s < teams?.length - 1; s++) {
-      const team1 = s + 1
+      const team1 = s
       for (let t = s; t <= teams?.length - 2; t++) {
         const team2 = t + 1
         const jointSchedules: ISchedule[] = [
@@ -187,6 +187,7 @@ function getPageData(groupsQuantity?: string, teamList?: ITeam[]) {
             teams[team2],
             jointSchedules,
           )
+          // console.log(team1, team2)
           newListMatch.push(matchData)
         }
       }

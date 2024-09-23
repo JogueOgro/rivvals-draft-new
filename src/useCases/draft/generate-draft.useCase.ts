@@ -73,6 +73,8 @@ const execute = (
         (x) => Number(x.team.number) === teamNum,
       )
       team.group = filteredDrafts[0].team?.group
+      team.name = filteredDrafts[0].team?.name
+      team.number = filteredDrafts[0].team?.number
     }
 
     let captains = [...sortByTwitch]

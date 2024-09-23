@@ -132,7 +132,7 @@ const DraftResult = () => {
           <Button
             variant="outline"
             onClick={() => draftEvent({ activeTab: '2' })}
-            className="min-w-[300px]  py-2"
+            className="min-w-[300px] py-2"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Voltar
