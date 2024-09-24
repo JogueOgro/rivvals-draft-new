@@ -16,8 +16,7 @@ stages:
               containerRegistry: 'sc_rivvals_draft'
               repository: 'rivvals-draft-new'
               command: 'buildAndPush'
-              Dockerfile: '.'
-              buildContext: 'Dockerfile'
+              Dockerfile: 'Dockerfile'
               tags: |
                 $(Build.BuildId)
                 latest
