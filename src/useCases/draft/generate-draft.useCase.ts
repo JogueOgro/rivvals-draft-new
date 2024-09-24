@@ -68,13 +68,15 @@ const execute = (
       (x) => Number(x.team) === teamNum,
     )
 
-    if (fullDraft[0].isActive === 0) {
-      const filteredDrafts = fullDraft.filter(
-        (x) => Number(x.team.number) === teamNum,
-      )
-      team.group = filteredDrafts[0].team?.group
-      team.name = filteredDrafts[0].team?.name
-      team.number = filteredDrafts[0].team?.number
+    if (fullDraft.length !== 0) {
+      if (fullDraft[0].isActive === 0) {
+        const filteredDrafts = fullDraft.filter(
+          (x) => Number(x?.team?.number) === teamNum,
+        )
+        team.group = filteredDrafts[0].team?.group
+        team.name = filteredDrafts[0].team?.name
+        team.number = filteredDrafts[0].team?.number
+      }
     }
 
     let captains = [...sortByTwitch]

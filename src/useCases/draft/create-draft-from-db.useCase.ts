@@ -53,6 +53,7 @@ const execute = async ({ draftEdition, callBack, type }: IParams) => {
   })
 
   generateDraftUseCase.execute(
+    fullDraft,
     {
       isActive: singleDraft?.active,
       game: singleDraft?.game,

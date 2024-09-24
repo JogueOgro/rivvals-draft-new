@@ -61,6 +61,7 @@ const execute = async ({ file, callBack, type }: IParams) => {
     playerEvent({ progress: 80 })
 
     generateDraftUseCase.execute(
+      [],
       {
         game: config?.game,
         edition: config?.edition,

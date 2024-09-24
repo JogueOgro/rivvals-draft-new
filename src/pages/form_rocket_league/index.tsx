@@ -110,17 +110,12 @@ export default function FormPage() {
   async function onSubmit(formData: z.infer<typeof formSchema>) {
     setIsLoading(true)
 
-    const result = await subscribePlayer.execute({
+    subscribePlayer.execute({
       ...formData,
       edition: 15,
       game: 'Rocket League',
     });
-
-    if (result) {
-      setIsSubmited(true);
-    } else {
-      window.alert('Ocorreu um erro, tente novamente mais tarde.');
-    }
+    setIsSubmited(true);
   }
 
   useEffect(() => {
