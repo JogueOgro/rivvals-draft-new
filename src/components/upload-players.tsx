@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dialog'
 import { Progress } from '@/components/ui/progress'
 import { getFileSize, stringTruncate } from '@/lib/utils'
-import { IType } from '@/pages/home'
+import { IType } from '@/pages/admin'
 import { playerEvent } from '@/store/player/player-events'
 import playerStore from '@/store/player/player-store'
 import { readUploadFileUseCase } from '@/useCases/draft/read-upload-file.useCase'
@@ -108,6 +108,7 @@ export default function ModalUploadPlayers({ type }: { type: IType }) {
                 width={150}
                 height={150}
                 className="self-center"
+                priority
               />
               <span className="text-md font-semibold mt-4">
                 Arraste e solte seu arquivo aqui
@@ -136,7 +137,13 @@ export default function ModalUploadPlayers({ type }: { type: IType }) {
               <div className="w-full mt-6">
                 <div className="flex items-center justify-between border rounded-xl py-4 px-2 w-full">
                   <div className="w-full flex items-center gap-4 pl-2">
-                    <Image src={excelImg} alt="Excel" width={30} height={30} />
+                    <Image
+                      src={excelImg}
+                      alt="Excel"
+                      width={30}
+                      height={30}
+                      priority
+                    />
                     <div className="flex flex-col w-full">
                       <span className="font-semibold text-sm">
                         {stringTruncate(selectedFile?.name, 38)}

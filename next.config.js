@@ -4,10 +4,7 @@ const path = require('path')
 const nextConfig = {
   output: 'standalone',
   reactStrictMode: false,
-  swcMinify: true,
-  experimental: {
-    outputFileTracingRoot: path.join(__dirname, './src'),
-  },
+  outputFileTracingRoot: path.join(__dirname, './src'),
   eslint: {
     ignoreDuringBuilds: true // Ignora linting durante o build
   },

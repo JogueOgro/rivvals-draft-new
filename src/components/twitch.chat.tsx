@@ -37,6 +37,7 @@ export default function TwitchChat() {
                     width="24"
                     height="24"
                     alt={username}
+                    priority
                   />
                   <div>
                     <h4 className={`text-sm font-medium `}>

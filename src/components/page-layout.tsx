@@ -9,49 +9,40 @@ const showSidebar = false
 const PageLayout = ({ children }: { children: ReactNode }) => {
   const { asPath } = useRouter()
 
-  if (!asPath || asPath === '/') {
+  if (asPath === '/admin') {
     return (
-      <>
-        <AnimatedBackground />
-        {children}
-      </>
-    )
-  }
-
-  if (asPath === '/form_rocket_league') {
-    return (
-      <>
-        <AnimatedBackground />
-        {children}
-      </>
-    )
-  }
-
-  return (
-    <div
-      className="flex min-h-screen"
-      style={{
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
-      <AnimatedBackground />
-      <Sidebar {...{ showSidebar }} />
       <div
-        className="flex flex-col flex-1 overflow-hidden central-box"
+        className="flex min-h-screen"
         style={{
-          marginLeft: showSidebar ? 250 : 75,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       >
-        <main
-          className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-12 main-print"
-          style={{ zIndex: 1 }}
+        <AnimatedBackground />
+        <Sidebar {...{ showSidebar }} />
+        <div
+          className="flex flex-col flex-1 overflow-hidden central-box"
+          style={{
+            marginLeft: showSidebar ? 250 : 75,
+          }}
         >
-          {children}
-        </main>
+          <main
+            className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-12 main-print"
+            style={{ zIndex: 1 }}
+          >
+            {children}
+          </main>
+        </div>
       </div>
-    </div>
-  )
+    )
+  } else {
+    return (
+      <>
+        <AnimatedBackground />
+        {children}
+      </>
+    )
+  }
 }
 
 export default PageLayout

@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { IDraft } from '@/domain/draft.domain'
-import { IType } from '@/pages/home'
+import { IType } from '@/pages/admin'
 import { playerEvent } from '@/store/player/player-events'
 import playerStore from '@/store/player/player-store'
 import { createDraftFromDB } from '@/useCases/draft/create-draft-from-db.useCase'

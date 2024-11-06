@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import api from '@/clients/api'
 import { IPlayer } from '@/domain/player.domain'
-import { IType } from '@/pages/home'
+import { IType } from '@/pages/admin'
 import { groupsEvent } from '@/store/groups/groups-events'
 
 import { importPlayersFromDBUseCase } from '../player/import-players-from-db.useCase'

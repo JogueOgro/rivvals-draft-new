@@ -77,6 +77,7 @@ export default function RaffleButton() {
             width={350}
             height={350}
             alt="Tenas"
+            priority
           />
         </AlertDialogContent>
       </AlertDialog>

@@ -44,6 +44,7 @@ const Sidebar = ({ showSidebar }: IProps) => {
             width={showSidebar ? 100 : 50}
             height={0}
             className="pt-10"
+            priority
           />
         </div>
         <div className="border border-b-0 border-x-0 border-slate-300 mt-8">

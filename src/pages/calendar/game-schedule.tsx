@@ -64,13 +64,16 @@ export default function GameSchedule() {
             <SelectGroup>
               {dataSource?.map((team) => (
                 <SelectItem key={team.id} value={team.id!}>
-                  Time: <b>{team.id}</b>
+                  Time:{' '}
+                  <b>
+                    ({team.id}) {team.name}
+                  </b>
                 </SelectItem>
               ))}
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Image src={vsImg} alt="vs" width={40} height={0} />
+        <Image src={vsImg} alt="vs" width={40} height={0} priority />
         <Select value={selectedTeamB} onValueChange={setSelectedTeamB}>
           <SelectTrigger className="w-[280px]">
             <SelectValue placeholder="-Selecione-" />

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IPlayer } from '@/domain/player.domain'
 import { sleep } from '@/lib/utils'
-import { IType } from '@/pages/home'
+import { IType } from '@/pages/admin'
 import draftStore from '@/store/draft/draft-store'
 import { playerEvent } from '@/store/player/player-events'
 

@@ -1,7 +1,7 @@
 import { IDraft, ISchedule, ITeam } from '@/domain/draft.domain'
 import { IPlayer } from '@/domain/player.domain'
 import { sortDays } from '@/lib/utils'
-import { IType } from '@/pages/home'
+import { IType } from '@/pages/admin'
 import { draftEvent } from '@/store/draft/draft-events'
 import { draftInitialState } from '@/store/draft/draft-state'
 import { playerEvent } from '@/store/player/player-events'

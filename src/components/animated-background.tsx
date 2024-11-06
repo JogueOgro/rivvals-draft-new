@@ -47,6 +47,7 @@ const AnimatedBackground = (): JSX.Element => {
                 width={0}
                 height={0}
                 className="h-auto w-full"
+                priority
               />
             </div>
           </div>

@@ -1,15 +1,14 @@
 'use client'
 
-import { useUnit } from 'effector-react'
-import { DatabaseBackup, Upload } from 'lucide-react'
+import { LogIn } from 'lucide-react'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import logoImg from '@/assets/logo.png'
+import api from '@/clients/api'
 import HeadMetatags from '@/components/head-metatags'
-import ModalQueryPlayers from '@/components/query-players'
-import ModalQueryPlayersNew from '@/components/query-players-new'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -19,12 +18,7 @@ import {
   FormLabel,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import ModalUploadPlayers from '@/components/upload-players'
-import { draftEvent } from '@/store/draft/draft-events'
-import draftStore from '@/store/draft/draft-store'
-import { playerEvent } from '@/store/player/player-events'
+import { authEvent } from '@/store/auth/auth-events'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -32,32 +26,18 @@ import { z } from 'zod'
 export type IType = undefined | 'new' | 'import' | 'database' | 'database_new'
 
 const defaultValues = {
-  name: undefined,
-  teamPlayersQuantity: undefined,
-  teamsQuantity: undefined,
+  email: undefined,
+  password: undefined,
 }
 
 export default function LoginPage() {
-  const [type, setType] = useState<IType>(undefined)
-  const { config } = useUnit(draftStore)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const route = useRouter()
 
   const formSchema = z.object({
-    game:
-      type === 'database'
-        ? z.string()
-        : z.string().min(1, '* Campo obrigatório'),
-    edition:
-      type === 'database'
-        ? z.string()
-        : z.string().min(1, '* Campo obrigatório'),
-    teamPlayersQuantity:
-      type === 'database'
-        ? z.string()
-        : z.string().min(1, '* Campo obrigatório'),
-    teamsQuantity:
-      type === 'database'
-        ? z.string()
-        : z.string().min(1, '* Campo obrigatório'),
+    email: z.string(),
+    password: z.string().min(1, '* Campo obrigatório'),
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -70,215 +50,116 @@ export default function LoginPage() {
     form.reset(defaultValues)
   }, [])
 
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    console.log(`Email: ${email}, Password: ${password}`)
+
+    const data = {
+      email,
+      password,
+    }
+
+    try {
+      const response = await api.post('/checkpassword', data)
+      const responseData = response.data
+      console.log('Login feito com sucesso:')
+      const username = email.split('@')[0]
+      authEvent({
+        username,
+        email: data.email,
+        loggedIn: true,
+        date: new Date(),
+        access_token: responseData,
+      })
+      route.push('/profile/' + username)
+    } catch (error) {
+      console.error('Erro durante login:', error.message)
+      if (error.response) {
+        console.error('Status do erro:', error.response.status)
+        console.error('Dados do erro:', error.response.data)
+      }
+    }
+  }
+
   return (
     <>
-      <HeadMetatags title="Draft" />
+      <HeadMetatags title="Login" />
       <div className="bg-muted overflow-hidden flex w-full min-h-screen items-center justify-center">
         <div className="flex flex-col py-4 rounded-3xl animate-in fade-in shadow-lg transition-all duration-1000 bg-white border-md min-w-[30vw] pb-12 backdrop-filter backdrop-blur-lg bg-opacity-30">
-          <Image src={logoImg} alt="img" width={180} className="self-center" />
+          <Image
+            src={logoImg}
+            alt="img"
+            width={180}
+            className="self-center"
+            priority
+          />
 
           <div className="flex w-full items-center justify-center mt-4">
             <Form {...form}>
               <form
                 className="flex flex-col max-w-[500px] gap-2"
-                onSubmit={form.handleSubmit((formData) => {
-                  draftEvent({
-                    config: {
-                      game: formData!.game,
-                      teamPlayersQuantity:
-                        formData!.teamPlayersQuantity.toString(),
-                      teamsQuantity: formData!.teamsQuantity.toString(),
-                      edition: Number(formData!.edition),
-                      draftDate: new Date(),
-                    },
-                  })
-                  if (type === 'new' || type === 'import') {
-                    playerEvent({ openModalUpload: true })
-                  }
-                  if (type === 'database') {
-                    playerEvent({ openModalDB: true })
-                  }
-                  if (type === 'database_new') {
-                    playerEvent({ openModalDBNew: true })
-                  }
-                })}
+                onSubmit={handleLogin}
               >
-                {type !== 'database' && type !== 'database_new' && (
-                  <div className="w-full flex items-center justify-between gap-4">
-                    <FormField
-                      control={form.control}
-                      name="game"
-                      defaultValue={config?.game}
-                      render={({ field: { value, onChange, name } }) => (
-                        <FormItem className="w-full">
-                          <FormLabel>Nome do Jogo *</FormLabel>
-                          <FormControl>
-                            <Input
-                              key={name}
-                              name={name}
-                              placeholder="Digite aqui"
-                              value={value?.toString()}
-                              onChange={(event) => onChange(event.target.value)}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="edition"
-                      defaultValue="15"
-                      render={({ field: { value, onChange, name } }) => (
-                        <FormItem className="w-full">
-                          <FormLabel>Edicao *</FormLabel>
-                          <FormControl>
-                            <Input
-                              key={name}
-                              name={name}
-                              placeholder="Digite aqui"
-                              value={value?.toString()}
-                              onChange={(event) => onChange(event.target.value)}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                )}
-                {type !== 'database' && type !== 'database_new' && (
-                  <div className="w-full flex items-center justify-between gap-4">
-                    <FormField
-                      control={form.control}
-                      name="teamsQuantity"
-                      defaultValue={config?.teamsQuantity}
-                      render={({ field: { value, onChange, name } }) => (
-                        <FormItem className="w-full">
-                          <FormLabel>Quantidade de Times *</FormLabel>
-                          <FormControl>
-                            <Input
-                              key={name}
-                              name={name}
-                              placeholder="Digite aqui"
-                              value={value?.toString()}
-                              onChange={(event) => onChange(event.target.value)}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="teamPlayersQuantity"
-                      defaultValue={config?.teamPlayersQuantity}
-                      render={({ field: { value, onChange, name } }) => (
-                        <FormItem className="w-full">
-                          <FormLabel>Players por time *</FormLabel>
-                          <FormControl>
-                            <Input
-                              key={name}
-                              name={name}
-                              placeholder="Digite aqui"
-                              value={value?.toString()}
-                              onChange={(event) => onChange(event.target.value)}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                )}
+                <div className="w-full flex items-center justify-between gap-4">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field: { value, name } }) => (
+                      <FormItem className="w-full">
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input
+                            key={name}
+                            name={name}
+                            placeholder="ogro@levva.io"
+                            value={value?.toString()}
+                            onChange={(e) => setEmail(e.target.value)}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
-                <RadioGroup
-                  className="mt-4"
-                  value={type}
-                  onValueChange={(x) => setType(x as IType)}
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="new" id="new" />
-                    <Label htmlFor="new">Começar um draft novo</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="import" id="import" />
-                    <Label htmlFor="import">Importar um draft existente</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="database_new" id="database_new" />
-                    <Label htmlFor="new">Começar um draft novo (Banco)</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="database" id="database" />
-                    <Label htmlFor="import">
-                      Carregar draft completo (Banco)
-                    </Label>
-                  </div>
-                </RadioGroup>
-
-                {type === 'new' && (
-                  <div className="w-full flex-col flex justify-center mt-8 gap-4">
-                    <Button
-                      type="submit"
-                      className="w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
-                    >
-                      <div className="flex items-center gap-2">
-                        <Upload className="w-5 h-5" />
-                        <span>Upload arquivo de importação&nbsp;&nbsp;</span>
-                      </div>
-                    </Button>
-                  </div>
-                )}
-
-                {type === 'import' && (
-                  <div className="w-full flex-col flex justify-center mt-8 gap-4">
-                    <Button
-                      type="submit"
-                      className="w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
-                    >
-                      <div className="flex items-center gap-2">
-                        <Upload className="w-5 h-5" />
-                        <span>Upload do draft</span>
-                      </div>
-                    </Button>
-                  </div>
-                )}
-
-                {type === 'database_new' && (
-                  <div className="w-full flex-col flex justify-center mt-8 gap-4">
-                    <Button
-                      type="submit"
-                      className="w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
-                    >
-                      <div className="flex items-center gap-2">
-                        <DatabaseBackup className="w-5 h-5" />
-                        <span>Iniciar</span>
-                      </div>
-                    </Button>
-                  </div>
-                )}
-
-                {type === 'database' && (
-                  <div className="w-full flex-col flex justify-center mt-8 gap-4">
-                    <Button
-                      type="submit"
-                      className="w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
-                    >
-                      <div className="flex items-center gap-2">
-                        <DatabaseBackup className="w-5 h-5" />
-                        <span>Carregar dados</span>
-                      </div>
-                    </Button>
-                  </div>
-                )}
+                <div className="w-full flex items-center justify-between gap-4">
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field: { value, name } }) => (
+                      <FormItem className="w-full">
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input
+                            key={name}
+                            name={name}
+                            placeholder="ziriguidumdekodeko"
+                            value={value?.toString()}
+                            onChange={(e) => setPassword(e.target.value)}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="w-full flex-col flex justify-center mt-1 gap-1 text-xs">
+                  Não tem uma conta? Registre-se
+                </div>
+                <div className="w-full flex-col flex justify-center mt-2 gap-2">
+                  <Button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
+                  >
+                    <div className="flex items-center gap-2">
+                      <LogIn className="w-5 h-5" />
+                      <span>Entrar</span>
+                    </div>
+                  </Button>
+                </div>
               </form>
             </Form>
           </div>
         </div>
       </div>
-
-      {type === 'database_new' && <ModalQueryPlayersNew type={type} />}
-      {type === 'database' && <ModalQueryPlayers type={type} />}
-      {(type === 'new' || type === 'import') && (
-        <ModalUploadPlayers type={type} />
-      )}
     </>
   )
 }
