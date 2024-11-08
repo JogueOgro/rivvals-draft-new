@@ -29,7 +29,6 @@ export default function ModalQueryPlayersNew({ type }: { type: IType }) {
   const { isLoading, openModalDBNew } = useUnit(playerStore)
   const [drafts, setDrafts] = useState([])
   const [selectedDraft, setSelectedDraft] = useState('')
-
   const route = useRouter()
 
   const fetchActiveDrafts = async () => {

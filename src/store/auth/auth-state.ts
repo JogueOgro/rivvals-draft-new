@@ -5,5 +5,5 @@ export const authInitialState: IAuth = {
   email: '',
   loggedIn: false,
   date: new Date(),
-  access_token: '',
+  token: '',
 }

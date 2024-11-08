@@ -69,7 +69,7 @@ export default function LoginPage() {
         email: data.email,
         loggedIn: true,
         date: new Date(),
-        access_token: responseData,
+        token: responseData,
       })
       route.push('/profile/' + username)
     } catch (error) {

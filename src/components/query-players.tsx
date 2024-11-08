@@ -53,7 +53,7 @@ export default function ModalQueryPlayers({ type }: { type: IType }) {
       draftEdition,
       type,
       callBack: () => {
-        route.push('/draft')
+        route.push('/admin/draft')
       },
     })
   }

@@ -39,7 +39,7 @@ export default function ModalUploadPlayers({ type }: { type: IType }) {
       file,
       type,
       callBack: () => {
-        route.push(type === 'import' ? '/draft' : '/player')
+        route.push(type === 'import' ? '/admin/draft' : '/admin/player')
       },
     })
   }

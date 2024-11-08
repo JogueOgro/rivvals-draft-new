@@ -1,3 +1,5 @@
+import authStore from '@/store/auth/auth-store'
+
 import axios from 'axios'
 
 const getApiHost = (): string => {
@@ -17,6 +19,10 @@ const api = axios.create({
 })
 
 api.interceptors.request.use(async (config) => {
+  const { token } = authStore.getState()
+  if (token) {
+    config.headers.Authorization = 'Bearer ' + token.token
+  }
   return config
 })
 

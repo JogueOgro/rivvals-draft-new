@@ -5,22 +5,22 @@ import { IMenuItemProps } from '@/components/menu-item'
 const modules: IMenuItemProps[] = [
   {
     menu: 'Dashboard',
-    route: '/dashboard',
+    route: '/admin/dashboard',
     icon: LayoutDashboard,
   },
   {
     menu: 'Draft',
-    route: '/draft',
+    route: '/admin/draft',
     icon: Swords,
   },
   {
     menu: 'Calendário',
-    route: '/calendar',
+    route: '/admin/calendar',
     icon: Calendar,
   },
   {
     menu: 'Jogadores',
-    route: '/player',
+    route: '/admin/player',
     icon: User,
   },
 ]

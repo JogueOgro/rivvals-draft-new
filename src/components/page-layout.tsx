@@ -9,7 +9,7 @@ const showSidebar = false
 const PageLayout = ({ children }: { children: ReactNode }) => {
   const { asPath } = useRouter()
 
-  if (asPath === '/admin') {
+  if (asPath.startsWith('/admin') && asPath !== '/admin') {
     return (
       <div
         className="flex min-h-screen"

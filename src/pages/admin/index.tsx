@@ -41,8 +41,6 @@ const defaultValues = {
 export default function LoginPage() {
   const [type, setType] = useState<IType>(undefined)
   const { config } = useUnit(draftStore)
-  const { username } = useUnit(authStore)
-  console.log(username)
 
   const formSchema = z.object({
     game:

@@ -3,5 +3,5 @@ export interface IAuth {
   email: string
   loggedIn: boolean
   date: Date
-  access_token: string
+  token: string
 }
