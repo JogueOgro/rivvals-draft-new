@@ -4,4 +4,5 @@ export interface IAuth {
   loggedIn: boolean
   date: Date
   token: string
+  auth: string
 }

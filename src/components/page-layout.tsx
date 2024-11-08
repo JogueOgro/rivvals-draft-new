@@ -1,5 +1,9 @@
+import { useUnit } from 'effector-react'
 import { useRouter } from 'next/router'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
+
+import api from '@/clients/api'
+import authStore from '@/store/auth/auth-store'
 
 import AnimatedBackground from './animated-background'
 import Sidebar from './sidebar'
@@ -8,6 +12,29 @@ const showSidebar = false
 
 const PageLayout = ({ children }: { children: ReactNode }) => {
   const { asPath } = useRouter()
+  const { email } = useUnit(authStore)
+  const router = useRouter()
+  const data = { email, auth: 'admin' }
+
+  useEffect(() => {
+    const checkAuthorization = async (data) => {
+      try {
+        const response = await api.post('/checkauth', data)
+        console.log('Auth:', response.data.isAuthorized)
+
+        if (!response.data.isAuthorized) {
+          router.push('/')
+        }
+      } catch (error) {
+        console.error('Erro ao verificar autorização:', error)
+        router.push('/')
+      }
+    }
+
+    if (asPath.startsWith('/admin')) {
+      checkAuthorization(data)
+    }
+  }, [router])
 
   if (asPath.startsWith('/admin') && asPath !== '/admin') {
     return (
