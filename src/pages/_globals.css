@@ -178,3 +178,157 @@
     margin-left: 0px !important;
   }
 }
+
+/* Layout Geral */
+.container {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Cabeçalho */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #ddd;
+}
+
+.search-bar {
+  flex-grow: 1;
+  max-width: 300px;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.icons, .user-menu {
+  display: flex;
+  align-items: center;
+}
+
+.icon-notifications, .icon-store {
+  margin: 0 0.5rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.user-photo-small {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+/* Seção Principal */
+.main-section {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  gap: 2rem;
+}
+
+.profile-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.user-photo-large {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-right: 1rem;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-profile-btn {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.status-section {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-left: 1px solid #ddd;
+}
+
+/* Body */
+.body-content {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.feed {
+  flex: 4;
+  padding: 1rem;
+  background-color: #f1f1f1;
+}
+
+.achievements-history {
+  flex: 1;
+  padding: 1rem;
+  background-color: #e8e8e8;
+}
+
+.vertical-bar {
+  width: 1px;
+  background-color: #000;
+  height: 100%;
+  margin: 0 20px;
+}
+
+.achievements-history {
+  margin-top: 20px;
+}
+
+.ranking-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.ranking-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.ranking-item:hover {
+  background-color: #f4f4f4;
+}
+
+.ranking-position {
+  font-weight: bold;
+  color: #333;
+}
+
+.player-name {
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+.player-coins {
+  font-weight: bold;
+  color: #f39c12; /* Cor dourada para as moedas */
+}
+
+

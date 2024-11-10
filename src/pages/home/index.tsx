@@ -52,7 +52,6 @@ export default function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault()
-    console.log(`Email: ${email}, Password: ${password}`)
 
     const data = {
       email,
