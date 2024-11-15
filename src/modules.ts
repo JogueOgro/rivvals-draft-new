@@ -1,4 +1,4 @@
-import { Calendar, LayoutDashboard, Swords, User } from 'lucide-react'
+import { Atom, Calendar, LayoutDashboard, Swords, User } from 'lucide-react'
 
 import { IMenuItemProps } from '@/components/menu-item'
 
@@ -11,12 +11,17 @@ const modules: IMenuItemProps[] = [
   {
     menu: 'Draft',
     route: '/admin/draft',
-    icon: Swords,
+    icon: Atom,
   },
   {
     menu: 'Calendário',
     route: '/admin/calendar',
     icon: Calendar,
+  },
+  {
+    menu: 'Partidas',
+    route: '/admin/match_control',
+    icon: Swords,
   },
   {
     menu: 'Jogadores',

@@ -20,7 +20,6 @@ const PageLayout = ({ children }: { children: ReactNode }) => {
     const checkAuthorization = async (data) => {
       try {
         const response = await api.post('/checkauth', data)
-        console.log('Auth:', response.data.isAuthorized)
 
         if (!response.data.isAuthorized) {
           router.push('/')

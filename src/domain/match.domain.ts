@@ -4,6 +4,7 @@ import { ITeam } from './draft.domain'
 export interface IMatch extends BaseDomain {
   team1?: ITeam
   team2?: ITeam
+  draftEdition?: string
   phase?: string
   group?: number
   format?: string

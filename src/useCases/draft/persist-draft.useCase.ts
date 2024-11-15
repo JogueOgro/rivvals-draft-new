@@ -9,7 +9,7 @@ const execute = async () => {
   try {
     const response = await api.post('/complete_draft', { players, config })
     const data = response.data
-    console.log(data)
+    // console.log(data)
   } catch (error) {
     const errorJson = {
       error: error.message,

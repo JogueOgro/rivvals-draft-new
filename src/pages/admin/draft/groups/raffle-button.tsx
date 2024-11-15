@@ -5,12 +5,14 @@ import React, { useEffect, useState } from 'react'
 
 import tenasBag from '@/assets/tenas-bag.gif'
 import tenas from '@/assets/tenas.gif'
+import api from '@/clients/api'
 import { AlertDialog, AlertDialogContent } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { sleep } from '@/lib/utils'
 import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
 import groupsStore from '@/store/groups/groups-store'
+import { CreateMatches } from '@/useCases/match/create-matches-useCase'
 
 export default function RaffleButton() {
   const [tenasOpen, setTenasOpen] = useState(false)
@@ -36,6 +38,21 @@ export default function RaffleButton() {
         config: { ...config, teamList },
         activeTab: '4',
       })
+      try {
+        const response = await api.put('/teams', teamList)
+        if (response) {
+          console.log('Times atualizados!')
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados:', error.message)
+        if (error.response) {
+          console.error('Status do erro:', error.response.status)
+          console.error('Dados do erro:', error.response.data)
+        }
+      }
+      // @ts-ignore
+      const edition = String(config.edition)
+      CreateMatches.execute({ edition, teamList, groupsQuantity })
       window.alert('Sorteio Concluído!')
     } else {
       setTenasOpen(true)
