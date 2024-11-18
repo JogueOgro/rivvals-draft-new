@@ -2,7 +2,6 @@
 
 import { LogIn } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -141,6 +140,9 @@ export default function LoginPage() {
                     )}
                   />
                 </div>
+                <div className="w-full flex-col flex justify-center mt-1 gap-1 text-xs">
+                  Não tem uma conta? Registre-se
+                </div>
                 <div className="w-full flex-col flex justify-center mt-2 gap-2">
                   <Button
                     type="submit"
@@ -151,18 +153,6 @@ export default function LoginPage() {
                       <span>Entrar</span>
                     </div>
                   </Button>
-                  <div className="w-full flex-col flex justify-center mt-1 gap-1 text-xs">
-                    <span>
-                      Nâo tem conta?
-                      <Link
-                        href="/home/register"
-                        rel="noopener noreferrer" // Recomendado para segurança
-                        className="p-1 text-decoration-line: underline"
-                      >
-                        Registre-se
-                      </Link>
-                    </span>
-                  </div>
                 </div>
               </form>
             </Form>
