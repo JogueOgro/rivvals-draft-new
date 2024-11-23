@@ -22,11 +22,13 @@ export interface IPlayer extends BaseDomain {
   epic?: string
   xbox?: string
   psn?: string
-  score_cs?: string
-  score_valorant?: string
-  score_lol?: string
-  score_rocketleague?: string
-  score_fallguys?: string
+  score_cs?: number
+  score_valorant?: number
+  score_lol?: number
+  score_rocketleague?: number
+  score_fallguys?: number
+  score_pingpong?: number
+  score_racing?: number
 }
 
 export interface IPlayerPage {
