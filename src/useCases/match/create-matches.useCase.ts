@@ -121,4 +121,4 @@ const execute = async ({ edition, teamList, groupsQuantity }: IParams) => {
   }
 }
 
-export const CreateMatches = { execute }
+export const createMatchesUseCase = { execute }

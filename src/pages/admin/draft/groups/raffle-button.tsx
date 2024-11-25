@@ -12,7 +12,7 @@ import { sleep } from '@/lib/utils'
 import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
 import groupsStore from '@/store/groups/groups-store'
-import { CreateMatches } from '@/useCases/match/create-matches-useCase'
+import { createMatchesUseCase } from '@/useCases/match/create-matches.useCase'
 
 export default function RaffleButton() {
   const [tenasOpen, setTenasOpen] = useState(false)
@@ -38,21 +38,40 @@ export default function RaffleButton() {
         config: { ...config, teamList },
         activeTab: '4',
       })
-      try {
-        const response = await api.put('/teams', teamList)
-        if (response) {
-          console.log('Times atualizados!')
-        }
-      } catch (error) {
-        console.error('Erro ao buscar dados:', error.message)
-        if (error.response) {
-          console.error('Status do erro:', error.response.status)
-          console.error('Dados do erro:', error.response.data)
-        }
-      }
+      const data = { groupsQuantity, teamsPerGroup }
+
+      api
+        .put('/draft/' + config?.edition + '/groups', data)
+        .then((response) => {
+          if (response.status === 200) {
+            console.log('Dados de grupo atualizados com sucesso')
+          } else {
+            console.log('Erro na resposta', response)
+          }
+        })
+        .catch((error) => {
+          console.error('Erro na requisição', error)
+        })
+
+      api
+        .put('/teams', teamList)
+        .then((response) => {
+          if (response.status === 200) {
+            console.log('Dados de times atualizados com sucesso')
+          } else {
+            console.log('Erro na resposta', response)
+          }
+        })
+        .catch((error) => {
+          console.error('Erro ao buscar dados:', error.message)
+          if (error.response) {
+            console.error('Status do erro:', error.response.status)
+            console.error('Dados do erro:', error.response.data)
+          }
+        })
       // @ts-ignore
       const edition = String(config.edition)
-      CreateMatches.execute({ edition, teamList, groupsQuantity })
+      createMatchesUseCase.execute({ edition, teamList, groupsQuantity })
       window.alert('Sorteio Concluído!')
     } else {
       setTenasOpen(true)
@@ -81,7 +100,7 @@ export default function RaffleButton() {
         onClick={handleClickRaffle}
         className="mt-8 w-[300px] bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600  py-2"
       >
-        Sortear
+        {currentTeam > total ? 'Concluir' : 'Sortear'}
         <Shuffle className="w-5 h-5 ml-2" />
       </Button>
       <AlertDialog open={tenasOpen} onOpenChange={setTenasOpen}>

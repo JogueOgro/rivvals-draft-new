@@ -2,6 +2,7 @@ import { BaseDomain } from './base.domain'
 import { ITeam } from './draft.domain'
 
 export interface IMatch extends BaseDomain {
+  idmatch?: string
   team1?: ITeam
   team2?: ITeam
   draftEdition?: string
@@ -12,6 +13,9 @@ export interface IMatch extends BaseDomain {
   hour?: string
   isDone?: boolean
   isScheduled?: boolean
-  score?: string[]
+  winner?: number
+  scoreTeam1?: number
+  scoreTeam2?: number
   freeSchedule?: { day: string; hour: number }[]
+  conclusionDate: Date
 }

@@ -302,3 +302,8 @@ export const sortDays = (a, b) => {
     return a - b
   }
 }
+
+export const fixSchedule = (rawSchedule) => {
+  const fixedSchedule = rawSchedule.replace(/'/g, '"');
+  return JSON.parse(fixedSchedule);
+}
