@@ -48,7 +48,9 @@ const formSchema = z.object({
 })
 
 export default function MatchesConfig({ match, index }: IMatch) {
-  const [sent, setSent] = useState(false)
+  const [sent, setSent] = useState(match.isDone)
+  const [score1, setScore1] = useState(match.scoreTeam1 || '')
+  const [score2, setScore2] = useState(match.scoreTeam2 || '')
 
   const form = useForm<z.infer<typeof formSchema>>({
     mode: 'all',
@@ -89,10 +91,24 @@ export default function MatchesConfig({ match, index }: IMatch) {
               control={form.control}
               name="team1"
               render={({ field: { value, onChange, name } }) => (
-                <FormItem className="flex items-center gap-2 mb-2">
-                  <FormLabel className="flex justify-end w-[200px] mt-2">
+                <FormItem className="flex items-center gap-2">
+                  <FormControl>
+                    <Input
+                      disabled={sent}
+                      key={name}
+                      name={name}
+                      placeholder=""
+                      value={value || score1} // Aqui você usa o value do field ou o score2
+                      onChange={(e) => {
+                        onChange(e) // Atualiza o campo com o valor do form control
+                        setScore1(e.target.value) // Atualiza o estado local
+                      }}
+                      className="w-[50px] text-center"
+                    />
+                  </FormControl>
+                  <FormLabel className="flex justify-start w-[200px]">
                     <strong
-                      className={`flex items-center gap-1 text-left mb-2 mt-2  ${sent ? 'text-gray-400' : ''}`}
+                      className={`flex items-center gap-1 text-left mb-2 ${sent ? 'text-gray-400' : ''}`}
                     >
                       <span className="truncate">
                         {match.team1?.name || 'N/A'}
@@ -100,17 +116,6 @@ export default function MatchesConfig({ match, index }: IMatch) {
                       <span>({match.team1?.number || 'N/A'})</span>
                     </strong>
                   </FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={sent}
-                      key={name}
-                      name={name}
-                      placeholder=""
-                      value={value}
-                      onChange={(event) => onChange(event.target.value)}
-                      className="w-[50px] text-center"
-                    />
-                  </FormControl>
                 </FormItem>
               )}
             />
@@ -132,14 +137,17 @@ export default function MatchesConfig({ match, index }: IMatch) {
                       key={name}
                       name={name}
                       placeholder=""
-                      value={value}
-                      onChange={(event) => onChange(event.target.value)}
+                      value={value || score2} // Aqui você usa o value do field ou o score2
+                      onChange={(e) => {
+                        onChange(e) // Atualiza o campo com o valor do form control
+                        setScore2(e.target.value) // Atualiza o estado local
+                      }}
                       className="w-[50px] text-center"
                     />
                   </FormControl>
                   <FormLabel className="flex justify-start w-[200px]">
                     <strong
-                      className={`flex items-center gap-1 text-left mb-2  ${sent ? 'text-gray-400' : ''}`}
+                      className={`flex items-center gap-1 text-left mb-2 ${sent ? 'text-gray-400' : ''}`}
                     >
                       <span className="truncate">
                         {match.team2?.name || 'N/A'}
