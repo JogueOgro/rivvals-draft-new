@@ -40,6 +40,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { IPlayer } from '@/domain/player.domain'
 import { cn } from '@/lib/utils'
 import { processWinnerPingPong } from '@/useCases/player/proccess-winner-pingpong.UseCase'
 
@@ -91,20 +92,36 @@ export default function LoginPage() {
     setInPlay(true)
   }
 
-  const proccessWinner = () => {
-    const player1 = players.find((player) => player.nick === player1nick)
-    const player2 = players.find((player) => player.nick === player2nick)
-    let data = {}
+  const proccessWinner = async () => {
+    let winner = ''
+    const player1: IPlayer = players.find(
+      (player) => player.nick === player1nick,
+    )
+    const player2: IPlayer = players.find(
+      (player) => player.nick === player2nick,
+    )
 
-    if (radio1.current.getAttribute('data-state') == 'checked') {
-      data = { player1, player2 }
-    } else if (radio2.current.getAttribute('data-state') == 'checked') {
-      data = { player1, player2 }
+    if (!player1 || !player2) {
+      alert('Jogador(es) não encontrado(s). Verifique os nicks.')
+      return
+    }
+
+    const data = {}
+
+    if (radio1.current.getAttribute('data-state') === 'checked') {
+      winner = 'player1'
+    } else if (radio2.current.getAttribute('data-state') === 'checked') {
+      winner = 'player2'
     } else {
       alert('Selecione o vencedor!')
+      return
     }
     setIsLoading(true)
-    processWinnerPingPong.execute(data)
+    await processWinnerPingPong.execute({
+      player1: { ...player1 },
+      player2: { ...player2 },
+      winner,
+    })
     router.push('/ranked/pingpong/standings')
   }
 

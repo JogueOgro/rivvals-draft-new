@@ -20,18 +20,22 @@ const execute = async (formData) => {
     conclusionDate: localTime.toISOString().slice(0, 19).replace('T', ' '),
   }
 
-  try {
-    const response = await api.post('/match/scores', scores)
-    if (response) {
-      console.log('Partidas atualizadas!')
-    }
-  } catch (error) {
-    console.error('Erro ao buscar dados:', error.message)
-    if (error.response) {
-      console.error('Status do erro:', error.response.status)
-      console.error('Dados do erro:', error.response.data)
-    }
-  }
+  api
+    .post('/match/scores', scores)
+    .then((response) => {
+      if (response.status === 200) {
+        console.log('Partidas atualizadas!')
+      } else {
+        console.log('Erro na resposta', response)
+      }
+    })
+    .catch((error) => {
+      console.error('Erro ao buscar dados:', error.message)
+      if (error.response) {
+        console.error('Status do erro:', error.response.status)
+        console.error('Dados do erro:', error.response.data)
+      }
+    })
 }
 
 export const postMatchUseCase = { execute }

@@ -107,18 +107,22 @@ const execute = async ({ edition, teamList, groupsQuantity }: IParams) => {
     }
   }
 
-  try {
-    const response = await api.post('/matches', newListMatch)
-    if (response) {
-      console.log('Partidas atualizadas!')
-    }
-  } catch (error) {
-    console.error('Erro ao buscar dados:', error.message)
-    if (error.response) {
-      console.error('Status do erro:', error.response.status)
-      console.error('Dados do erro:', error.response.data)
-    }
-  }
+  api
+    .post('/matches', newListMatch)
+    .then((response) => {
+      if (response.status === 200) {
+        console.log('Dados de times atualizados com sucesso')
+      } else {
+        console.log('Erro ao buscar dados:', response)
+      }
+    })
+    .catch((error) => {
+      console.error('Erro ao buscar dados:', error.message)
+      if (error.response) {
+        console.error('Status do erro:', error.response.status)
+        console.error('Dados do erro:', error.response.data)
+      }
+    })
 }
 
 export const createMatchesUseCase = { execute }
