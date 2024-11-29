@@ -62,10 +62,8 @@ export default function MatchesConfig({ match, index }: IMatch) {
 
   const handleClick = () => {
     setSent(false)
-    form.reset({
-      team1: '',
-      team2: '',
-    })
+    setScore1('')
+    setScore2('')
   }
 
   return (

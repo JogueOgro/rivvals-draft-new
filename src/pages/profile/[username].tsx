@@ -2,7 +2,13 @@ import { useRouter } from 'next/router'
 
 export default function UserProfile() {
   const router = useRouter()
-  const { username } = router.query
+
+  const redirectToEdit = () => {
+    console.log('CLICK')
+    const asPath = router.asPath
+    const newPath = `${asPath}/edit`
+    router.push(newPath)
+  }
 
   return (
     <div className="container">
@@ -16,7 +22,7 @@ export default function UserProfile() {
           <img
             src="/ogroicon.png"
             alt="Foto do usuário"
-            class="user-photo-small"
+            className="user-photo-small"
           />
           <span className="user-name">Peter Thorun</span>
         </div>
@@ -35,7 +41,15 @@ export default function UserProfile() {
             <p>Email: ogro@levva.io</p>
             <p>Telefone: (11) 993045775</p>
             <p>Nível: Avançado</p>
-            <button className="edit-profile-btn">Editar Perfil</button>
+            <button
+              className="edit-profile-btn"
+              onClick={() => {
+                console.log('Teste de clique funcionando!')
+                redirectToEdit()
+              }}
+            >
+              Editar Perfil
+            </button>
           </div>
         </div>
 

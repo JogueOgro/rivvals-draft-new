@@ -63,7 +63,7 @@ export default function LoginPage() {
       const response = await api.post('/checkpassword', data)
       const responseData = response.data
       console.log('Login feito com sucesso:')
-      const username = email.split('@')[0]
+      const username = email.split('.')[0]
       authEvent({
         username,
         email: data.email,

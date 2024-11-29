@@ -70,12 +70,12 @@ export default function FormPage() {
   return (
     <>
       <HeadMetatags
-        title="Register"
-        description="Criar conta"
+        title="Editar Informações Pessoais"
+        description="Editar"
       />
       <div className="p-4 overflow-hidden flex w-full min-h-screen items-center justify-center">
-        <div className="flex flex-col pb-12 rounded animate-in fade-in shadow-lg transition-all duration-1000 bg-white w-full max-w-[1000px] my-4 backdrop-filter backdrop-blur-lg bg-opacity-40">
-          <Image src={bannerImg} alt="img" className="self-center" priority/>
+      <div className="flex flex-col pb-12 rounded animate-in fade-in shadow-lg transition-all duration-1000 bg-white w-full max-w-[1000px] my-4 backdrop-filter backdrop-blur-lg bg-opacity-40 border-t border-t-gray-200">
+
           <div className="flex w-full items-center justify-center mt-4 p-4">
             {isSubmited ? (
               <div className="text-center flex items-center justify-center flex-col">
@@ -152,6 +152,23 @@ export default function FormPage() {
                       )}
                     />
                   </div>
+                  <div className="w-full px-6">
+                    <FormField
+                      control={form.control}
+                      name="nick"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel>Nickname</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Digite uma senha"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                   <div className="w-full">
                     <FormField
                       control={form.control}
@@ -161,6 +178,23 @@ export default function FormPage() {
                           <FormLabel>E-mail *</FormLabel>
                           <FormControl>
                             <Input placeholder="Digite seu e-mail" {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full px-6">
+                    <FormField
+                      control={form.control}
+                      name="photo"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel>Foto do Perfil</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Digite uma senha"
+                              {...field}
+                            />
                           </FormControl>
                         </FormItem>
                       )}
@@ -186,10 +220,78 @@ export default function FormPage() {
                   <div className="w-full px-6">
                     <FormField
                       control={form.control}
-                      name="password"
+                      name="riot"
                       render={({ field }) => (
                         <FormItem className="w-full">
-                          <FormLabel>Senha *</FormLabel>
+                          <FormLabel>Riot Id</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Digite uma senha"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full px-6">
+                    <FormField
+                      control={form.control}
+                      name="steam"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel>Steam</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Digite uma senha"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full px-6">
+                    <FormField
+                      control={form.control}
+                      name="epic"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel>Epic</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Digite uma senha"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full px-6">
+                    <FormField
+                      control={form.control}
+                      name="xbox"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel>Xbox</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Digite uma senha"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full px-6">
+                    <FormField
+                      control={form.control}
+                      name="psn"
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <FormLabel>PSN</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="Digite uma senha"
@@ -213,7 +315,7 @@ export default function FormPage() {
                       </>
                     ) : (
                       <>
-                        <span className="text-md">Registrar</span>
+                        <span className="text-md">Salvar</span>
                         <ArrowRight className="ml-2 h-6" />
                       </>
                     )}

@@ -283,15 +283,15 @@ export const formatFileName = (file: File): string => {
   return `${formattedName}_${timestamp}.${extension}`
 }
 
-const days = [
+export const weekDays = [
   'SEGUNDA-FEIRA',
   'TERÇA-FEIRA',
   'QUARTA-FEIRA',
   'QUINTA-FEIRA',
   'SEXTA-FEIRA',
-  'SÁBADO',
-  'DOMINGO',
 ]
+
+
 
 export const sortDays = (a, b) => {
   a = days.indexOf(a.day)
