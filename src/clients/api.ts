@@ -12,9 +12,6 @@ const getApiHost = (): string => {
 
 const api = axios.create({
   baseURL: getApiHost(),
-  headers: {
-    'Content-Type': 'application/json',
-  },
   withCredentials: true,
 })
 

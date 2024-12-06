@@ -66,6 +66,11 @@ const execute = async ({ draftEdition, callBack, type }: IParams) => {
     teamsPerGroup: singleDraft.teamsPerGroup,
   })
 
+  groupsEvent({
+    groupsQuantity: 1,
+    teamsPerGroup: 2,
+  })
+
   generateDraftUseCase.execute(
     fullDraft,
     {

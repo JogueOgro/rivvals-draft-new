@@ -1,6 +1,6 @@
 import { IGroup } from '@/domain/group.domain'
 
 export const groupsInitialState: IGroup = {
-  groupsQuantity: '',
-  teamsPerGroup: '',
+  groupsQuantity: 0,
+  teamsPerGroup: 0,
 }

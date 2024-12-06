@@ -61,8 +61,8 @@ const PlayerCard = ({ player, onSelect, cardNumber }: IProps) => {
       style={{
         perspective: '1000px',
         backgroundImage: !isOpen
-          ? 'url("./static/card-back.jpg")'
-          : 'url("./static/card.webp")',
+          ? 'url("/static/card-back.jpg")'
+          : 'url("/static/card.webp")',
         backgroundSize: !isOpen ? 'contain' : 'cover',
         backgroundRepeat: 'no-repeat',
       }}

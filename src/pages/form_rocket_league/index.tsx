@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
 /* eslint-disable prettier/prettier */
 'use client'
 
@@ -25,10 +26,13 @@ import {
 import { Input } from '@/components/ui/input'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from '@/components/ui/textarea'
-import { subscribePlayer } from '@/useCases/player/subscribe-player.useCase'
+import { subscribePlayer } from '@/useCases/player/edit-player-profile.useCase'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prettier/prettier */
 
 const defaultValues = {
   twitch: '',
@@ -114,8 +118,8 @@ export default function FormPage() {
       ...formData,
       edition: 15,
       game: 'Rocket League',
-    });
-    setIsSubmited(true);
+    })
+    setIsSubmited(true)
   }
 
   useEffect(() => {
@@ -131,7 +135,7 @@ export default function FormPage() {
       />
       <div className="p-4 overflow-hidden flex w-full min-h-screen items-center justify-center">
         <div className="flex flex-col pb-12 rounded animate-in fade-in shadow-lg transition-all duration-1000 bg-white w-full max-w-[1000px] my-4 backdrop-filter backdrop-blur-lg bg-opacity-40">
-          <Image src={bannerImg} alt="img" className="self-center" priority/>
+          <Image src={bannerImg} alt="img" className="self-center" priority />
           <div className="flex w-full items-center justify-center mt-4 p-4">
             {isSubmited ? (
               <div className="text-center flex items-center justify-center flex-col">
@@ -483,14 +487,14 @@ export default function FormPage() {
                                     onCheckedChange={(checked) => {
                                       return checked
                                         ? field.onChange([
-                                          ...(field?.value || []),
-                                          item.id,
-                                        ])
+                                            ...(field?.value || []),
+                                            item.id,
+                                          ])
                                         : field.onChange(
-                                          field.value?.filter(
-                                            (value) => value !== item.id,
-                                          ),
-                                        )
+                                            field.value?.filter(
+                                              (value) => value !== item.id,
+                                            ),
+                                          )
                                     }}
                                   />
                                 </FormControl>

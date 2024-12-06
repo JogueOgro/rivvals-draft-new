@@ -22,7 +22,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import ModalUploadPlayers from '@/components/upload-players'
-import authStore from '@/store/auth/auth-store'
 import { draftEvent } from '@/store/draft/draft-events'
 import draftStore from '@/store/draft/draft-store'
 import { playerEvent } from '@/store/player/player-events'
@@ -38,7 +37,7 @@ const defaultValues = {
   teamsQuantity: undefined,
 }
 
-export default function LoginPage() {
+export default function AdminPage() {
   const [type, setType] = useState<IType>(undefined)
   const { config } = useUnit(draftStore)
 

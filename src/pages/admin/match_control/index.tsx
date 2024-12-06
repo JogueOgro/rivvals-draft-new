@@ -90,11 +90,8 @@ export default function MatchControl() {
                 PLAYOFF PICTURE
               </TabsTrigger>
             </TabsList>
-            {!matches?.length ? (
-              <Card className="p-12 text-center w-full">
-                <span>Nenhuma partida encontrada...</span>
-              </Card>
-            ) : (
+
+            {matches && (
               <>
                 <TabsContent value="1">
                   {/* <CaptainSelection /> */}

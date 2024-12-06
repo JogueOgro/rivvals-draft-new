@@ -291,19 +291,17 @@ export const weekDays = [
   'SEXTA-FEIRA',
 ]
 
-
-
 export const sortDays = (a, b) => {
-  a = days.indexOf(a.day)
-  b = days.indexOf(b.day)
-  if (a === b) {
+  const indexA = weekDays.indexOf(a.day)
+  const indexB = weekDays.indexOf(b.day)
+  if (indexA === indexB) {
     return a.hour - b.hour
   } else {
-    return a - b
+    return indexA - indexB
   }
 }
 
 export const fixSchedule = (rawSchedule) => {
-  const fixedSchedule = rawSchedule.replace(/'/g, '"');
-  return JSON.parse(fixedSchedule);
+  const fixedSchedule = rawSchedule.replace(/'/g, '"')
+  return JSON.parse(fixedSchedule)
 }

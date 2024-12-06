@@ -22,7 +22,6 @@ import { playerEvent } from '@/store/player/player-events'
 import playerStore from '@/store/player/player-store'
 import { downloadDraftUseCase } from '@/useCases/draft/download-draft.useCase'
 import { persistDraftUseCase } from '@/useCases/draft/persist-draft.useCase'
-import { persistNewDraftUseCase } from '@/useCases/draft/persist-new-draft.useCase'
 
 const weekDays = [
   'SEGUNDA-FEIRA',
@@ -56,13 +55,6 @@ export default function PlayerSchedules() {
         Inserir no Banco
       </Button>
       <span>&nbsp;&nbsp;</span>
-      {/* <Button
-        className="min-w-[300px] py-2 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
-        onClick={persistNewDraftUseCase.execute}
-      >
-        <DatabaseIcon className="w-5 h-5 mr-2" />
-        Salvar novo Draft
-      </Button> */}
       {Array.from({ length: Number(config?.teamsQuantity || 0) })?.map(
         (_, idx) => (
           <Table className="my-4 border-t " key={idx}>
