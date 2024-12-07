@@ -85,7 +85,7 @@ export default function RaffleButton() {
       teamList[currentTeam - 1].group = Math.ceil(
         raffle / Number(teamsPerGroup),
       )
-      const capname = teamList[currentTeam]?.players[0].nick
+      const capname = teamList[currentTeam - 1]?.players[0].nick
       document.getElementById(String(raffle))!.innerHTML =
         'Time ' + currentTeam + ' (' + capname + ')'
       setCurrentTeam((oldState) => oldState + 1)

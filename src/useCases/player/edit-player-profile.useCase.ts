@@ -21,8 +21,7 @@ const execute = async (form, file) => {
   }
 
   try {
-    const response = await api.put('/player/' + form.idplayer, form)
-    console.log(response.data)
+    await api.put('/player/' + form.idplayer, form)
   } catch (error) {
     const errorJson = {
       message: error.message,

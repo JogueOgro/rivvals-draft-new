@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import api from '@/clients/api'
 import { ITeam } from '@/domain/draft.domain'
-import { IMatch } from '@/domain/match.domain'
+import { IConfirmation, IMatch } from '@/domain/match.domain'
 
 type ISchedule = { day: string; hour: number }
 
@@ -41,6 +41,37 @@ function findMatch(
   schedule: ISchedule[],
 ) {
   const freeSchedule = [] as ISchedule[]
+  const confirmation = {
+    playersToConfirm: team1.players.length * 2,
+    numberConfirmed: 0,
+    playersConfirms: {
+      team1: [],
+      team2: [],
+    },
+  } as IConfirmation
+
+  for (const player of team1.players) {
+    confirmation.playersConfirms.team1.push({
+      id: player.idplayer,
+      name: player.name,
+      email: player.email,
+      team: team1.id,
+      teamName: team1.name,
+      ok: false,
+    })
+  }
+
+  for (const player of team2.players) {
+    confirmation.playersConfirms.team2.push({
+      id: player.idplayer,
+      name: player.name,
+      email: player.email,
+      team: team1.id,
+      teamName: team1.name,
+      ok: false,
+    })
+  }
+
   if (schedule.length === 0) {
     return {
       team1,
@@ -52,6 +83,7 @@ function findMatch(
       isScheduled: false,
       isDone: false,
       format: 'md1',
+      confirmation,
     }
   } else {
     for (let index = 0; index < fullSchedule.length; index++) {
@@ -79,6 +111,7 @@ function findMatch(
     isScheduled: false,
     isDone: false,
     format: 'md1',
+    confirmation,
   } as IMatch
 }
 
@@ -111,7 +144,7 @@ const execute = async ({ edition, teamList, groupsQuantity }: IParams) => {
     .post('/matches', newListMatch)
     .then((response) => {
       if (response.status === 200) {
-        console.log('Dados de times atualizados com sucesso')
+        console.log('Partidas criadas com sucesso')
       } else {
         console.log('Erro ao buscar dados:', response)
       }

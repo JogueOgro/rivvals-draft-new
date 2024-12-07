@@ -55,10 +55,9 @@ const execute = async (players) => {
   ratingPlayer2 = Math.max(0, ratingPlayer2)
 
   try {
-    const response = await api.put(
+    await api.put(
       '/player/pingpong/' + players.player1.idplayer + '/' + ratingPlayer1,
     )
-    console.log(response.data)
   } catch (error) {
     const errorJson = {
       message: error.message,
@@ -69,10 +68,9 @@ const execute = async (players) => {
   }
 
   try {
-    const response = await api.put(
+    await api.put(
       '/player/pingpong/' + players.player2.idplayer + '/' + ratingPlayer2,
     )
-    console.log(response.data)
   } catch (error) {
     const errorJson = {
       message: error.message,
