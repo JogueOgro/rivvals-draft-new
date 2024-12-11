@@ -1,4 +1,8 @@
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+
+import api from '@/clients/api'
+import CoinRanking from '@/components/coin-ranking'
 
 export default function UserProfile() {
   const router = useRouter()
@@ -9,6 +13,26 @@ export default function UserProfile() {
     const newPath = `${asPath}/edit`
     router.push(newPath)
   }
+
+  const [players, setPlayers] = useState([])
+
+  const fetchPlayers = async () => {
+    try {
+      const response = await api.get('/players')
+      const data = response.data
+      setPlayers(data)
+    } catch (error) {
+      console.error('Erro ao buscar players:', error.message)
+      if (error.response) {
+        console.error('Status do erro:', error.response.status)
+        console.error('Dados do erro:', error.response.data)
+      }
+    }
+  }
+
+  useEffect(() => {
+    fetchPlayers()
+  }, [])
 
   return (
     <div className="container">
@@ -94,25 +118,7 @@ export default function UserProfile() {
           <div>Calendário de Eventos</div>
         </div>
         <aside className="achievements-history">
-          <h3>Ranking Moedas Rivvals</h3>
-          <ul className="ranking-list">
-            {[
-              { name: 'Debora Leite', coins: 6 },
-              { name: 'Gustavo Barros', coins: 5 },
-              { name: 'Marcelo Tenório', coins: 4 },
-              { name: 'Lucas Fegueredo', coins: 4 },
-              { name: 'Tati Kaori', coins: 3 },
-              { name: 'Ogro', coins: 2 },
-            ]
-              .sort((a, b) => b.coins - a.coins) // Ordena pela quantidade de moedas
-              .map((player, index) => (
-                <li key={index} className="ranking-item">
-                  <span className="ranking-position">{index + 1}</span>
-                  <span className="player-name">{player.name}</span>
-                  <span className="player-coins">{player.coins} Rv$</span>
-                </li>
-              ))}
-          </ul>
+          <CoinRanking players={players} playerId={1} />
         </aside>
       </div>
     </div>
