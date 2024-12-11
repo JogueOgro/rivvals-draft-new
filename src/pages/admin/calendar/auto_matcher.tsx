@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/accordion'
 import { Card } from '@/components/ui/card'
 import { IMatch } from '@/domain/match.domain'
-import { fixSchedule, weekDays } from '@/lib/utils'
+import { fixStringToObj, weekDays } from '@/lib/utils'
 import draftStore from '@/store/draft/draft-store'
 import groupsStore from '@/store/groups/groups-store'
 
@@ -27,7 +27,7 @@ export default function AutoMatcher() {
       const rawMatches = response.data
       const processedMatches = rawMatches.map((match) => ({
         ...match,
-        freeSchedule: fixSchedule(match.freeSchedule as string),
+        freeSchedule: fixStringToObj(match.freeSchedule as string),
       }))
       setMatches(processedMatches)
     } catch (error) {

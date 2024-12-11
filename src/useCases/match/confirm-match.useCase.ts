@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import api from '@/clients/api'
 import { IConfirmation } from '@/domain/match.domain'
+import { fixStringToObj } from '@/lib/utils'
 
 const execute = async (player, draft, match) => {
   let freshMatch
@@ -8,14 +9,9 @@ const execute = async (player, draft, match) => {
   try {
     const response = await api.get('/match/' + match.idmatch)
     freshMatch = response.data
-    console.log(freshMatch)
-    if (!freshMatch.confirmation) {
-      freshMatch.confirmation = {
-        playersPerTeam: draft.playersPerTeam,
-        numberConfirmed: 0,
-        playersConfirms: [],
-      } as IConfirmation
-    }
+    freshMatch.confirmation = fixStringToObj(
+      freshMatch.confirmation,
+    ) as IConfirmation
   } catch (error) {
     console.error('Erro na busca de partidas:', error.message)
     if (error.response) {
@@ -25,19 +21,29 @@ const execute = async (player, draft, match) => {
     return
   }
 
-  console.log(freshMatch)
+  console.log(freshMatch.confirmation)
 
-  freshMatch.confirmation.numberConfirmed += 1
-  freshMatch.confirmation.playerConfirms.push({
-    id: player.idplayer,
-    name: player.name,
-    team: draft.team.idteam,
-    ok: true,
-  })
+  const updatePlayerOk = (players, idPlayer) =>
+    players.map((player) =>
+      player.id === idPlayer ? { ...player, ok: true } : player,
+    )
+
+  freshMatch.confirmation.playersConfirms.team1 = updatePlayerOk(
+    freshMatch.confirmation.playersConfirms.team1,
+    player.idplayer,
+  )
+
+  freshMatch.confirmation.playersConfirms.team2 = updatePlayerOk(
+    freshMatch.confirmation.playersConfirms.team2,
+    player.idplayer,
+  )
+
+  if (!freshMatch.confirmation.confirmedIds.includes(player.idplayer)) {
+    freshMatch.confirmation.confirmedIds.push(player.idplayer)
+  }
 
   try {
-    const response = await api.put('/match/' + match.idmatch, freshMatch)
-    freshMatch = response.data
+    await api.put('/match/' + match.idmatch, freshMatch)
   } catch (error) {
     console.error('Erro na busca de partidas:', error.message)
     if (error.response) {

@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { fixSchedule, sortDays, weekDays } from '@/lib/utils'
+import { fixStringToObj, sortDays, weekDays } from '@/lib/utils'
 import { editPlayerSchedule } from '@/useCases/player/edit-player-schedule.useCase'
 
 export default function CalendarPage() {
@@ -25,7 +25,7 @@ export default function CalendarPage() {
   const getPlayerByEmail = async () => {
     try {
       const response = await api.get('/player/email/ogro@levva.io')
-      response.data.schedule = fixSchedule(response.data.schedule)
+      response.data.schedule = fixStringToObj(response.data.schedule)
       setPlayer(response.data)
     } catch (error) {
       console.error('Erro na busca de jogadores:', error.message)

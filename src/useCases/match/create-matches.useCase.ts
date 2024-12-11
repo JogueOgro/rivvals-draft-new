@@ -43,7 +43,7 @@ function findMatch(
   const freeSchedule = [] as ISchedule[]
   const confirmation = {
     playersToConfirm: team1.players.length * 2,
-    numberConfirmed: 0,
+    confirmedIds: [],
     playersConfirms: {
       team1: [],
       team2: [],
@@ -54,6 +54,7 @@ function findMatch(
     confirmation.playersConfirms.team1.push({
       id: player.idplayer,
       name: player.name,
+      nick: player.nick,
       email: player.email,
       team: team1.id,
       teamName: team1.name,
@@ -65,9 +66,10 @@ function findMatch(
     confirmation.playersConfirms.team2.push({
       id: player.idplayer,
       name: player.name,
+      nick: player.nick,
       email: player.email,
-      team: team1.id,
-      teamName: team1.name,
+      team: team2.id,
+      teamName: team2.name,
       ok: false,
     })
   }

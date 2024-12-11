@@ -1,25 +1,33 @@
 import { BaseDomain } from './base.domain'
 import { ITeam } from './draft.domain'
 
+export interface IReschedule {
+  playerid: number
+  playername: string
+  reason: string
+  blockedSchedule: string
+}
 export interface IConfirmation {
-  playersToConfirm: number
-  numberConfirmed: number
-  playersConfirms: {
-    team1: Array<{
-      id: number
-      name: string
-      email: string
-      team: number
-      teamName: string
-      ok: boolean
+  playersToConfirm?: number
+  confirmedIds?: []
+  playersConfirms?: {
+    team1?: Array<{
+      id?: number
+      name?: string
+      nick?: string
+      email?: string
+      team?: number
+      teamName?: string
+      ok?: boolean
     }>
-    team2: Array<{
-      id: number
-      name: string
-      email: string
-      team: number
-      teamName: string
-      ok: boolean
+    team2?: Array<{
+      id?: number
+      name?: string
+      nick?: string
+      email?: string
+      team?: number
+      teamName?: string
+      ok?: boolean
     }>
   }
 }
@@ -34,10 +42,11 @@ export interface IMatch extends BaseDomain {
   isDone?: boolean
   isScheduled?: boolean
   scheduledDate: Date
+  reschedule: IReschedule
   winner?: number
   scoreTeam1?: number
   scoreTeam2?: number
   freeSchedule?: { day: string; hour: number }[]
   confirmation?: IConfirmation
-  conclusionDate: Date
+  conclusionDate?: Date
 }

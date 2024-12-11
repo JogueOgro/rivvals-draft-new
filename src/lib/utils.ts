@@ -301,7 +301,35 @@ export const sortDays = (a, b) => {
   }
 }
 
-export const fixSchedule = (rawSchedule) => {
-  const fixedSchedule = rawSchedule.replace(/'/g, '"')
-  return JSON.parse(fixedSchedule)
+export const fixStringToObj = (string) => {
+  try {
+    const formattedString = string
+      .replace(/'/g, '"')
+      .replace(/True/g, 'true')
+      .replace(/False/g, 'false')
+
+    return JSON.parse(formattedString)
+  } catch (error) {
+    console.error('Erro ao converter string para objeto JSON:', error)
+    return null
+  }
+}
+
+export const formatLocalDate = (date) => {
+  const localDate = new Date(date)
+    .toLocaleString('pt-BR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    })
+    .replace(',', '')
+    .replace('/', '-')
+    .replace('/', '-')
+    .replace(' ', 'T')
+
+  return localDate
 }

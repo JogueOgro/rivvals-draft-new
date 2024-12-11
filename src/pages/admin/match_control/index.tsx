@@ -14,7 +14,7 @@ import {
 import { Card } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { IMatch } from '@/domain/match.domain'
-import { fixSchedule } from '@/lib/utils'
+import { fixStringToObj } from '@/lib/utils'
 import draftStore from '@/store/draft/draft-store'
 import groupsStore from '@/store/groups/groups-store'
 
@@ -39,7 +39,7 @@ export default function MatchControl() {
       const rawMatches = response.data
       const processedMatches = rawMatches.map((match) => ({
         ...match,
-        freeSchedule: fixSchedule(match.freeSchedule as string),
+        freeSchedule: fixStringToObj(match.freeSchedule as string),
       }))
       setMatches(processedMatches)
     } catch (error) {
