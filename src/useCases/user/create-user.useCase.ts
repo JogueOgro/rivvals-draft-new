@@ -1,9 +1,19 @@
 import api from '@/clients/api'
 
-const execute = async (data) => {
+const execute = (data) => {
   try {
-    const response = await api.post('/user', data)
-    console.log(response.data)
+    api.post('/user', data)
+  } catch (error) {
+    const errorJson = {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+    }
+    console.log('Error JSON:', errorJson)
+  }
+
+  try {
+    api.post('/player', data)
   } catch (error) {
     const errorJson = {
       message: error.message,

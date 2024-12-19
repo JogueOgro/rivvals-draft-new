@@ -229,7 +229,6 @@
 .main-section {
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
   gap: 2rem;
 }
 
@@ -243,7 +242,6 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  margin-right: 1rem;
 }
 
 .user-details {
@@ -330,6 +328,27 @@
 .player-coins {
   font-weight: bold;
   color: #f39c12; /* Cor dourada para as moedas */
+}
+
+.profile-image {
+  width: 61%;
+  height: 61%;
+  border-radius: 50%; /* Torna a imagem circular */
+  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+  position: absolute; /* Fixa a posição dentro do wrapper */
+  top: 16%;
+  left: 20%;
+  z-index: 1; /* Coloca a imagem abaixo da moldura */
+}
+
+.profile-frame {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2; /* Coloca a moldura acima da imagem */
+  pointer-events: none; /* Impede que eventos de clique interfiram na moldura */
 }
 
 
