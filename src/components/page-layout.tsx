@@ -12,7 +12,7 @@ const showSidebar = false
 
 const PageLayout = ({ children }: { children: ReactNode }) => {
   const { asPath } = useRouter()
-  const { email } = useUnit(authStore)
+  const { username, email } = useUnit(authStore)
   const router = useRouter()
   const data = { email, auth: 'admin' }
 
@@ -61,11 +61,32 @@ const PageLayout = ({ children }: { children: ReactNode }) => {
         </div>
       </div>
     )
+  } else if (asPath.startsWith('/profile')) {
+    return (
+      <div
+        className="flex min-h-screen"
+        style={{
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <AnimatedBackground />
+        {children}
+      </div>
+    )
   } else {
     return (
       <>
-        <AnimatedBackground />
-        {children}
+        <div
+          className="flex min-h-screen"
+          style={{
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          <AnimatedBackground />
+          {children}
+        </div>
       </>
     )
   }

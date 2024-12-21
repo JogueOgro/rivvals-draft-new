@@ -24,8 +24,6 @@ import { authEvent } from '@/store/auth/auth-events'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-export type IType = undefined | 'new' | 'import' | 'database' | 'database_new'
-
 const defaultValues = {
   email: undefined,
   password: undefined,
@@ -71,7 +69,7 @@ export default function LoginPage() {
         date: new Date(),
         token: responseData,
       })
-      route.push('/profile/' + username)
+      route.push('/profile/' + email)
     } catch (error) {
       console.error('Erro durante login:', error.message)
       if (error.response) {

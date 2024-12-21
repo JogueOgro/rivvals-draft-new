@@ -31,7 +31,7 @@ const AnimatedBackground = (): JSX.Element => {
   )
 
   return (
-    <div className="fixed mt-24 h-full w-full opacity-20 transition-opacity duration-1000 ease-in-out">
+    <div className="fixed mt-4 h-full w-full opacity-20 transition-opacity duration-1000 ease-in-out z-0 pointer-events-none">
       {duplicatedList.map((illustration, index) => {
         const delay = index * 100
         return (

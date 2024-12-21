@@ -18,7 +18,8 @@ export default function MenuItem(props: IMenuItemProps) {
   const { icon: IconMenu, setActiveMenuIndex } = props
   const route = useRouter()
 
-  const isActive = route.pathname === props.route
+  const isActive =
+    props.route === '/' ? false : route.asPath.startsWith(props.route)
 
   return (
     <Button

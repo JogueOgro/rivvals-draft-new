@@ -179,32 +179,74 @@
   }
 }
 
-/* Layout Geral */
-.container {
-  font-family: Arial, sans-serif;
+.container-profile {
+  margin-top: 34px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  width: 100%;
+}
+
+.profile-section,
+.feed-section,
+.ranking-section {
+  border-radius: 8px;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.profile-section,
+.ranking-section {
+  flex: 0 0 17%;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 1200px;
-  margin: auto;
+  padding: 10px;
 }
 
-/* Cabeçalho */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  background-color: #f8f8f8;
-  border-bottom: 1px solid #ddd;
+.feed-section {
+  flex: 1;
+  background-color: #f3f4f6;
 }
 
-.search-bar {
-  flex-grow: 1;
-  max-width: 300px;
-  padding: 0.5rem;
+.profile-section .user-details h2 {
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.profile-section .user-details button {
+  align-self: center;
+  margin-top: 16px;
+  color: #fff;
+  border: none;
   border-radius: 4px;
-  border: 1px solid #ddd;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.profile-section .user-details button:hover {
+  background-color: #1d4ed8;
+}
+
+.profile-section .rating-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.feed-section h2 {
+  margin-bottom: 16px;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.feed-section .feed-content div {
+  margin-bottom: 12px;
+}
+
+.ranking-section h2 {
+  margin-bottom: 16px;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: bold;
 }
 
 .icons, .user-menu {
@@ -225,28 +267,11 @@
   margin-right: 0.5rem;
 }
 
-/* Seção Principal */
-.main-section {
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-}
-
-.profile-section {
-  flex: 1;
-  display: flex;
-  align-items: center;
-}
 
 .user-photo-large {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-}
-
-.user-details {
-  display: flex;
-  flex-direction: column;
 }
 
 .edit-profile-btn {
@@ -258,76 +283,6 @@
   border-radius: 4px;
   cursor: pointer;
   pointer-events: auto;
-}
-
-.status-section {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-  padding: 1rem;
-  border-left: 1px solid #ddd;
-}
-
-/* Body */
-.body-content {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.feed {
-  flex: 4;
-  padding: 1rem;
-  background-color: #f1f1f1;
-}
-
-.achievements-history {
-  flex: 1;
-  padding: 1rem;
-  background-color: #e8e8e8;
-}
-
-.vertical-bar {
-  width: 1px;
-  background-color: #000;
-  height: 100%;
-  margin: 0 20px;
-}
-
-.achievements-history {
-  margin-top: 20px;
-}
-
-.ranking-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.ranking-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
-
-.ranking-item:hover {
-  background-color: #f4f4f4;
-}
-
-.ranking-position {
-  font-weight: bold;
-  color: #333;
-}
-
-.player-name {
-  flex-grow: 1;
-  margin-left: 10px;
-}
-
-.player-coins {
-  font-weight: bold;
-  color: #f39c12; /* Cor dourada para as moedas */
 }
 
 .profile-image {
@@ -350,5 +305,4 @@
   z-index: 2; /* Coloca a moldura acima da imagem */
   pointer-events: none; /* Impede que eventos de clique interfiram na moldura */
 }
-
 

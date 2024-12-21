@@ -18,7 +18,7 @@ import {
 import { fixStringToObj, sortDays, weekDays } from '@/lib/utils'
 import { editPlayerSchedule } from '@/useCases/player/edit-player-schedule.useCase'
 
-export default function CalendarPage() {
+export default function CalendarSection() {
   const [isLoading, setIsLoading] = useState(true)
   const [player, setPlayer] = useState({})
 

@@ -33,7 +33,7 @@ const formSchema = z.object({
   psn: z.string().optional(),
 })
 
-export default function EditPage() {
+export default function PlayerEdit() {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)

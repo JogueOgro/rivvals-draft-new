@@ -7,7 +7,6 @@ const getApiHost = (): string => {
     process.env.NEXT_PUBLIC_API_HOST ||
     process.env.NEXT_PUBLIC_API_HOST_LOCAL ||
     ''
-  console.log('LINK:', link)
   return link
 }
 
