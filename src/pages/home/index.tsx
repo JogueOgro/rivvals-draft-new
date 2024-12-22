@@ -69,7 +69,7 @@ export default function LoginPage() {
         date: new Date(),
         token: responseData,
       })
-      route.push('/profile/' + email)
+      route.push('/profile/' + username)
     } catch (error) {
       console.error('Erro durante login:', error.message)
       if (error.response) {

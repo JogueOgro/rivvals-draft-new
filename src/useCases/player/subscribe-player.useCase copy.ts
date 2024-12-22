@@ -9,6 +9,10 @@ const execute = async (data) => {
     isCaptain: 0,
     isBackup: 0,
     stars: 0,
+    wins: 0,
+    coins: 0,
+    participations: 0,
+    title: 'Padawan',
   }
 
   if (data.capitao_ou_reserva === 'capitao') player.isCaptain = 1

@@ -9,6 +9,7 @@ export type IMenuItemProps = {
   icon: LucideIcon
   menu: string
   route: string
+  loggedUsername?: string
   index?: number
   activeMenuIndex?: number
   setActiveMenuIndex?: (i: number) => void

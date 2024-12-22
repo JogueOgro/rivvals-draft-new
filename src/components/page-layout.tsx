@@ -12,9 +12,9 @@ const showSidebar = false
 
 const PageLayout = ({ children }: { children: ReactNode }) => {
   const { asPath } = useRouter()
-  const { username, email } = useUnit(authStore)
+  const { loggedEmail } = useUnit(authStore)
   const router = useRouter()
-  const data = { email, auth: 'admin' }
+  const data = { loggedEmail, auth: 'admin' }
 
   useEffect(() => {
     const checkAuthorization = async (data) => {

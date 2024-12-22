@@ -11,6 +11,18 @@ export interface IPlayer extends BaseDomain {
   medal?: number
   power?: number
   wins?: number
+  trophy?: number
+  gold?: number
+  silver?: number
+  bronze?: number
+  border?: string
+  bestTeam?: string
+  bestPlacement?: string
+  favoriteGame?: string
+  mobile?: string
+  evaluations?: number
+  achievments?: number
+  participations?: number
   tags?: string
   stars: number
   isCaptain?: boolean

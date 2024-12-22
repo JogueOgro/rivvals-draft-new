@@ -6,21 +6,18 @@ import { useState } from 'react'
 import logoImg from '@/assets/logo.png'
 import MenuItem, { IMenuItemProps } from '@/components/menu-item'
 
-type IProps = {
-  username: string
-}
-
-const UserSidebar = ({ username }: IProps) => {
+const UserSidebar = (props) => {
   const [activeMenuIndex, setActiveMenuIndex] = useState(0)
   const showSidebar = false
   const route = useRouter()
+  const loggedUser = props.loggedUser
 
   const handleExit = () => {
     localStorage.clear()
     route.push('/')
   }
 
-  const profilePath = '/profile/' + username
+  const profilePath = '/profile/' + loggedUser.username
   const userModules: IMenuItemProps[] = [
     {
       menu: 'Perfil',
@@ -62,7 +59,7 @@ const UserSidebar = ({ username }: IProps) => {
             className="pt-4"
             priority
             onClick={() => {
-              route.push(`/profile/${username}`)
+              route.push(`/profile/${loggedUser.username}`)
             }}
           />
         </div>

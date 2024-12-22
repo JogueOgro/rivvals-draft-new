@@ -1,10 +1,9 @@
 'use client'
 
-import { DatabaseIcon, Loader2 } from 'lucide-react'
+import { ArrowLeft, DatabaseIcon, Loader2 } from 'lucide-react'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-import api from '@/clients/api'
-import HeadMetatags from '@/components/head-metatags'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -18,29 +17,18 @@ import {
 import { fixStringToObj, sortDays, weekDays } from '@/lib/utils'
 import { editPlayerSchedule } from '@/useCases/player/edit-player-schedule.useCase'
 
-export default function CalendarSection() {
+export default function CalendarSection(props) {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
-  const [player, setPlayer] = useState({})
-
-  const getPlayerByEmail = async () => {
-    try {
-      const response = await api.get('/player/email/ogro@levva.io')
-      response.data.schedule = fixStringToObj(response.data.schedule)
-      setPlayer(response.data)
-    } catch (error) {
-      console.error('Erro na busca de jogadores:', error.message)
-      if (error.response) {
-        console.error('Status do erro:', error.response.status)
-        console.error('Dados do erro:', error.response.data)
-      }
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const [player, setPlayer] = useState(props.player)
 
   useEffect(() => {
-    getPlayerByEmail()
-  }, [])
+    setIsLoading(false)
+    console.log(player.schedule)
+    if (!Array.isArray(player.schedule)) {
+      player.schedule = fixStringToObj(player.schedule)
+    }
+  }, [player])
 
   if (isLoading) {
     return (
@@ -60,10 +48,10 @@ export default function CalendarSection() {
 
   return (
     <>
-      <HeadMetatags title="Editar Agenda Pessoal" description="Editar Agenda" />
-      <div className="p-4 overflow-hidden flex w-full min-h-screen items-center justify-center">
+      <div className="p-4 flex w-full min-h-screen items-start justify-center">
         <div className="flex flex-col pb-12 rounded animate-in fade-in shadow-lg transition-all duration-1000 bg-white w-full max-w-[1000px] my-4 backdrop-filter backdrop-blur-lg bg-opacity-40 border-t border-t-gray-200">
-          <div className="flex w-full items-center justify-center mt-4 p-4">
+          <div className="w-full mt-4 p-4">
+            <strong className="text-lg">Marque seus horários ocupados</strong>
             <Table className="my-4 border-t">
               <TableHeader>
                 <TableRow className="bg-muted">
@@ -136,27 +124,39 @@ export default function CalendarSection() {
                 </TableRow>
               </TableBody>
             </Table>
+          </div>
 
-            <Button
-              disabled={isLoading}
-              type="submit"
-              className="w-1/2 flex justify-center items-center gap-2 mt-12 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="h-7 w-7 animate-spin" />
-                  <span className="text-md ml-2">Carregando...</span>
-                </>
-              ) : (
+          <div className="w-full flex justify-center mt-4">
+            {isLoading ? (
+              <>
+                <Loader2 className="h-7 w-7 animate-spin" />
+                <span className="text-md ml-2">Carregando...</span>
+              </>
+            ) : (
+              <div className="flex justify-between items-center gap-2">
                 <Button
-                  className="min-w-[300px] py-2 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
-                  onClick={() => editPlayerSchedule.execute(player)}
+                  className="py-2 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
+                  onClick={() => props.setVisibility('feed')}
+                >
+                  <ArrowLeft className="w-5 h-5 mr-2" />
+                  Voltar
+                </Button>
+                <Button
+                  className="py-2 bg-gradient-to-r from-purple-800 via-purple-700 to-purple-600"
+                  onClick={async () => {
+                    try {
+                      await editPlayerSchedule.execute(player)
+                      await router.reload()
+                    } catch (error) {
+                      console.error('Erro ao editar player:', error)
+                    }
+                  }}
                 >
                   <DatabaseIcon className="w-5 h-5 mr-2" />
                   Salvar
                 </Button>
-              )}
-            </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
