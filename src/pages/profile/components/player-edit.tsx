@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowLeft, ArrowRight, Loader2, Upload } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Loader2, Upload, X } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'

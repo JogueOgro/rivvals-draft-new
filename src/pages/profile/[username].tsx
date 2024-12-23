@@ -10,6 +10,7 @@ import authStore from '@/store/auth/auth-store'
 
 import ConfirmMatch from './components/confirm-match'
 import FeedSection from './components/feed'
+import NotificationSection from './components/notification'
 import CalendarSection from './components/player-calendar'
 import PlayerEdit from './components/player-edit'
 import ProfileSection from './components/player-profile'
@@ -56,14 +57,29 @@ export default function UserProfile() {
     <>
       <HeadMetatags title="Perfil do Jogador" />
 
-      <UserSidebar loggedUser={loggedUser} username={username} />
+      <UserSidebar
+        loggedUser={loggedUser}
+        username={username}
+        setVisibility={setVisibility}
+      />
       <header className="w-[calc(100%-75px)] bg-white shadow-md z-10 fixed top-0 left-[76px] px-4 py-2 flex justify-between items-center">
-        <input type="text" placeholder="Buscar..." className="search-bar" />
-        <div className="icons">
-          <i className="icon-notifications">🔔</i>
-          <i className="icon-store">🛒</i>
-        </div>
+        <input
+          type="text"
+          placeholder="Buscar..."
+          className="search-bar w-1/4"
+        />
         <div className="user-menu flex items-center">
+          <div className="icons flex items-center mr-6 gap-x-4">
+            <NotificationSection player={player} />
+            <a
+              href="https://rivvals.lojaintegrada.com.br"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <p className="icon-store">🛒</p>
+            </a>
+          </div>
+
           <Avatar>
             <AvatarImage
               src={
@@ -72,6 +88,7 @@ export default function UserProfile() {
                   : backendURL + '/pictures/incognito.jpg'
               }
               alt="Player Avatar"
+              className="object-cover w-full h-full"
             />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>

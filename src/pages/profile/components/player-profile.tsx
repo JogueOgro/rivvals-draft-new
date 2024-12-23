@@ -16,7 +16,12 @@ export default function ProfileSection(props) {
   return (
     <>
       <aside className="profile-section flex flex-col gap-4 !w-[65%] shadow-md">
-        <div className="relative w-full aspect-square">
+        <div
+          className="relative w-full aspect-square cursor-pointer"
+          onClick={() => {
+            props.setVisibility('feed')
+          }}
+        >
           <img
             src={
               player.photo

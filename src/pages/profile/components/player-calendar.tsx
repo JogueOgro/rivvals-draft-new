@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowLeft, DatabaseIcon, Loader2 } from 'lucide-react'
+import { ArrowLeft, DatabaseIcon, Loader2, X } from 'lucide-react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 

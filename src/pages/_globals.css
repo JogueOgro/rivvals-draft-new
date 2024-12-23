@@ -94,6 +94,10 @@
   animation: slideInFromRight 0.5s ease-in-out forwards;
 }
 
+body {
+  overflow: auto !important;
+}
+
 
 .card {
   display: flex;

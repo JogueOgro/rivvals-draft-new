@@ -60,6 +60,7 @@ const UserSidebar = (props) => {
             priority
             onClick={() => {
               route.push(`/profile/${loggedUser.username}`)
+              props.setVisibility('feed')
             }}
           />
         </div>
